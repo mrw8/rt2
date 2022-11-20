@@ -10,14 +10,37 @@ sys.path.append(".")
 from ids_codes import Rui
 
 class Atuple:
-	
-	def __init__(self, ruip, ruia=Rui.Rui('A'), ruit=Rui.Rui('A'), unique="+SU", ar='A', t=datetime.now(timezone.utc)):
-		self.ruit = ruit
-		self.ruip = ruip
-		self.ruia = ruia
-		self.unique = unique
-		self.ar = 'A'
-		self.t = t
+	"""Referent Tracking assignment tuple that registers assignment of an RUI to a PoR"""
+	def __init__(self, ruip=None, ruia=None, ruit=None, unique=None, ar=None, t=None):
+		if ruit is None:
+			self.ruit = Rui.Rui('A')
+		else:	
+			self.ruit = ruit
+
+		if ar is None:
+			self.ar = 'A'
+		else:
+			self.ar = ar
+
+		if ruip is None: 
+			self.ruip = Rui.Rui(self.ar)
+		else:
+			self.ruip = ruip 
+		
+		if ruia is None:
+			self.ruia = Rui.Rui('A')
+		else:
+			self.ruia = ruia
+
+		if unique is None:
+			self.unique = "-SU"
+		else:
+			self.unique = unique
+		
+		if t is None:
+			self.t = datetime.now(timezone.utc)
+		else:
+			self.t = t
 
 	def get_ruit(self):
 		return self.ruit
@@ -30,3 +53,7 @@ class Atuple:
 
 	def get_t(self):
 		return self.t
+
+	def get_su_status(self):
+		return self.unique
+
