@@ -4,7 +4,7 @@ import sys
 # parent directory
 sys.path.append(".")
 
-from rui import Rui
+from ids_codes import Rui
 
 
 def print_info(rui):

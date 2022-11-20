@@ -2,6 +2,8 @@ from uuid6 import uuid7
 import logging
 
 class Rui:
+	"""Referent Unique Identifier"""
+	
 	def __init__(self, a_or_r):
 		self.uuid = uuid7()
 		if (a_or_r == 'A' or a_or_r == 'R'):
