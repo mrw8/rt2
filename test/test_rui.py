@@ -15,6 +15,13 @@ def print_info(rui):
 
 x = Rui.Rui('A')
 y = Rui.Rui('R')
+z = Rui.Rui('R')
 
 print_info(x)
 print_info(y)
+print()
+print("z before status change")
+print_info(z)
+z.update_status_assigned()
+print("\nz after status change")
+print_info(z)

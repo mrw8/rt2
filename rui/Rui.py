@@ -1,4 +1,5 @@
 from uuid6 import uuid7
+import logging
 
 class Rui:
 	def __init__(self, a_or_r):
@@ -17,3 +18,8 @@ class Rui:
 	def get_uuid(self):
 		return self.uuid
 
+	def update_status_assigned(self):
+		if (self.a_or_r == 'A'):
+			logging.warning("status of Rui instance is already assigned. No change.")
+		else:
+			self.a_or_r = 'A'
