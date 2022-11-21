@@ -16,6 +16,9 @@ class RtTuple:
 		else:	
 			self.ruit = ruit
 
+	def get_ruit(self):
+		return self.ruit 
+
 class Atuple(RtTuple):
 	"""Referent Tracking assignment tuple that registers assignment of an RUI to a PoR"""
 	def __init__(self, ruip=None, ruia=None, ruit=None, unique=None, ar=None, t=None):
@@ -60,4 +63,30 @@ class Atuple(RtTuple):
 
 	def get_su_status(self):
 		return self.unique
+
+class NtoXGenericTuple(RtTuple):
+	def __init__(self, ruit, ruin):
+		super().__init__(ruit)
+		if ruin is None:
+			raise Exception("must provide a value for RUIn")
+		else:
+			self.ruin = ruin
+
+	def get_rui_n(self):
+		return self.ruin 
+
+class NtoXTuple(NtoXGenericTuple):
+	def __init(self, ruit, ruin, polarity):
+		super().__init__(ruit, ruin)
+		if (polarity):
+			self.polarity = True
+		else:
+			self.polarity = False
+
+	def isPositive(self):
+		return self.polarity
+
+	def isNegated(self):
+		return not self.polarity
+
 
