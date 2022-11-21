@@ -63,22 +63,22 @@ pretty_print_dict = {
 	RtErrorCode.R01: "The relationship between the non-repeatable PoR referred to by ruin and the repeatable PoR referred to by ruir does not hold during the stated time period",
 	RtErrorCode.R02: " The ruir parameter for the repeatable PoR does not refer to the intended PoR or it refers to no PoR at all",
 	RtErrorCode.R03: "There is an A1 error in the corresponding A tuple; therefore the NtoR tuple is nonsensical",
-	RtErrorCode.R04: "The ruin parameter is subject to a mistake of type A2, and for at least one of the particulars referred to by it, the stated relationship does not hold",
-	RtErrorCode.R05: "The ruin parameter is subject to a mistake of type A3, and the non-repeatable PoR referred to by ruin is not an instance of the repeatable PoR during the stated time period",
-	RtErrorCode.R06: "The ruin parameter is subject to a mistake of type A4, and the non-repeatable PoR referred to by ruin is not an instance of the repeatable PoR during the stated time period",
+	RtErrorCode.R04: "The ruin parameter is subject to a mistake of type A2, and for at least one of the non-repeatable PoR referred to by it, the stated relationship does not hold",
+	RtErrorCode.R05: "The ruin parameter is subject to a mistake of type A3, and the relationship between the non-repeatable PoR and the repeatable PoR does not hold during the stated time period",
+	RtErrorCode.R06: "The ruin parameter is subject to a mistake of type A4, and the relationship between the non-repeatable PoR and the repeatable PoR does not hold during the stated time period",
 	RtErrorCode.R07: "The ruin parameter is subject to a mistake of type A2, but for ALL the non-repeatable PoR that it refers to, the relationship with the repeatable PoR does not hold during the stated time period",
-	RtErrorCode.R08: "The ruin parameter is subject to a mistake of type A3, but the non-repeatable PoR it denotes is an instance of the repeatable PoR during the stated time period",
-	RtErrorCode.R09: "The ruin parameter is subject to a mistake of type A4, but the non-repeatable PoR it denotes is an instance of the repeatable PoR during the stated time period",
+	RtErrorCode.R08: "The ruin parameter is subject to a mistake of type A3, but the relationship between the non-repeatable PoR it denotes and the repeatable PoR holds during the stated time period",
+	RtErrorCode.R09: "The ruin parameter is subject to a mistake of type A4, but the relationship between the non-repeatable PoR it denotes and the repeatable PoR holds during the stated time period",
 	RtErrorCode.R10: "There is no A-type error but the stated relationship between the non-repeatable PoR and the repeatable PoR is irrelevant",
 	RtErrorCode.P1: "The relationship does not hold among the list of non-repeatable PoR denoted by the RUIs in P",
 	RtErrorCode.P2: "One or more of the RUIs in P do not refer to the intended non-repeatable PoR or refer to no non-repeatable PoR at all",
-	RtErrorCode.P3: "",
-	RtErrorCode.AM1: "",
-	RtErrorCode.AM2: "",
-	RtErrorCode.RM1: "",
-	RtErrorCode.RM2: "",
-	RtErrorCode.PM1: "",
-	RtErrorCode.PM2: ""
+	RtErrorCode.P3: "There is an A1 error in the corresponding A tuple; the NtoN tuple is nonsensical",
+	RtErrorCode.AM1: "The existence of a relevant non-repeatable PoR was previously not recognized",
+	RtErrorCode.AM2: "The relevance of a non-repeatable PoR to the purpose of the RTS has not been acknowledged, despite knowledge of its existence",
+	RtErrorCode.RM1: "The existence of relationship between a non-repeatable PoR and a repeatable PoR was previously not recognized",
+	RtErrorCode.RM2: "The relevance of a relationship between a non-repeatable PoR and a repeatable PoR has not been acknowledged, despite knowledge of its existence",
+	RtErrorCode.PM1: "The existence of a relationship among a group of non-repeatable PoR was previously not recognized",
+	RtErrorCode.PM2: "The relevance of a relationship among a group of non-repeatable PoR has not been acknowledged, despite knowledge of its existence"
 }
 
 
@@ -98,26 +98,19 @@ description_dict = {
 	RtErrorCode.R02: "The ruir parameter for the repeatable portion of reality does not refer to the intended portion of reality or it refers to no portion of reality at all",
 	RtErrorCode.R03: "There is an A1 error in the corresponding A tuple (the ruin parameter does not refer to any PoR at all); therefore the NtoR tuple is nonsensical",
 	RtErrorCode.R04: "The ruin parameter is subject to a mistake of type A2 and for at least one of the non-repeatable portions of reality referred to by it, the stated relationship to the repeatable portion of reality (denoted by ruir) does not hold",
-	RtErrorCode.R05: "The ruin parameter is subject to a mistake of type A3, and the non-repeatable portion of reality referred to by ruin is not an instance of the repeatable portion of reality (denoted by ruir) during the stated time period",
-	RtErrorCode.R06: "The ruin parameter is subject to a mistake of type A4, and the non-repeatable portion of reality referred to by ruin is not an instance of the repeatable portion of reality (denoted by ruir) during the stated time period",
+	RtErrorCode.R05: "The ruin parameter is subject to a mistake of type A3, and the relationship between the non-repeatable portion of reality (denoted by ruin) and the repeatable portion of reality (denoted by ruir) does not hold during the stated time period",
+	RtErrorCode.R06: "The ruin parameter is subject to a mistake of type A4, and the relationship between the non-repeatable portion of reality (dentoed by ruin) and the repeatable portion of reality (denoted by ruir) does not hold during the stated time period",
 	RtErrorCode.R07: "The ruin parameter is subject to a mistake of type A2, but for ALL the non-repeatable portions of reality that it refers to, the relationship with the repeatable portion of reality (denoted by ruir) does not hold during the stated time period",
-	RtErrorCode.R08: "The ruin parameter is subject to a mistake of type A3, but the non-repeatable portion of reality it denotes is an instance of the repeatable portion of reality (denoted by ruir) during the stated time period",
-	RtErrorCode.R09: "The ruin parameter is subject to a mistake of type A4, but the non-repeatable portion of reality it denotes is an instance of the repeatable portion of reality (denoted by ruir) during the stated time period",
+	RtErrorCode.R08: "The ruin parameter is subject to a mistake of type A3, but the relationship between the non-repeatable portion of reality it denotes and the repeatable portion of reality (denoted by ruir) holds during the stated time period",
+	RtErrorCode.R09: "The ruin parameter is subject to a mistake of type A4, but the relationship between the non-repeatable portion of reality it denotes and the repeatable portion of reality (denoted by ruir) holds during the stated time period",
 	RtErrorCode.R10: "There is no A-type error but the stated relationship between the non-repeatable portion of reality and the repeatable portion of reality is irrelevant to the purpose of the system",
 	RtErrorCode.P1: "The stated relationship does not hold among the list of non-repeatable portions of reality denoted by the set of RUIs in the P parameter",
 	RtErrorCode.P2: "One or more of the RUIs in the set P do not refer to the intended non-repeatable portion of reality or refer to no non-repeatable portion of reality at all",
-	RtErrorCode.P3: "",
-	RtErrorCode.AM1: "",
-	RtErrorCode.AM2: "",
-	RtErrorCode.RM1: "",
-	RtErrorCode.RM2: "",
-	RtErrorCode.PM1: "",
-	RtErrorCode.PM2: ""
+	RtErrorCode.P3: "There is an A1 error in the corresponding A tuple (one or more of the RUIs in P does not refer at all); therefore the NtoN tuple is nonsensical",
+	RtErrorCode.AM1: "The existence of a relevant non-repeatable portion of reality was previously not recognized",
+	RtErrorCode.AM2: "The relevance of a non-repeatable PoR to the purpose of the RTS has not been acknowledged, despite knowing of its existence",
+	RtErrorCode.RM1: "The existence of relationship between a non-repeatable portion of reality and a repeatable portion of reality was previously not recognized",
+	RtErrorCode.RM2: "The relevance of a relationship between a non-repeatable portion of reality and a repeatable portion of reality has not been acknowledged, despite knowledge of its existence",
+	RtErrorCode.PM1: "The existence of a relationship among a group of non-repeatable portions of reality was previously not recognized",
+	RtErrorCode.PM2: "The relevance of a relationship among a group of non-repeatable PoR has not been acknowledged, despite knowledge of its existence"
 }
-
-print(TupleEventType.INSERT)
-print(pretty_print_dict[TupleEventType.INSERT])
-
-print(RtChangeReason.REALITY)
-print(pretty_print_dict[RtChangeReason.REALITY])
-
