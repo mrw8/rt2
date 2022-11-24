@@ -17,9 +17,6 @@ class Rui:
 	def is_reserved(self): 
 		return (self.a_or_r == 'R')
 
-	def get_uuid(self):
-		return self.uuid
-
 	def update_status_assigned(self):
 		if (self.a_or_r == 'A'):
 			logging.warning("status of Rui instance is already assigned. No change.")

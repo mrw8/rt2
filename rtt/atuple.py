@@ -49,20 +49,6 @@ class Atuple(RtTuple):
 		else:
 			self.t = t
 
-	def get_ruit(self):
-		return self.ruit
-
-	def get_ruip(self):
-		return self.ruip 
-
-	def get_ruia(self):
-		return self.ruia 
-
-	def get_t(self):
-		return self.t
-
-	def get_su_status(self):
-		return self.unique
 
 class NtoXGenericTuple(RtTuple):
 	def __init__(self, ruit, ruin):
@@ -72,8 +58,6 @@ class NtoXGenericTuple(RtTuple):
 		else:
 			self.ruin = ruin
 
-	def get_rui_n(self):
-		return self.ruin 
 
 class NtoXTuple(NtoXGenericTuple):
 	def __init(self, ruit, ruin, polarity):

@@ -9,18 +9,20 @@ from ids_codes import Rui
 
 
 def print_code(c):
-	print("code for concept is", c.get_c_code())
-	print("code system rui is", str(c.get_cs_rui().get_uuid()))
-	x = c.get_name()
+	print("code for concept is", c.code)
+	print("\tcode system rui is", str(c.cs_rui.uuid))
+	x = c.name
 	if (x):
-		print("concept name is", x)
+		print("\tconcept name is '",x,"'")
+	print()
 
 def print_attribute(a):
-	print("code for attribute is", a.get_r_code())
-	print("code system rui is", str(a.get_cs_rui().get_uuid()))
-	y = a.get_name()
+	print("code for attribute is", a.r)
+	print("\tcode system rui is", str(a.cs_rui.uuid))
+	y = a.name
 	if (y):
-		print("attribute name is", y)
+		print("\tattribute name is '",y,"'")
+	print()
 
 csrui = Rui.Rui('A')
 c1 = Concept.Concept("12345678", csrui)
@@ -34,7 +36,6 @@ print_code(c2)
 
 a1 = Concept.Attribute("456", csrui)
 a2 = Concept.Attribute("101", csrui, "narrower than")
-print("attribute 1")
+
 print_attribute(a1)
-print("attribute 2")
 print_attribute(a2)

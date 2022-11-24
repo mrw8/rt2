@@ -9,12 +9,12 @@ from rtt.atuple import Atuple
 
 def print_atuple(a):
 	print("tuple information:")
-	print("\truit: the rui that denotes tuple itself", str(a.get_ruit().get_uuid()))
-	print("\truip: rui that was assigned to some PoR", str(a.get_ruip().get_uuid()))
-	print("\tis ruip reserved? ", a.get_ruip().is_reserved())
-	print('\tis ruip singularly unique vs. potentially non-singularly unique: ', a.get_su_status())
-	print("\truia: rui that denotes person who assigned ruip to some PoR", str(a.get_ruia().get_uuid()))
-	print("\tt: time that ruia assigned/reserved ruip to/for some PoR", str(a.get_t()))
+	print("\truit: the rui that denotes tuple itself", str(a.ruit.uuid))
+	print("\truip: rui that was assigned to some PoR", str(a.ruip.uuid))
+	print("\tis ruip reserved? ", a.ruip.is_reserved())
+	print('\tis ruip singularly unique vs. potentially non-singularly unique: ', a.unique)
+	print("\truia: rui that denotes person who assigned ruip to some PoR", str(a.ruia.uuid))
+	print("\tt: time that ruia assigned/reserved ruip to/for some PoR", str(a.t))
 	print()
 
 

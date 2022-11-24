@@ -9,9 +9,9 @@ from ids_codes import Rui
 
 def print_info(rui):
 	print(rui)
-	print("assigned? " + str(rui.is_assigned()))
-	print("reserved? " + str(rui.is_reserved()))
-	print("uuid: " + str(rui.get_uuid()))
+	print("\tassigned? " + str(rui.is_assigned()))
+	print("\treserved? " + str(rui.is_reserved()))
+	print("\tuuid: " + str(rui.uuid))
 
 x = Rui.Rui('A')
 y = Rui.Rui('R')
