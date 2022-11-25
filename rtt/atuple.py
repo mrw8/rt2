@@ -51,17 +51,20 @@ class Atuple(RtTuple):
 
 
 class NtoXGenericTuple(RtTuple):
-	def __init__(self, ruit, ruin):
+	def __init__(self, ruit, ruin, r):
 		super().__init__(ruit)
 		if ruin is None:
 			raise Exception("must provide a value for RUIn")
 		else:
 			self.ruin = ruin
-
+		if r is None:
+			raise Exception("must provide a value for r")
+		else:
+			self.r = r 
 
 class NtoXTuple(NtoXGenericTuple):
-	def __init(self, ruit, ruin, polarity):
-		super().__init__(ruit, ruin)
+	def __init__(self, ruit, ruin, r, polarity):
+		super().__init__(ruit, ruin, r)
 		if (polarity):
 			self.polarity = True
 		else:
