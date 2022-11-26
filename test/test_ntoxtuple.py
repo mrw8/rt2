@@ -28,16 +28,30 @@ def print_ntor_tuple(ntor):
 	print("\tpolarity: the relationship holds (true) or does not hold (false) --", str(ntor.polarity))
 	print()
 
+def print_nton_tuple(nton):
+	print("NtoN tuple information:")
+	print("\truit: the rui that the system assigned to the NtoR tuple itself --", str(nton.ruit.uuid))
+	print("\truin: the rui that denotes the non-repeatable PoR that this tuple is about --", str(nton.ruin.uuid))
+	print("\tP: the list of ruis that denote the non-repeatable PoRs that are related by r:")
+	for i in nton.p_list:
+		print("\t\t", i.uuid)
+	print("\tr: the relationship between the non-repeatable PoR and the repeatable PoR --", str(nton.r))
+	print("\ttr: the time at which the relationship between the non-repeatable PoR and the repeatable PoR holds --", str(nton.tr.uuid))
+	print("\tpolarity: the relationship holds (true) or does not hold (false) --", str(nton.polarity))
+	print()
+
 # Rui that represents the person authoring these tuples
 a = Rui.Rui('A')
 # Rui that stands for the repeatable PoR called "human being"
 h = Rui.Rui('A')
 # Rui that stands for interval over which author has been instance of human being
-tr = Rui.Rui('A')
+tr1 = Rui.Rui('A')
+k = Atuple(tr1, ruia=a)
 
-ntor = NtoR(None, a, True, "instance of", h, tr)
+ntor = NtoR(None, a, True, "instance of", h, tr1)
 print_ntor_tuple(ntor)
 
+#let x be the RUI standing for Kuala Lumpur
 x = Rui.Rui('A')
 y = Atuple(x)
 print_atuple(y)
@@ -46,6 +60,13 @@ q = Rui.Rui('R')
 z = Atuple(q, ruia=a, unique="+SU", ar='R')
 print_atuple(z)
 
+#let s be the RUI standing for the territory of Malaysia
 s = Rui.Rui('A')
 w = Atuple(s, ruia=a, unique="+SU")
 print_atuple(w)
+
+#let tr2 be interval over which kuala lumpur has been part of Malaysia
+tr2 = Rui.Rui('A')
+j = Atuple(tr2, ruia=a)
+nton = NtoN(None, x, True, "part of", [x, s], tr2)
+print_nton_tuple(nton)
