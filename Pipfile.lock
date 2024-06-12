@@ -1,11 +1,11 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "d610acdbc1158a74385b8da1497ec75631d3f56122bcdcf19dbccda56856d7c1"
+            "sha256": "27929dc9ccbd725024e183c7b7b1c9ade1cfe973466d9c81b631d59e817dec49"
         },
         "pipfile-spec": 6,
         "requires": {
-            "python_version": "3.11"
+            "python_version": "3.12"
         },
         "sources": [
             {
@@ -16,13 +16,39 @@
         ]
     },
     "default": {
-        "uuid6": {
+        "build": {
             "hashes": [
-                "sha256:0a56935de9c1ce8dd8559225b845549d94917d9e24ad4b1cc2328eea5be0010c",
-                "sha256:bd9b874081968c5f24af7ec7a3f48175197806224cc6f4833914f671854c6266"
+                "sha256:526263f4870c26f26c433545579475377b2b7588b6f1eac76a001e873ae3e19d",
+                "sha256:75e10f767a433d9a86e50d83f418e83efc18ede923ee5ff7df93b6cb0306c5d4"
             ],
             "index": "pypi",
-            "version": "==2022.10.25"
+            "markers": "python_version >= '3.8'",
+            "version": "==1.2.1"
+        },
+        "packaging": {
+            "hashes": [
+                "sha256:026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002",
+                "sha256:5b8f2217dbdbd2f7f384c41c628544e6d52f2d0f53c6d0c3ea61aa5d1d7ff124"
+            ],
+            "markers": "python_version >= '3.8'",
+            "version": "==24.1"
+        },
+        "pyproject-hooks": {
+            "hashes": [
+                "sha256:4b37730834edbd6bd37f26ece6b44802fb1c1ee2ece0e54ddff8bfc06db86965",
+                "sha256:7ceeefe9aec63a1064c18d939bdc3adf2d8aa1988a510afec15151578b232aa2"
+            ],
+            "markers": "python_version >= '3.7'",
+            "version": "==1.1.0"
+        },
+        "uuid6": {
+            "hashes": [
+                "sha256:8150093c8d05a331bc0535bc5ef6cf57ac6eceb2404fd319bc10caee2e02c065",
+                "sha256:ed0afb3a973057575f9883201baefe402787ca5e11e1d24e377190f0c43f1993"
+            ],
+            "index": "pypi",
+            "markers": "python_version >= '3.8'",
+            "version": "==2024.1.12"
         }
     },
     "develop": {}

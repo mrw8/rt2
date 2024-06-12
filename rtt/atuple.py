@@ -3,10 +3,6 @@ from datetime import datetime, timezone
 
 import sys
   
-# append the path of the
-# parent directory
-sys.path.append(".")
-
 from ids_codes import Rui
 
 class RtTuple:
