@@ -1,5 +1,3 @@
-import sys
-  
 from ids_codes import Rui
 from rtt.atuple import NtoXTuple, NtoXGenericTuple
 

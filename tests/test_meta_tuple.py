@@ -1,10 +1,4 @@
 from datetime import datetime, timezone
-import sys
-  
-# append the path of the
-# parent directory
-sys.path.append(".")
-
 from ids_codes import Rui
 from rtt_meta.meta_tuple import Dtuple, Ftuple
 from rtt_meta.metadata_accessory import TupleEventType, RtChangeReason, RtErrorCode

@@ -1,9 +1,3 @@
-import sys
-  
-# append the path of the
-# parent directory
-sys.path.append(".")
-
 from ids_codes import Rui
 from rtt.atuple import Atuple
 from rtt.ntoxtuple import NtoR, NtoN, NtoDE, NtoC, NtoLackR
