@@ -1,5 +1,6 @@
 from ids_codes import Rui
 from rtt.atuple import Atuple
+from datetime import datetime, timezone
 
 def print_atuple(a):
 	print("tuple information:")
@@ -25,3 +26,5 @@ print_atuple(z)
 s = Rui.Rui('A')
 w = Atuple(s, ruia=a, unique="+SU")
 print_atuple(w)
+
+print(type(datetime.now(timezone.utc)))

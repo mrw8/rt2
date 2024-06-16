@@ -1,5 +1,6 @@
-from ids_codes import Rui
-
+from ids_codes.Rui import Rui, TempRef
+from uuid6 import uuid7
+from datetime import datetime, timezone
 
 def print_info(rui):
 	print(rui)
@@ -7,9 +8,17 @@ def print_info(rui):
 	print("\treserved? " + str(rui.is_reserved()))
 	print("\tuuid: " + str(rui.uuid))
 
-x = Rui.Rui('A')
-y = Rui.Rui('R')
-z = Rui.Rui('R')
+def print_tr(tr):
+	print(tr)
+	print("uuid field=", tr.uuid)
+	if (tr.cal != None):
+		print("cal field=", tr.cal.isoformat('T'))
+	else:
+		print("cal field=", tr.cal)
+
+x = Rui('A')
+y = Rui('R')
+z = Rui('R')
 
 print_info(x)
 print_info(y)
@@ -19,3 +28,29 @@ print_info(z)
 z.update_status_assigned()
 print("\nz after status change")
 print_info(z)
+
+j = TempRef(uuid7())
+k = TempRef(datetime.now(timezone.utc))
+m = TempRef(datetime.now())
+n = TempRef(None,'U')
+p = TempRef(None,'C')
+
+print("\n### Temporal reference initialized with UUID ###")
+print_tr(j)
+print("##############\n")
+
+print("### Temporal reference initialized with UTC now ###")
+print_tr(k)
+print("##############\n")
+
+print("### Temporal reference initialized with local now ###")
+print_tr(m)
+print("##############\n")
+
+print("### Temporal reference initialized with no id and instruction to create a new UUID ###")
+print_tr(n)
+print("##############\n")
+
+print("### Temporal reference initialized with no id and instruction to create a UTC now datetime ###")
+print_tr(p)
+print("##############\n")
