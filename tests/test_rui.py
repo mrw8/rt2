@@ -16,18 +16,28 @@ def print_tr(tr):
 	else:
 		print("cal field=", tr.cal)
 
-x = Rui(RuiStatus.assigned)
-y = Rui(RuiStatus.reserved)
-z = Rui(RuiStatus.reserved)
 
-print_info(x)
-print_info(y)
-print()
-print("z before status change")
-print_info(z)
-z.update_status_assigned()
-print("\nz after status change")
-print_info(z)
+def test_RuiStatus():
+	a = Rui(RuiStatus.assigned)
+	assert(a.is_assigned())
+	assert(a.status is RuiStatus.assigned)
+	assert(not a.is_reserved())
+
+	a.update_status_assigned()
+	assert(a.is_assigned())
+	assert(a.status is RuiStatus.assigned)
+	assert(not a.is_reserved())
+
+	r = Rui(RuiStatus.reserved)
+	assert(r.is_reserved())
+	assert(r.status is RuiStatus.reserved)
+	assert(not r.is_assigned())
+
+	r.update_status_assigned()
+	assert(r.is_assigned())
+	assert(r.status is RuiStatus.assigned)
+	assert(not r.is_reserved())
+
 
 j = TempRef(uuid7())
 k = TempRef(datetime.now(timezone.utc))

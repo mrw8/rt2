@@ -1,24 +1,27 @@
-from uuid6 import uuid7
 from datetime import datetime, timezone
   
 from src.ids_codes.Rui import Rui, RuiStatus
 
 class RtTuple:
-	def __init__(self, ruit):
-		if ruit is None:
-			self.ruit = Rui(RuiStatus.assigned)
-		else:	
-			self.ruit = ruit
+	def __init__(self, ruit=None):
+		self.ruit = ruit if ruit else Rui(RuiStatus.assigned)
 
 	def get_ruit(self):
 		return self.ruit 
 
-# Assignment tuple, i.e., assigment of a Rui to some entity in reality
-#  We can also reserve a Rui, and this class has the ar parameter to 
-#	capture that. Depending on whether 
+
 class Atuple(RtTuple):
-	"""Referent Tracking assignment tuple that registers assignment of an RUI to a PoR"""
-	def __init__(self, ruip=Rui(RuiStatus.assigned), ruia=None, ruit=None, unique="-SU", ar=RuiStatus.assigned, t=datetime.now(timezone.utc)):
+	"""Referent Tracking assignment tuple that registers assignment of an RUI to a PoR
+	
+	Attributes:
+	ar -- The status of ruip
+	ruip -- The Rui that is being assigned for the first time
+	ruia -- The Rui of the author of this Atuple
+	unique -- 
+	t -- The time of the creation of the Atuple
+	"""
+
+	def __init__(self, ruip=None, ruia=None, ruit=None, unique="-SU", ar=RuiStatus.assigned, t=datetime.now(timezone.utc)):
 		super().__init__(ruit)
 
 		# If we don't get a value for whether the Rui is assigned or reserved
@@ -26,7 +29,7 @@ class Atuple(RtTuple):
 		self.ar = ar
 
 		# If we don't get a Ruip, then we'll create one on the fly
-		self.ruip = ruip 
+		self.ruip = ruip if ruip else Rui(self.ar)
 		
 		# If we don't get an author Rui for the tuple, then autogenerate one,
 		#	unless we don't get a Ruip either, in which case set it to the
@@ -41,6 +44,11 @@ class Atuple(RtTuple):
 
 		self.unique = unique
 		self.t = t
+
+	def getTimestamp(self):
+		return self.t
+	
+
 
 # This class is the superclass of all Nto* tuples. They all relate some
 #	non-repeatable portion of reality to some portion of reality (in 

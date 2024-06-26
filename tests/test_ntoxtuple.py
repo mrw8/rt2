@@ -4,7 +4,7 @@ from src.rtt.ntoxtuple import NtoR, NtoN, NtoDE, NtoC, NtoLackR
 
 def print_atuple(a):
 	print("A tuple information:")
-	print("\truit: the rui that denotes tuple itself", str(a.ruit.uuid))
+	print("\truit: the rui that denotes tuple itself", str(a.get_ruit().uuid))
 	print("\truip: rui that was assigned to some PoR", str(a.ruip.uuid))
 	print("\tis ruip reserved? ", a.ruip.is_reserved())
 	print('\tis ruip singularly unique vs. potentially non-singularly unique: ', a.unique)
@@ -14,7 +14,7 @@ def print_atuple(a):
 
 def print_ntor_tuple(ntor):
 	print("NtoR tuple information:")
-	print("\truit: the rui that the system assigned to the NtoR tuple itself --", str(ntor.ruit.uuid))
+	print("\truit: the rui that the system assigned to the NtoR tuple itself --", str(ntor.get_ruit().uuid))
 	print("\truin: the rui that denotes the non-repeatable PoR that this tuple is about --", str(ntor.ruin.uuid))
 	print("\truir: the rui that denotes the repeatable PoR to which the non-repeatable PoR (denoted by ruinI) is related --", ntor.ruir.uuid)
 	print("\tr: the relationship between the non-repeatable PoR and the repeatable PoR --", str(ntor.r))
@@ -24,7 +24,7 @@ def print_ntor_tuple(ntor):
 
 def print_nton_tuple(nton):
 	print("NtoN tuple information:")
-	print("\truit: the rui that the system assigned to the NtoR tuple itself --", str(nton.ruit.uuid))
+	print("\truit: the rui that the system assigned to the NtoR tuple itself --", str(nton.get_ruit().uuid))
 	print("\truin: the rui that denotes the non-repeatable PoR that this tuple is about --", str(nton.ruin.uuid))
 	print("\tP: the list of ruis that denote the non-repeatable PoRs that are related by r:")
 	for i in nton.p_list:
