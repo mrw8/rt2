@@ -1,6 +1,5 @@
 from src.ids_codes import Rui
-from src.rtt.atuple import Atuple
-from src.rtt.ntoxtuple import NtoR, NtoN, NtoDE, NtoC, NtoLackR
+from src.rttuple import Atuple, NtoR, NtoN, NtoDE, NtoC, NtoLackR
 
 def print_atuple(a):
 	print("A tuple information:")

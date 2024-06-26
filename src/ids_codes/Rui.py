@@ -13,8 +13,8 @@ class Rui:
 	"""Referent Unique Identifier
 
 	Attributes:
-	uuid -- the unique identifier of the RUI
-	status -- The current status of the RUI
+	uuid -- the unique identifier of the Rui
+	status -- the current status of the Rui
 	"""
 
 	def __init__(self, status: RuiStatus, uuid: UUID = uuid7()):
@@ -40,7 +40,12 @@ class Rui:
 # 	 = ''
 
 class TempRef:
-	"""Temporal Reference"""
+	"""Temporal Reference
+	
+	Attributes:
+	cal -- 
+	uuid -- 
+	"""
 
 	def __init__(self, tr, ref_type:str=''):
 		if (isinstance(tr, datetime)):
@@ -65,7 +70,7 @@ class TempRef:
 			raise Exception("temporal reference must be datatime or uuid")
 
 	def isCalendar(self):
-		return (self.cal != None)
+		return self.cal
 
 	def isUuid(self):
-		return (self.uuid != None)
+		return self.uuid

@@ -1,5 +1,5 @@
 from src.ids_codes import Rui
-from src.rtt.atuple import Atuple
+from src.rttuple import Atuple
 from datetime import datetime, timezone
 
 def print_atuple(a):

@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 from src.ids_codes import Rui
-from src.rtt import atuple
+from src import rttuple
 
 class Dtuple(atuple.RtTuple):
 
