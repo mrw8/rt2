@@ -1,4 +1,4 @@
-from rtt_meta.metadata_accessory import TupleEventType, RtChangeReason, RtErrorCode, pretty_print_dict, description_dict
+from src.rtt_meta.metadata_accessory import TupleEventType, RtChangeReason, RtErrorCode, pretty_print_dict, description_dict
 
 print(TupleEventType.INSERT, "\t", pretty_print_dict[TupleEventType.INSERT])
 print()

@@ -1,5 +1,5 @@
 from src.ids_codes import Rui
-from rtt.atuple import NtoXTuple, NtoXGenericTuple
+from src.rtt.atuple import NtoXTuple, NtoXGenericTuple
 
 class NtoN(NtoXTuple):
 
