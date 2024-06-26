@@ -47,39 +47,3 @@ class Atuple(RtTuple):
 
 	def getTimestamp(self):
 		return self.t
-	
-
-
-# This class is the superclass of all Nto* tuples. They all relate some
-#	non-repeatable portion of reality to some portion of reality (in 
-#	some cases a repeatable PoR, and in others non-repeatable ones) or
-#	in the case of NtoC, it is asserting that the N is "annotated by"
-#	the "concept" from some concept system.
-# We require the NtoXGenericTuple to accomodate NtoLackR
-#	All the other Nto* tuples extend NtoXTuple
-# 
-class NtoXGenericTuple(RtTuple):
-	def __init__(self, ruit, ruin, r):
-		super().__init__(ruit)
-		if ruin is None:
-			raise Exception("must provide a value for RUIn")
-		if r is None:
-			raise Exception("must provide a value for r")
-		
-		self.ruin = ruin
-		self.r = r 
-
-# Except for NtoLackR, Nto* tuples can be asserted as being
-#  true or false (i.e., "it is not the case that...")
-class NtoXTuple(NtoXGenericTuple):
-	def __init__(self, ruit, ruin, r, polarity: bool):
-		super().__init__(ruit, ruin, r)
-		self.polarity = polarity
-
-	def isPositive(self):
-		return self.polarity
-
-	def isNegated(self):
-		return not self.polarity
-
-
