@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from ids_codes import Rui
+from src.ids_codes import Rui
 from rtt_meta.meta_tuple import Dtuple, Ftuple
 from rtt_meta.metadata_accessory import TupleEventType, RtChangeReason, RtErrorCode
 from rtt.atuple import Atuple
@@ -18,14 +18,14 @@ def print_f_tuple(ft):
 	print("\tta: ", ft.ta.isoformat().replace('+00:00', 'Z'))
 
 # create two Atuples with a = rui of person assigning rui to things
-a = Rui.Rui('A')
-s = Rui.Rui('A')
+a = Rui.Rui(Rui.RuiStatus.assigned)
+s = Rui.Rui(Rui.RuiStatus.assigned)
 w = Atuple(a, ruia=a, unique="+SU")
 x = Atuple(s, ruia=a, unique="+SU")
 
 # create two D tuples for each Atuple
 # the entity registering the tuples in the RTS
-dr = Rui.Rui('A')
+dr = Rui.Rui(Rui.RuiStatus.assigned)
 # metadata or D tuple for w (Atuple)
 dt1 = Dtuple(w.ruit, dr, TupleEventType.INSERT, RtChangeReason.RELEVANCE, None, datetime.now(timezone.utc), None)
 # metadata or D tuple for x (Atuple)

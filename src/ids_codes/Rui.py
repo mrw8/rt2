@@ -1,40 +1,48 @@
 from uuid6 import uuid7, UUID
 from datetime import datetime, timezone
 import logging
+import enum
+
+
+"""Enum representing RUI statuses"""
+class RuiStatus(enum.Enum):
+	assigned = 'A'
+	reserved = 'R'
 
 class Rui:
-	"""Referent Unique Identifier"""
-	
-	def setAssignedOrReserved(self, a_or_r):
-		if (a_or_r == 'A' or a_or_r == 'R'):
-			self.a_or_r = a_or_r
-		else:
-			raise Exception("a_or_r must be set to A (assigned) or R (reserved)")
+	"""Referent Unique Identifier
 
-	def __init__(self, uuid, a_or_r):
+	Attributes:
+	uuid -- the unique identifier of the RUI
+	status -- The current status of the RUI
+	"""
+
+	def __init__(self, status: RuiStatus, uuid: UUID = uuid7()):
 		self.uuid = uuid
-		self.setAssignedOrReserved(a_or_r)
-
-	def __init__(self, a_or_r):
-		self.uuid = uuid7()
-		self.setAssignedOrReserved(a_or_r)
+		self.status = status
 
 	def is_assigned(self):
-		return (self.a_or_r == 'A')
+		return self.status is RuiStatus.assigned
 
 	def is_reserved(self): 
-		return (self.a_or_r == 'R')
+		return self.status is RuiStatus.reserved
 
 	def update_status_assigned(self):
-		if (self.a_or_r == 'A'):
+		if self.status is RuiStatus.assigned:
 			logging.warning("status of Rui instance is already assigned. No change.")
 		else:
-			self.a_or_r = 'A'
+			self.status = RuiStatus(RuiStatus.assigned)
+
+
+# class TempRefStatus(enum.Enum):
+# 	 = 'U'
+# 	 = 'C'
+# 	 = ''
 
 class TempRef:
 	"""Temporal Reference"""
 
-	def __init__(self, tr, ref_type = None):
+	def __init__(self, tr, ref_type:str=''):
 		if (isinstance(tr, datetime)):
 			if tr.tzinfo != timezone.utc:
 				tr = tr.astimezone(timezone.utc)
@@ -56,8 +64,8 @@ class TempRef:
 		else:
 			raise Exception("temporal reference must be datatime or uuid")
 
-	def isCalendar():
+	def isCalendar(self):
 		return (self.cal != None)
 
-	def isUuid():
+	def isUuid(self):
 		return (self.uuid != None)

@@ -1,4 +1,4 @@
-from ids_codes import Rui
+from src.ids_codes import Rui
 from rtt.atuple import Atuple
 from rtt.ntoxtuple import NtoR, NtoN, NtoDE, NtoC, NtoLackR
 
@@ -35,32 +35,32 @@ def print_nton_tuple(nton):
 	print()
 
 # Rui that represents the person authoring these tuples
-a = Rui.Rui('A')
+a = Rui.Rui(Rui.RuiStatus.assigned)
 # Rui that stands for the repeatable PoR called "human being"
-h = Rui.Rui('A')
+h = Rui.Rui(Rui.RuiStatus.assigned)
 # Rui that stands for interval over which author has been instance of human being
-tr1 = Rui.Rui('A')
+tr1 = Rui.Rui(Rui.RuiStatus.assigned)
 k = Atuple(tr1, ruia=a)
 
 ntor = NtoR(None, a, True, "instance of", h, tr1)
 print_ntor_tuple(ntor)
 
 #let x be the RUI standing for Kuala Lumpur
-x = Rui.Rui('A')
+x = Rui.Rui(Rui.RuiStatus.assigned)
 y = Atuple(x)
 print_atuple(y)
 
-q = Rui.Rui('R')
+q = Rui.Rui(Rui.RuiStatus.reserved)
 z = Atuple(q, ruia=a, unique="+SU", ar='R')
 print_atuple(z)
 
 #let s be the RUI standing for the territory of Malaysia
-s = Rui.Rui('A')
+s = Rui.Rui(Rui.RuiStatus.assigned)
 w = Atuple(s, ruia=a, unique="+SU")
 print_atuple(w)
 
 #let tr2 be interval over which kuala lumpur has been part of Malaysia
-tr2 = Rui.Rui('A')
+tr2 = Rui.Rui(Rui.RuiStatus.assigned)
 j = Atuple(tr2, ruia=a)
 nton = NtoN(None, x, True, "part of", [x, s], tr2)
 print_nton_tuple(nton)

@@ -1,4 +1,4 @@
-from ids_codes.Rui import Rui, TempRef
+from src.ids_codes.Rui import Rui, TempRef, RuiStatus
 from uuid6 import uuid7
 from datetime import datetime, timezone
 
@@ -16,9 +16,9 @@ def print_tr(tr):
 	else:
 		print("cal field=", tr.cal)
 
-x = Rui('A')
-y = Rui('R')
-z = Rui('R')
+x = Rui(RuiStatus.assigned)
+y = Rui(RuiStatus.reserved)
+z = Rui(RuiStatus.reserved)
 
 print_info(x)
 print_info(y)

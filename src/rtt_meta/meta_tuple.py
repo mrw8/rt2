@@ -1,7 +1,5 @@
 from datetime import datetime, timezone
-import sys
-  
-from ids_codes import Rui
+from src.ids_codes import Rui
 
 class Dtuple:
 
@@ -33,7 +31,7 @@ class Ftuple:
 		self.C = C
 		# ruit denotes this Ftuple itself
 		if ruit is None:
-			self.ruit = Rui.Rui('A')
+			self.ruit = Rui.Rui(Rui.RuiStatus.assigned)
 		else:
 			self.ruit = ruit
 

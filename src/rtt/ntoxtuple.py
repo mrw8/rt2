@@ -1,4 +1,4 @@
-from ids_codes import Rui
+from src.ids_codes import Rui
 from rtt.atuple import NtoXTuple, NtoXGenericTuple
 
 class NtoN(NtoXTuple):

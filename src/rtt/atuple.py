@@ -1,14 +1,12 @@
 from uuid6 import uuid7
 from datetime import datetime, timezone
-
-import sys
   
-from ids_codes import Rui
+from src.ids_codes.Rui import Rui, RuiStatus
 
 class RtTuple:
 	def __init__(self, ruit):
 		if ruit is None:
-			self.ruit = Rui.Rui('A')
+			self.ruit = Rui(RuiStatus.assigned)
 		else:	
 			self.ruit = ruit
 
@@ -20,21 +18,15 @@ class RtTuple:
 #	capture that. Depending on whether 
 class Atuple(RtTuple):
 	"""Referent Tracking assignment tuple that registers assignment of an RUI to a PoR"""
-	def __init__(self, ruip=None, ruia=None, ruit=None, unique=None, ar=None, t=None):
+	def __init__(self, ruip=Rui(RuiStatus.assigned), ruia=None, ruit=None, unique="-SU", ar=RuiStatus.assigned, t=datetime.now(timezone.utc)):
 		super().__init__(ruit)
 
 		# If we don't get a value for whether the Rui is assigned or reserved
 		#	then we assume that it is assigned
-		if ar is None:
-			self.ar = 'A'
-		else:
-			self.ar = ar
+		self.ar = ar
 
 		# If we don't get a Ruip, then we'll create one on the fly
-		if ruip is None: 
-			self.ruip = Rui.Rui(self.ar)
-		else:
-			self.ruip = ruip 
+		self.ruip = ruip 
 		
 		# If we don't get an author Rui for the tuple, then autogenerate one,
 		#	unless we don't get a Ruip either, in which case set it to the
@@ -42,27 +34,13 @@ class Atuple(RtTuple):
 		# This means that the default behavior is that if neither Ruia nor Ruip
 		#	are provided, we are assuming some entity is assigning a Ruip to 
 		#	itself, and thus should be equal
-		if ruia is None:
-			if ruip is None:
-				self.ruia = ruip
-			else:
-				self.ruia = Rui.Rui('A')
-		else:
-			self.ruia = ruia
+		self.ruia = ruia
+		if self.ruia is None:
+			print(self.ruip.uuid)
+			self.ruia = Rui(self.ruip.status, self.ruip.uuid)
 
-		# If we don't get info about whether Ruip is singularly unique
-		#	then we're going to assume it isn't
-		if unique is None:
-			self.unique = "-SU"
-		else:
-			self.unique = unique
-		
-		# If we don't get a timestamp for assignment of Ruip to some entity
-		#	(assigned by Ruia), then assume Ruia is assigning Ruip at runtime
-		if t is None:
-			self.t = datetime.now(timezone.utc)
-		else:
-			self.t = t
+		self.unique = unique
+		self.t = t
 
 # This class is the superclass of all Nto* tuples. They all relate some
 #	non-repeatable portion of reality to some portion of reality (in 
@@ -77,22 +55,18 @@ class NtoXGenericTuple(RtTuple):
 		super().__init__(ruit)
 		if ruin is None:
 			raise Exception("must provide a value for RUIn")
-		else:
-			self.ruin = ruin
 		if r is None:
 			raise Exception("must provide a value for r")
-		else:
-			self.r = r 
+		
+		self.ruin = ruin
+		self.r = r 
 
 # Except for NtoLackR, Nto* tuples can be asserted as being
 #  true or false (i.e., "it is not the case that...")
 class NtoXTuple(NtoXGenericTuple):
-	def __init__(self, ruit, ruin, r, polarity):
+	def __init__(self, ruit, ruin, r, polarity: bool):
 		super().__init__(ruit, ruin, r)
-		if (polarity):
-			self.polarity = True
-		else:
-			self.polarity = False
+		self.polarity = polarity
 
 	def isPositive(self):
 		return self.polarity
