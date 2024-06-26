@@ -1,5 +1,5 @@
-from ids_codes import Rui
-from rtt.atuple import Atuple
+from src.ids_codes import Rui
+from src.rtt.atuple import Atuple
 from datetime import datetime, timezone
 
 def print_atuple(a):
@@ -13,17 +13,17 @@ def print_atuple(a):
 	print()
 
 
-a = Rui.Rui('A')
+a = Rui.Rui(Rui.RuiStatus.assigned)
 
-x = Rui.Rui('A')
+x = Rui.Rui(Rui.RuiStatus.assigned)
 y = Atuple(x)
 print_atuple(y)
 
-q = Rui.Rui('R')
+q = Rui.Rui(Rui.RuiStatus.reserved)
 z = Atuple(q, ruia=a, unique="+SU", ar='R')
 print_atuple(z)
 
-s = Rui.Rui('A')
+s = Rui.Rui(Rui.RuiStatus.assigned)
 w = Atuple(s, ruia=a, unique="+SU")
 print_atuple(w)
 
