@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 from src.ids_codes import Rui
 from src.rttuple import Dtuple, Ftuple, Atuple
-from src.rtt_meta.metadata_accessory import TupleEventType, RtChangeReason, RtErrorCode
+from metadata_accessory import TupleEventType, RtChangeReason, RtErrorCode
 
 
 # print functions 
