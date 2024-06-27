@@ -6,14 +6,14 @@ from metadata_accessory import TupleEventType, RtChangeReason, RtErrorCode
 
 # print functions 
 def print_d_tuple(dt):
-	print("<", dt.ruid.uuid, "> did a(n) ", dt.event, " to tuple <", dt.get_ruit().uuid, "> because of ", dt.event_reason, " at ", str(dt.td))
+	print("<", dt.ruid.uuid, "> did a(n) ", dt.event, " to tuple <", dt.ruit.uuid, "> because of ", dt.event_reason, " at ", str(dt.td))
 	print("\tany associated error code: ", dt.error)
 	print("\tany replacement tuples: ", dt.replacements) 
 	print()
 
 def print_f_tuple(ft):
 	print("<", ft.ruia.uuid, "> has confidence level '", ft.C, "' in tuple <", ft.ruitn.uuid, "> at ", ft.ta)
-	print("\ttuple rui: ", ft.get_ruit().uuid)
+	print("\ttuple rui: ", ft.ruit.uuid)
 	print("\tta: ", ft.ta.isoformat().replace('+00:00', 'Z'))
 
 # create two Atuples with a = rui of person assigning rui to things

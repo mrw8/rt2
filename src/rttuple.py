@@ -4,10 +4,16 @@ from src.ids_codes.Rui import Rui, RuiStatus
 
 class RtTuple:
 	def __init__(self, ruit=None):
-		self.ruit = ruit if ruit else Rui(RuiStatus.assigned)
+		self._ruit = ruit if ruit else Rui(RuiStatus.assigned)
 
-	def get_ruit(self):
-		return self.ruit 
+	@property
+	def ruit(self):
+		"""Get ruit"""
+		return self._ruit 
+	@ruit.setter
+	def ruit(self, ruit):
+		"""Set ruit"""
+		self._ruit = ruit
 
 
 class Atuple(RtTuple):
@@ -23,12 +29,7 @@ class Atuple(RtTuple):
 
 	def __init__(self, ruip=None, ruia=None, ruit=None, unique="-SU", ar=RuiStatus.assigned, t=datetime.now(timezone.utc)):
 		super().__init__(ruit)
-
-		# If we don't get a value for whether the Rui is assigned or reserved
-		#	then we assume that it is assigned
 		self.ar = ar
-
-		# If we don't get a Ruip, then we'll create one on the fly
 		self.ruip = ruip if ruip else Rui(self.ar)
 		
 		# If we don't get an author Rui for the tuple, then autogenerate one,
@@ -37,16 +38,19 @@ class Atuple(RtTuple):
 		# This means that the default behavior is that if neither Ruia nor Ruip
 		#	are provided, we are assuming some entity is assigning a Ruip to 
 		#	itself, and thus should be equal
-		self.ruia = ruia
-		if self.ruia is None:
-			print(self.ruip.uuid)
-			self.ruia = Rui(self.ruip.status, self.ruip.uuid)
-
+		self.ruia = ruia if ruia else Rui(self.ruip.status, self.ruip.uuid)
 		self.unique = unique
-		self.t = t
+		self._t = t
 
-	def getTimestamp(self):
-		return self.t
+	@property
+	def t(self):
+		"""Get t"""
+		return self._t
+	@t.setter
+	def t(self, t):
+		"""Set t"""
+		self._t = t
+	
 
 # This class is the superclass of all Nto* tuples. They all relate some
 #	non-repeatable portion of reality to some portion of reality (in 

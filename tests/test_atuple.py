@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 
 def print_atuple(a):
 	print("tuple information:")
-	print("\truit: the rui that denotes tuple itself", str(a.get_ruit().uuid))
+	print("\truit: the rui that denotes tuple itself", str(a.ruit.uuid))
 	print("\truip: rui that was assigned to some PoR", str(a.ruip.uuid))
 	print("\tis ruip reserved? ", a.ruip.is_reserved())
 	print('\tis ruip singularly unique vs. potentially non-singularly unique: ', a.unique)
