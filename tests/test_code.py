@@ -1,5 +1,4 @@
-from src.ids_codes import Concept
-from src.ids_codes import Rui
+from ids_codes import Concept, Rui
 import sys
 sys.path.append('../src')
 
@@ -20,7 +19,7 @@ def print_attribute(a):
 		print("\tattribute name is '",y,"'")
 	print()
 
-csrui = Rui.Rui(Rui.RuiStatus.assigned)
+csrui = Rui.Rui()
 c1 = Concept.Concept("12345678", csrui)
 c2 = Concept.Concept("98765432", csrui, "type 2 diabetes mellitus")
 

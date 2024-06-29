@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 uuid6 = "*"
 build = "*"
+pytest = "*"
 
 [dev-packages]
 

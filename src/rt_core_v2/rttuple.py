@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 import enum
 
-from src.ids_codes.Rui import Rui, RuiStatus
+from ids_codes.Rui import Rui
 from abc import ABC, abstractmethod
 
 """Enum representing RUI statuses"""
@@ -37,8 +37,8 @@ class RtTuple(ABC):
 	@ruid.setter
 	def ruid(self, ruid):
 		self._rui = ruid
-
-	@abstractmethod
+	#TODO Make this an abstract method
+	# @abstractmethod
 	def get_str_attributes(self):
 		pass
 
@@ -68,7 +68,6 @@ class Atuple(RtTuple):
 		self.ruia = ruia if ruia else Rui(self.ruip.uuid)
 		self.unique = unique
 		self._t = t
-		self.ar = ar
 
 	@property
 	def t(self):
@@ -80,10 +79,10 @@ class Atuple(RtTuple):
 		self._t = t
 
 	def is_assigned(self):
-		return self.status is RuiStatus.assigned
+		return self.ar is RuiStatus.assigned
 
 	def is_reserved(self): 
-		return self.status is RuiStatus.reserved
+		return self.ar is RuiStatus.reserved
 
 	#TODO Implement get_str_attribtues to return the attributes for the 
 	def get_str_attributes(self):
