@@ -3,35 +3,27 @@ from datetime import datetime, timezone
 import logging
 import enum
 
-
-"""Enum representing RUI statuses"""
-class RuiStatus(enum.Enum):
-	assigned = 'A'
-	reserved = 'R'
-
 class Rui:
 	"""Referent Unique Identifier
 
 	Attributes:
-	uuid -- the unique identifier of the Rui
 	status -- the current status of the Rui
+	uuid -- the unique identifier of the Rui
 	"""
 
-	def __init__(self, status: RuiStatus, uuid: UUID = uuid7()):
-		self.uuid = uuid
-		self.status = status
+	def __init__(self, uuid: UUID = uuid7()):
+		self._uuid = uuid
 
-	def is_assigned(self):
-		return self.status is RuiStatus.assigned
+	@property
+	def uuid(self):
+		return self._uuid
+	
+	@uuid.setter
+	def uuid(self, uuid):
+		self._uuid = uuid
 
-	def is_reserved(self): 
-		return self.status is RuiStatus.reserved
-
-	def update_status_assigned(self):
-		if self.status is RuiStatus.assigned:
-			logging.warning("status of Rui instance is already assigned. No change.")
-		else:
-			self.status = RuiStatus(RuiStatus.assigned)
+	def __str__(self):
+		return str(self._uuid)
 
 
 # class TempRefStatus(enum.Enum):
@@ -47,7 +39,7 @@ class TempRef:
 	uuid -- 
 	"""
 
-	def __init__(self, tr, ref_type:str=''):
+	def __init__(self, tr, ref_type: str=''):
 		if (isinstance(tr, datetime)):
 			if tr.tzinfo != timezone.utc:
 				tr = tr.astimezone(timezone.utc)

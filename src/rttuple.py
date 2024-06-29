@@ -1,20 +1,46 @@
 from datetime import datetime, timezone
+import enum
 
 from src.ids_codes.Rui import Rui, RuiStatus
+from abc import ABC, abstractmethod
 
-class RtTuple:
-	def __init__(self, ruit=None):
-		self._ruit = ruit if ruit else Rui(RuiStatus.assigned)
+"""Enum representing RUI statuses"""
+class RuiStatus(enum.Enum):
+	assigned = 'A'
+	reserved = 'R'
+
+class TupleCharSplit(enum.Enum):
+	delim = ','
+	opening = '#<'
+	closing = '>'
+
+class TupleUnique(enum.Enum):
+	singular = '+SU'
+	non_singular = '-SU'
+
+class RtTuple(ABC):
+	def __init__(self, rui: Rui=None):
+		self._rui = rui if rui else Rui(RuiStatus.assigned)
 
 	@property
 	def ruit(self):
-		"""Get ruit"""
-		return self._ruit 
+		"""Get the rui identifying this RtTuple"""
+		return self._rui
 	@ruit.setter
 	def ruit(self, ruit):
-		"""Set ruit"""
-		self._ruit = ruit
+		"""Set the rui identifying this RtTuple"""
+		self._rui = ruit
+	@property
+	def ruid(self):
+		"""Get"""
+		return self._rui
+	@ruid.setter
+	def ruid(self, ruid):
+		self._rui = ruid
 
+	@abstractmethod
+	def get_str_attributes(self):
+		pass
 
 class Atuple(RtTuple):
 	"""Referent Tracking assignment tuple that registers assignment of an RUI to a PoR
@@ -27,10 +53,11 @@ class Atuple(RtTuple):
 	t -- The time of the creation of the Atuple
 	"""
 
-	def __init__(self, ruip=None, ruia=None, ruit=None, unique="-SU", ar=RuiStatus.assigned, t=datetime.now(timezone.utc)):
+	def __init__(self, ruip: Rui=None, ruia: Rui=None, ruit: Rui=None, unique: str="-SU", ar: RuiStatus=RuiStatus.assigned, 
+			  t=datetime.now(timezone.utc)):
 		super().__init__(ruit)
 		self.ar = ar
-		self.ruip = ruip if ruip else Rui(self.ar)
+		self.ruip = ruip if ruip else Rui()
 		
 		# If we don't get an author Rui for the tuple, then autogenerate one,
 		#	unless we don't get a Ruip either, in which case set it to the
@@ -38,9 +65,10 @@ class Atuple(RtTuple):
 		# This means that the default behavior is that if neither Ruia nor Ruip
 		#	are provided, we are assuming some entity is assigning a Ruip to 
 		#	itself, and thus should be equal
-		self.ruia = ruia if ruia else Rui(self.ruip.status, self.ruip.uuid)
+		self.ruia = ruia if ruia else Rui(self.ruip.uuid)
 		self.unique = unique
 		self._t = t
+		self.ar = ar
 
 	@property
 	def t(self):
@@ -50,7 +78,27 @@ class Atuple(RtTuple):
 	def t(self, t):
 		"""Set t"""
 		self._t = t
+
+	def is_assigned(self):
+		return self.status is RuiStatus.assigned
+
+	def is_reserved(self): 
+		return self.status is RuiStatus.reserved
+
+	#TODO Implement get_str_attribtues to return the attributes for the 
+	def get_str_attributes(self):
+		return {"ar":self.ar.uuid}
+
+	def create_assigned(self):
+		if self.status is RuiStatus.assigned:
+			logging.warning("status of Rui instance is already assigned. No change.")
+			return self
+		else:
+			#TODO Figure out the process for creating d-tuples
+			return Atuple(self.ruip, self.ruia, self.ruit, self.unique, RuiStatus(RuiStatus.assigned))
+
 	
+
 
 # This class is the superclass of all Nto* tuples. They all relate some
 #	non-repeatable portion of reality to some portion of reality (in 
@@ -61,7 +109,7 @@ class Atuple(RtTuple):
 #	All the other Nto* tuples extend NtoXTuple
 # 
 class NtoXGenericTuple(RtTuple):
-	def __init__(self, ruit, ruin, r):
+	def __init__(self, ruit: Rui, ruin: Rui, r: str):
 		super().__init__(ruit)
 		if ruin is None:
 			raise Exception("must provide a value for RUIn")
@@ -74,7 +122,7 @@ class NtoXGenericTuple(RtTuple):
 # Except for NtoLackR, Nto* tuples can be asserted as being
 #  true or false (i.e., "it is not the case that...")
 class NtoXTuple(NtoXGenericTuple):
-	def __init__(self, ruit, ruin, r, polarity: bool):
+	def __init__(self, ruit: Rui, ruin: Rui, r: str, polarity: bool):
 		super().__init__(ruit, ruin, r)
 		self.polarity = polarity
 
@@ -86,32 +134,30 @@ class NtoXTuple(NtoXGenericTuple):
 
 
 class NtoN(NtoXTuple):
-
 	"""Tuple type that relates two or more non-repeatable portions of reality to one another"""
 
 	#NtoN#< ‘+’/‘-’, r, P, rT/‘-’, tr/‘-’ >
-	def __init__(self, ruit, ruin, polarity, r, p_list, tr):
+	def __init__(self, ruit: Rui, ruin: Rui, polarity: bool, r: str, p_list: list[Rui], tr: Rui):
 		super().__init__(ruit, ruin, r, polarity)
 		self.p_list = p_list.copy()
 		self.tr = tr
 
 class NtoR(NtoXTuple):
-
 	"""Tuple type that relates a non-repeatable portion of reality to a repeatable portion of reality"""
 
 	#NtoR#< ‘+’/‘-’, inst, RUIn, RUIr, rT/‘-’, tr/‘-’ >
-	def __init__(self, ruit, ruin, polarity, r, ruir, tr):
+	def __init__(self, ruit: Rui, ruin: Rui, polarity: bool, r: str, ruir: Rui, tr: Rui):
 		super().__init__(ruit, ruin, r, polarity)
 		self.tr = tr 
 		self.ruir = ruir
-
+		
+#TODO Figure out the type of code
 class NtoC(NtoXTuple):
-
 	"""Tuple type that annotates a non-repeatable portion of reality with a "concept" code from a
 		concept-based system"""
 
 	#NtoC#< ‘+’/‘-’, r, RUIcs, RUIp, code, rT, tr >
-	def __init__(self, ruit, ruin, polarity, r, ruics, code, tr):
+	def __init__(self, ruit: Rui, ruin: Rui, polarity: bool, r: str, ruics: Rui, code, tr: Rui):
 		super().__init__(ruit, ruin, r, polarity)
 		self.tr = tr 
 		self.ruics = ruics
@@ -123,46 +169,40 @@ class NtoC(NtoXTuple):
 #	(2) an NtoN tuple to relate the name to what the IdD denotes, and 
 #	(3) an NtoDE tuple to hold the actual written (or "string") form of the IdD. 
 # Note that an IdD can be a name, identifier, etc.
+#TODO Figure out if data should be a string or generic data
 class NtoDE(NtoXTuple):
 	#NtoDE#< '+/-', r, ruin, ruins, data, ruidt >
-	def __init__(self, ruit, ruin, polarity, r, ruins, data, ruidt):
+	def __init__(self, ruit: Rui, ruin: Rui, polarity: bool, r: str, ruins: Rui, data, ruidt: Rui):
 		super().__init__(ruit, ruin, r, polarity)
 		self.ruins = ruins
 		self.data = data
 		self.ruidt = ruidt
 
 class NtoLackR(NtoXGenericTuple):
-
 	"""Tuple type that asserts that for all instances of a given type, a specific
 		non-repeatable portion of reality is not related to any of them by a 
 		given relation"""
 
 	#NtoR(-) -tuple NtoR(-)#< r, RUIp, RUIr, rT/‘-’, tr/‘-’ >
-	def __init__(self, ruit, ruin, r, ruir, tr):
+	def __init__(self, ruit: Rui, ruin: Rui, r: str, ruir: Rui, tr: Rui):
 		super()._init__(self, ruit, ruin, r)
 		self.ruir = ruir
 		self.tr = tr 
 
 class Dtuple(RtTuple):
 	# D#< RUId, RUIT, t, ‘I’/E, R, S >
-	def __init__(self, ruit, ruid, event, event_reason, error, td=None, replacements=None):
+	def __init__(self, ruit: Rui, ruid: Rui, event, event_reason, error, td=None, replacements=None):
 		super().__init__(ruit)
 		self.ruid = ruid
 		self.event = event
 		self.event_reason = event_reason
 		self.error = error
-		if td is None:
-			self.td = datetime.now(timezone.utc)
-		else:
-			self.td = td
-		if replacements is None:
-			self.replacements = replacements
-		else:
-			self.replacements = replacements.copy()
+		self.td = td if td else datetime.now(timezone.utc)
+		self.replacements = replacements.copy() if replacements else None
 
 class Ftuple(RtTuple):
 	#F#< RUId, ta, RUIa, RUIT, C >
-	def __init__(self, ruitn, ruia, ta, C, ruit=None):
+	def __init__(self, ruitn: Rui, ruia: Rui, ta, C: float, ruit: Rui=None):
 		super().__init__(ruit)
 		# ruitn denotes the tuple that this Ftuple is about
 		self.ruitn = ruitn

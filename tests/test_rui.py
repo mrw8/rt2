@@ -17,7 +17,7 @@ def print_tr(tr):
 		print("cal field=", tr.cal)
 
 
-def test_RuiStatus():
+def test_ruistatus():
 	a = Rui(RuiStatus.assigned)
 	assert(a.is_assigned())
 	assert(a.status is RuiStatus.assigned)
@@ -38,29 +38,30 @@ def test_RuiStatus():
 	assert(r.status is RuiStatus.assigned)
 	assert(not r.is_reserved())
 
+#TODO Add actual testing assertions 
+def test_tempref():
+	j = TempRef(uuid7())
+	k = TempRef(datetime.now(timezone.utc))
+	m = TempRef(datetime.now())
+	n = TempRef(None,'U')
+	p = TempRef(None,'C')
 
-j = TempRef(uuid7())
-k = TempRef(datetime.now(timezone.utc))
-m = TempRef(datetime.now())
-n = TempRef(None,'U')
-p = TempRef(None,'C')
+	print("\n### Temporal reference initialized with UUID ###")
+	print_tr(j)
+	print("##############\n")
 
-print("\n### Temporal reference initialized with UUID ###")
-print_tr(j)
-print("##############\n")
+	print("### Temporal reference initialized with UTC now ###")
+	print_tr(k)
+	print("##############\n")
 
-print("### Temporal reference initialized with UTC now ###")
-print_tr(k)
-print("##############\n")
+	print("### Temporal reference initialized with local now ###")
+	print_tr(m)
+	print("##############\n")
 
-print("### Temporal reference initialized with local now ###")
-print_tr(m)
-print("##############\n")
+	print("### Temporal reference initialized with no id and instruction to create a new UUID ###")
+	print_tr(n)
+	print("##############\n")
 
-print("### Temporal reference initialized with no id and instruction to create a new UUID ###")
-print_tr(n)
-print("##############\n")
-
-print("### Temporal reference initialized with no id and instruction to create a UTC now datetime ###")
-print_tr(p)
-print("##############\n")
+	print("### Temporal reference initialized with no id and instruction to create a UTC now datetime ###")
+	print_tr(p)
+	print("##############\n")
