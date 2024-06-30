@@ -6,9 +6,9 @@ name = "pypi"
 [packages]
 uuid6 = "*"
 build = "*"
-pytest = "*"
 
 [dev-packages]
+pytest = "*"
 
 [requires]
 python_version = "3.12"
