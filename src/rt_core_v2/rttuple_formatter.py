@@ -10,6 +10,4 @@ class RtTupleFormat(enum.Enum):
 
 def format_rttuples(tuples, format: RtTupleFormat=RtTupleFormat.json_format):
     """Convert the rttuple to the specified format"""
-    print(format is RtTupleFormat)
-    print(RtTupleFormat.json_format is RtTupleFormat)
     return format(tuples)
