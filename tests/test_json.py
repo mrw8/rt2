@@ -1,7 +1,7 @@
 import json
 
 from rttuple import *
-from tuple_formatter import format_rttuples
+from rttuple_formatter import format_rttuples
 
 def ordered(obj):
     if isinstance(obj, dict):
