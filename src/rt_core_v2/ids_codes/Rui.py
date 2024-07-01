@@ -26,11 +26,6 @@ class Rui:
 		return str(self._uuid)
 
 
-# class TempRefStatus(enum.Enum):
-# 	 = 'U'
-# 	 = 'C'
-# 	 = ''
-
 class TempRef:
 	"""Temporal Reference
 	

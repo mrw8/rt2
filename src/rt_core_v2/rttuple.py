@@ -13,6 +13,11 @@ class TupleCharSplit(enum.Enum):
 	delim = ','
 	opening = '#<'
 	closing = '>'
+	
+# class TempRefStatus(enum.Enum):
+# 	 = 'U'
+# 	 = 'C'
+# 	 = ''
 
 class TupleUnique(enum.Enum):
 	singular = '+SU'
@@ -20,7 +25,8 @@ class TupleUnique(enum.Enum):
 
 class RtTuple(ABC):
 	def __init__(self, rui: Rui=None):
-		self._rui = rui if rui else Rui(RuiStatus.assigned)
+		self._rui = rui if rui else Rui()
+		self.tuple_type = "Abstract tuple type"
 
 	@property
 	def ruit(self):
@@ -37,10 +43,10 @@ class RtTuple(ABC):
 	@ruid.setter
 	def ruid(self, ruid):
 		self._rui = ruid
-	#TODO Make this an abstract method
-	# @abstractmethod
+
+	@abstractmethod
 	def get_str_attributes(self):
-		pass
+		return {"ruit":str(self._rui), "type":str(self.tuple_type)}
 
 class Atuple(RtTuple):
 	"""Referent Tracking assignment tuple that registers assignment of an RUI to a PoR
@@ -68,6 +74,7 @@ class Atuple(RtTuple):
 		self.ruia = ruia if ruia else Rui(self.ruip.uuid)
 		self.unique = unique
 		self._t = t
+		self.tuple_type = "A"
 
 	@property
 	def t(self):
@@ -84,9 +91,14 @@ class Atuple(RtTuple):
 	def is_reserved(self): 
 		return self.ar is RuiStatus.reserved
 
-	#TODO Implement get_str_attribtues to return the attributes for the 
 	def get_str_attributes(self):
-		return {"ar":self.ar.uuid}
+		attributes = super().get_str_attributes()
+		attributes["ar"] = str(self.ar)
+		attributes["t"] = str(self._t)
+		attributes["ruia"] = str(self.ruia)
+		attributes["unique"] = str(self.unique)
+		attributes["ruip"] = str(self.ruip)
+		return attributes
 
 	def create_assigned(self):
 		if self.status is RuiStatus.assigned:
@@ -118,6 +130,12 @@ class NtoXGenericTuple(RtTuple):
 		self.ruin = ruin
 		self.r = r 
 
+	def get_str_attributes(self):
+		attributes = super().get_str_attributes()
+		attributes["ruin"] = str(self.ruin)
+		attributes["r"] = str(self.r)
+		return attributes
+
 # Except for NtoLackR, Nto* tuples can be asserted as being
 #  true or false (i.e., "it is not the case that...")
 class NtoXTuple(NtoXGenericTuple):
@@ -130,6 +148,11 @@ class NtoXTuple(NtoXGenericTuple):
 
 	def isNegated(self):
 		return not self.polarity
+	
+	def get_str_attributes(self):
+		attributes = super().get_str_attributes()
+		attributes["polarity"] = str(self.polarity)
+		return attributes
 
 
 class NtoN(NtoXTuple):
@@ -140,6 +163,12 @@ class NtoN(NtoXTuple):
 		super().__init__(ruit, ruin, r, polarity)
 		self.p_list = p_list.copy()
 		self.tr = tr
+	
+	def get_str_attributes(self):
+		attributes = super().get_str_attributes()
+		attributes["p_list"] = str(self.p_list)
+		attributes["tr"] = str(self.tr)
+		return attributes
 
 class NtoR(NtoXTuple):
 	"""Tuple type that relates a non-repeatable portion of reality to a repeatable portion of reality"""
@@ -149,6 +178,12 @@ class NtoR(NtoXTuple):
 		super().__init__(ruit, ruin, r, polarity)
 		self.tr = tr 
 		self.ruir = ruir
+
+	def get_str_attributes(self):
+		attributes = super().get_str_attributes()
+		attributes["ruir"] = str(self.ruir)
+		attributes["tr"] = str(self.tr)
+		return attributes
 		
 #TODO Figure out the type of code
 class NtoC(NtoXTuple):
@@ -161,6 +196,12 @@ class NtoC(NtoXTuple):
 		self.tr = tr 
 		self.ruics = ruics
 		self.code = code 
+
+	def get_str_attributes(self):
+		attributes = super().get_str_attributes()
+		attributes["ruics"] = str(self.ruics)
+		attributes["code"] = str(self.code)
+		return attributes
 
 # We use NtoDE instead of NtoI, and we use an instance for the identifying descriptor
 # or IdD associated with:
@@ -176,6 +217,13 @@ class NtoDE(NtoXTuple):
 		self.ruins = ruins
 		self.data = data
 		self.ruidt = ruidt
+	
+	def get_str_attributes(self):
+		attributes = super().get_str_attributes()
+		attributes["ruins"] = str(self.ruins)
+		attributes["data"] = str(self.data)
+		attributes["ruidt"] = str(self.ruidt)
+		return attributes
 
 class NtoLackR(NtoXGenericTuple):
 	"""Tuple type that asserts that for all instances of a given type, a specific
@@ -188,16 +236,33 @@ class NtoLackR(NtoXGenericTuple):
 		self.ruir = ruir
 		self.tr = tr 
 
+	def get_str_attributes(self):
+		attributes = super().get_str_attributes()
+		attributes["ruir"] = str(self.ruir)
+		attributes["tr"] = str(self.tr)
+		return attributes
+
 class Dtuple(RtTuple):
 	# D#< RUId, RUIT, t, ‘I’/E, R, S >
 	def __init__(self, ruit: Rui, ruid: Rui, event, event_reason, error, td=None, replacements=None):
-		super().__init__(ruit)
-		self.ruid = ruid
+		super().__init__(ruid)
+		self.ruit = ruit
 		self.event = event
 		self.event_reason = event_reason
 		self.error = error
 		self.td = td if td else datetime.now(timezone.utc)
 		self.replacements = replacements.copy() if replacements else None
+
+	def get_str_attributes(self):
+		attributes = {}
+		attributes["ruid"] = str(self.ruid)
+		attributes["ruit"] = str(self.ruit)
+		attributes["event"] = str(self.event)
+		attributes["event_reason"] = str(self.event_reason)
+		attributes["error"] = str(self.error)
+		attributes["td"] = str(self.td)
+		attributes["replacements"] = str(self.td)
+		return attributes
 
 class Ftuple(RtTuple):
 	#F#< RUId, ta, RUIa, RUIT, C >
@@ -209,3 +274,11 @@ class Ftuple(RtTuple):
 		#TO DO - we need to figure out how to do time parameters
 		self.ta = ta
 		self.C = C
+
+	def get_str_attributes(self):
+		attributes = super().get_str_attributes()
+		attributes["ruitn"] = str(self.ruitn)
+		attributes["ruia"] = str(self.ruia)
+		attributes["ta"] = str(self.ta)
+		attributes["C"] = str(self.C)
+		return attributes
