@@ -3,6 +3,11 @@ from datetime import datetime, timezone
 import logging
 import enum
 
+
+class TempRefType(enum.Enum):
+	calendar = 'C'
+	id = 'U'
+
 class Rui:
 	"""Referent Unique Identifier
 	A unique identifier for referent tracking
@@ -32,35 +37,19 @@ class TempRef:
 	A tuple component that contains is either a calendar date or a unique identifier that represents a instance or interval of time
 
 	Attributes:
-	cal -- o
-	uuid -- The unique identifier for the tempref
+	type -- The type of identifier
+	ref -- Identifier for the temporal reference
 	"""
-
-	def __init__(self, tr, ref_type: str=''):
-		self.uuid = None
-		self.cal = None
-		if (isinstance(tr, datetime)):
-			if tr.tzinfo != timezone.utc:
-				tr = tr.astimezone(timezone.utc)
-			self.cal = tr
-		elif (isinstance(tr, UUID)):
-			self.uuid = tr
+	def __init__(self, tr, ref_type: TempRefType=TempRefType.id):
+		self.type = ref_type
+		primary_timezone = timezone.utc
+		if ref_type == TempRefType.calendar:
+			self.ref = tr.astimezone(primary_timezone) if tr else datetime.now(primary_timezone)
+		elif ref_type == TempRefType.id:
+			self.ref = tr if tr else uuid7()
 		else:
-			if ref_type == 'U':
-				self.uuid = uuid7()
-			elif ref_type == 'C':
-				self.cal = datetime.now(timezone.utc)
-			else:
-				logging.error("don't understand " + ref_type)
-				raise Exception(ref_type + " is not a valid option")
-
-	def isCalendar(self):
-		return self.cal
-
-	def isUuid(self):
-		return self.uuid
+			logging.error("don't understand " + ref_type)
+			raise Exception(ref_type + " is not a valid option")
 	
 	def __str__(self):
-		if self.isCalendar():
-			return str(self.cal)
-		return str(self.uuid)
+		return str(self.ref)
