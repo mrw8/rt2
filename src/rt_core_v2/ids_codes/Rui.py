@@ -17,8 +17,8 @@ class Rui:
 	uuid -- the unique identifier of the Rui
 	"""
 
-	def __init__(self, uuid: UUID = uuid7()):
-		self._uuid = uuid
+	def __init__(self, uuid: UUID=None):
+		self._uuid = uuid if uuid else uuid7()
 
 	@property
 	def uuid(self):
