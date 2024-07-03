@@ -1,4 +1,4 @@
-from ids_codes import Concept, Rui
+from rt_core_v2.ids_codes import Concept, Rui
 import sys
 sys.path.append('../src')
 
