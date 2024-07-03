@@ -1,14 +1,10 @@
 from uuid6 import uuid7, UUID
-from datetime import datetime, timezone
-import logging
-import enum
 
 class Rui:
 	"""Referent Unique Identifier
 	A unique identifier for referent tracking
 
 	Attributes:
-	status -- the current status of the Rui
 	uuid -- the unique identifier of the Rui
 	"""
 
@@ -32,7 +28,6 @@ class TempRef:
 	A tuple component that contains is either a calendar date or a unique identifier that represents a instance or interval of time
 
 	Attributes:
-	type -- The type of identifier
 	ref -- Identifier for the temporal reference
 	"""
 	def __init__(self, tr: Rui):

@@ -1,8 +1,8 @@
-from datetime import datetime, timezone
 import enum
+from abc import ABC, abstractmethod
+from datetime import datetime, timezone
 
 from rt_core_v2.ids_codes.Rui import Rui, TempRef
-from abc import ABC, abstractmethod
 
 """Takes an set of enums and converts them into a dict with mapping entry:value"""
 def enum_to_dict(entries: set):
@@ -29,11 +29,6 @@ class TupleType(ValueEnum):
 	NtoR = 'NtoR'
 	NtoC = 'NtoC'
 	NtoLackR = 'NtoR(-)'
-
-#TODO Should polarity be a boolean or an enum? Seems reasonable, but this represents the string output
-class TuplePolarity(ValueEnum):
-	positive = '+'
-	negative = '-'
 
 """Enum representing portions of reality types"""
 class PorType(ValueEnum):
@@ -340,14 +335,22 @@ class Dtuple(RtTuple):
 		"""Get the attributes of this tuple as a string"""
 		attributes = {}
 		attributes[self.params[TupleComponents.ruid]] = str(self.ruit)
-		attributes[self.params.type.value] = str(self.tuple_type)
-		attributes[self.params.ruit.value] = str(self.ruit_ref)
+		attributes[self.params[TupleComponents.type]] = str(self.tuple_type)
+		attributes[self.params[TupleComponents.ruit]] = str(self.ruit_ref)
 		attributes[self.params[TupleComponents.event]] = str(self.event)
 		attributes[self.params[TupleComponents.event_reason]] = str(self.event_reason)
 		attributes[self.params[TupleComponents.error]] = str(self.error)
 		attributes[self.params[TupleComponents.td]] = str(self.td)
 		attributes[self.params[TupleComponents.replacements]] = str(self.replacements)
 		return attributes
+	
+	@property
+	def ruid(self):
+		return self.ruid
+	
+	@ruid.setter
+	def ruid(self, ruid):
+		self.ruit = ruid
 
 class Ftuple(RtTuple):
 	#F#< RUId, ta, RUIa, RUIT, C >

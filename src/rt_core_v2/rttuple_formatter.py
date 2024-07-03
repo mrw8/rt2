@@ -1,4 +1,5 @@
-import json, enum
+import json
+import enum
 
 def rttuple_to_json(input_rttuples):
     """Converts either a list or an RtTuple to a json object"""
@@ -11,3 +12,8 @@ class RtTupleFormat(enum.Enum):
 def format_rttuples(tuples, format: RtTupleFormat=RtTupleFormat.json_format):
     """Convert the rttuple to the specified format"""
     return format(tuples)
+
+
+# def tuple_to_rttuple(input_json):
+#     """Converts the input JSON string into an rttuple if it exists"""
+

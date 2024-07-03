@@ -1,5 +1,4 @@
-from rt_core_v2.ids_codes.Rui import Rui, TempRef, TempRefType
-from rt_core_v2.rttuple import RuiStatus
+from rt_core_v2.ids_codes.Rui import Rui, TempRef
 from uuid6 import uuid7
 from datetime import datetime, timezone
 
