@@ -1,6 +1,7 @@
 import enum
 from abc import ABC, abstractmethod
 from datetime import datetime, timezone
+import logging
 
 from rt_core_v2.ids_codes.Rui import Rui, TempRef
 
@@ -35,6 +36,8 @@ class PorType(ValueEnum):
 	singular = '+SU'
 	non_singular = '-SU'
 
+
+#TODO Move this into the classes, as it is not a semantically sound placement here
 class TupleComponents(enum.Enum):
 	ar = 'ar'
 	C = 'C'
@@ -95,7 +98,8 @@ class Atuple(RtTuple):
 	unique -- 
 	t -- The time of the creation of the Atuple
 	"""
-	params = {**RtTuple.params, **enum_to_dict({TupleComponents.ar, TupleComponents.t, TupleComponents.ruia, TupleComponents.unique, TupleComponents.ruip})}
+	params = {**RtTuple.params, **enum_to_dict({TupleComponents.ar, TupleComponents.t, 
+											 TupleComponents.ruia, TupleComponents.unique, TupleComponents.ruip})}
 	tuple_type = TupleType.A
 
 	def __init__(self, ruip: Rui=None, ruia: Rui=None, ruit: Rui=None, unique: PorType=PorType.singular, ar: RuiStatus=RuiStatus.assigned, 
@@ -161,7 +165,6 @@ class Atuple(RtTuple):
 #	All the other Nto* tuples extend NtoXTuple
 #
 class NtoXGenericTuple(RtTuple):
-
 	params = {**RtTuple.params, **enum_to_dict({TupleComponents.ruin, TupleComponents.r})}
 
 	def __init__(self, ruit: Rui, ruin: Rui, r: str):
@@ -320,7 +323,9 @@ class Dtuple(RtTuple):
 	# D#< RUId, RUIT, t, ‘I’/E, R, S >
 
 	tuple_type = TupleType.D
-	params = {**RtTuple.params, **enum_to_dict({TupleComponents.ruid, TupleComponents.event, TupleComponents.event_reason, TupleComponents.error, TupleComponents.td, TupleComponents.replacements})}
+	params = {**RtTuple.params, **enum_to_dict({TupleComponents.ruid, TupleComponents.event, 
+											 TupleComponents.event_reason, TupleComponents.error, 
+											 TupleComponents.td, TupleComponents.replacements})}
 
 	def __init__(self, ruit: Rui, ruid: Rui, event, event_reason, error, td=None, replacements=None):
 		super().__init__(ruid)
@@ -376,3 +381,14 @@ class Ftuple(RtTuple):
 		attributes[self.params[TupleComponents.C]] = str(self.C)
 
 		return attributes
+	
+type_to_class = {
+	TupleType.A: Atuple,
+	TupleType.D: Dtuple,
+	TupleType.F: Ftuple,
+	TupleType.NtoDE: NtoDE,
+	TupleType.NtoN: NtoN,
+	TupleType.NtoR: NtoR,
+	TupleType.NtoC: NtoC,
+	TupleType.NtoLackR: NtoLackR,
+}
