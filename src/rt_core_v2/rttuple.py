@@ -215,6 +215,7 @@ class NtoN(NtoXTuple):
 	params = {**NtoXTuple.params, **enum_to_dict({TupleComponents.p_list, TupleComponents.tr})}
 
 	def __init__(self, ruit: Rui, ruin: Rui, polarity: bool, r: str, p_list: list[Rui], tr: str):
+		#TODO Add rt, remove ruin
 		super().__init__(ruit, ruin, r, polarity)
 		self.p_list = p_list.copy()
 		self.tr = tr
@@ -234,6 +235,7 @@ class NtoR(NtoXTuple):
 	params = {**NtoXTuple.params, **enum_to_dict({TupleComponents.ruir, TupleComponents.tr})}
 
 	def __init__(self, ruit: Rui, ruin: Rui, polarity: bool, r: str, ruir: Rui, tr: str):
+		#TODO Add rT, change r to inst
 		super().__init__(ruit, ruin, r, polarity)
 		self.tr = tr 
 		self.ruir = ruir
@@ -255,6 +257,7 @@ class NtoC(NtoXTuple):
 	params = {**NtoXTuple.params, **enum_to_dict({TupleComponents.ruics, TupleComponents.code})}
 	
 	def __init__(self, ruit: Rui, ruin: Rui, polarity: bool, r: str, ruics: Rui, code, tr: str):
+		#TODO Add rT, ruip. Remove ruin
 		super().__init__(ruit, ruin, r, polarity)
 		self.tr = tr 
 		self.ruics = ruics
@@ -306,9 +309,7 @@ class NtoLackR(NtoXGenericTuple):
 
 	def __init__(self, ruit: Rui, ruin: Rui, r: str, ruir: Rui, tr: str):
 		super()._init__(self, ruit, ruin, r)
-		if not self.params:
-			self.params[TupleComponents.ruir] = TupleComponents.ruir.value
-			self.params[TupleComponents.tr] = TupleComponents.tr.value
+		#TODO Add rT
 		self.ruir = ruir
 		self.tr = tr 
 
@@ -329,6 +330,7 @@ class Dtuple(RtTuple):
 
 	def __init__(self, ruit: Rui, ruid: Rui, event, event_reason, error, td=None, replacements=None):
 		super().__init__(ruid)
+		#TODO Figure out the argument count discrepancy between the parameter count and the D-tuple outline
 		self.ruit_ref = ruit
 		self.event = event
 		self.event_reason = event_reason
@@ -365,7 +367,6 @@ class Ftuple(RtTuple):
 	
 	def __init__(self, ruitn: Rui, ruia: Rui, ta: TempRef, C: float, ruit: Rui=None):
 		super().__init__(ruit)
-		# ruitn denotes the tuple that this Ftuple is about
 		self.ruitn = ruitn
 		self.ruia = ruia
 		#TODO - we need to figure out how to do time parameters
@@ -374,6 +375,7 @@ class Ftuple(RtTuple):
 
 	def get_str_attributes(self):
 		"""Get the attributes of this tuple as a string"""
+		#TODO Get the attributes set for ruid.
 		attributes = super().get_str_attributes()
 		attributes[self.params[TupleComponents.ruitn]] = str(self.ruitn)
 		attributes[self.params[TupleComponents.ruia]] = str(self.ruia)
@@ -382,6 +384,7 @@ class Ftuple(RtTuple):
 
 		return attributes
 	
+"""Mapping from tuple id to the corresponding tuple class"""
 type_to_class = {
 	TupleType.A: Atuple,
 	TupleType.D: Dtuple,
