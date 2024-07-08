@@ -155,6 +155,15 @@ class ATuple(RtTuple):
 			pass
 
 class DTuple(RtTuple):
+	""" Referent Tracking metadata tuple that stores information regarding the instantation of other tuple types
+
+	Attributes:
+	ruit_ref -- The ruit of another tuple that this tuple stores information about
+	event -- The category of reason that caused the creation of tuple ruit_ref
+	event_reason -- The reason for the event above occuring
+	td -- The time of this tuple's creation
+	replacements -- Any tuples that will be replaced by ruit (if there are any)
+	"""
 	# D#< RUId, RUIT, t, ‘I’/E, R, S >
 
 	tuple_type = TupleType.D
@@ -162,7 +171,7 @@ class DTuple(RtTuple):
 											 TupleComponents.event_reason, TupleComponents.td, 
 											 TupleComponents.replacements})}
 
-	def __init__(self, ruid: Rui, ruit: Rui, t, event, event_reason, replacements=None):
+	def __init__(self, ruid: Rui, ruit: Rui, t, event, event_reason, replacements=[]):
 		super().__init__(ruid)
 		#TODO Figure out the argument count discrepancy between the parameter count and the D-tuple outline
 		self.ruit_ref = ruit
@@ -192,6 +201,15 @@ class DTuple(RtTuple):
 		self.ruit = ruid
 
 class FTuple(RtTuple):
+	"""Referent Tracking metadata tuple that stores information regarding the confidence level in another tuple's assertions
+
+	Attributes:
+	ruid -- 
+	ruia -- The id of the author making the assertion
+	ruitn -- The id of the tuple refered to by this tuple's confidence assertion.
+	ta -- The time instance of the confidence assertion.
+	C -- The level of confidence from 0.00-1.00 in the assertion.
+	"""
 	#F#< RUId, ta, RUIa, RUIT, C >
 
 	tuple_type = TupleType.F
@@ -218,7 +236,15 @@ class FTuple(RtTuple):
 		return attributes
 
 class NtoNTuple(RtTuple):
-	"""Tuple type that relates two or more non-repeatable portions of reality to one another"""
+	"""Tuple type that relates two or more non-repeatable portions of reality to one another
+	
+	Attributes:
+	polarity -- Boolean describing whether the relation is as stated or negated
+	relation -- A relation between the non-repeatable portions of reality in p_list
+	p_list -- A list of non-repeatable portions of reality that have the relationship described
+	time_relation -- The relationship between the time of the creation of this tuple and variable time
+	time -- A temporal reference 
+	"""
 	#NtoNTuple#< ‘+’/‘-’, r, P, rT/‘-’, tr/‘-’ >
 	tuple_type = TupleType.NtoNTuple
 	params = {**RtTuple.params, **enum_to_dict({TupleComponents.polarity, TupleComponents.r, 
@@ -244,7 +270,16 @@ class NtoNTuple(RtTuple):
 		return attributes
 	
 class NtoRTuple(RtTuple):
-	"""Tuple type that relates a non-repeatable portion of reality to a repeatable portion of reality"""
+	"""Tuple type that relates a non-repeatable portion of reality to a repeatable portion of reality
+	
+	Attribtues:
+	polarity -- Boolean describing whether the relation is as stated or negated
+	inst -- 
+	ruin -- 
+	ruir -- 
+	time_relation -- The relationship between the time of the creation of this tuple and variable time
+	time -- A temporal reference 
+	"""
 	#NtoRTuple#< ‘+’/‘-’, inst, RUIn, RUIr, rT/‘-’, tr/‘-’ >
 
 	tuple_type = TupleType.NtoRTuple
@@ -274,7 +309,17 @@ class NtoRTuple(RtTuple):
 #TODO Figure out the type of code
 class NtoCTuple(RtTuple):
 	"""Tuple type that annotates a non-repeatable portion of reality with a "concept" code from a
-		concept-based system"""
+		concept-based system
+		
+		Attributes:
+		polarity -- Boolean describing whether the relation is as stated or negated
+		reason -- 
+		ruics -- 
+		ruip -- 
+		code -- 
+		time_relation -- The relationship between the time of the creation of this tuple and variable time
+		time -- A temporal reference
+		"""
 	#NtoC#< ‘+’/‘-’, r, RUIcs, RUIp, code, rT, tr >
 
 	tuple_type = TupleType.NtoC
@@ -312,6 +357,15 @@ class NtoCTuple(RtTuple):
 # Note that an IdD can be a name, identifier, etc.
 #TODO Figure out if data should be a string or generic data
 class NtoDETuple(RtTuple):
+	"""Tuple type that creates a connection between a non-repeatable portion of reality and a piece of data
+	
+	Attributes:
+	polarity -- Boolean describing whether the relation is as stated or negated
+	ruin -- 
+	ruins -- 
+	data --
+	ruidt -- 
+	"""
 	#NtoDE#< '+/-', r, ruin, ruins, data, ruidt >
 
 	tuple_type = TupleType.NtoDE
@@ -337,9 +391,23 @@ class NtoDETuple(RtTuple):
 		return attributes
 
 class NtoLackRTuple(RtTuple):
-	"""Tuple type that asserts that for all instances of a given type, a specific
-		non-repeatable portion of reality is not related to any of them by a 
-		given relation"""
+	"""Tuple type that relates a non-repeatable portion of reality to a repeatable portion of reality in a negative relationship
+	
+	Attribtues:
+	relation -- A relationship between a non-repeatable portion of reality and a repeatable portion of reality
+	ruip -- The rui of the repeatable portion of reality that the non-repeatable does not have the relation to
+	ruir -- The rui of the non-repeatable portion fo reality that does not have relation to the POR refered to buy ruip
+	time_relation -- The relationship between the time of the creation of this tuple and variable time
+	time -- A temporal reference 
+	"""
+	"""Tuple type that relates two or more non-repeatable portions of reality to one another
+	
+	Attributes:
+	relation -- A relation between the non-repeatable portions of reality in p_list
+	p_list -- A list of non-repeatable portions of reality that have the relationship described
+	time_relation -- The relationship between the time of the creation of this tuple and variable time
+	time -- A temporal reference 
+	"""
 	#NtoRTuple(-) -tuple NtoRTuple(-)#< r, RUIp, RUIr, rT/‘-’, tr/‘-’ >
 
 	tuple_type = TupleType.NtoLackR
@@ -349,7 +417,6 @@ class NtoLackRTuple(RtTuple):
 
 	def __init__(self, ruit: Rui, r: str, ruip: Rui, ruir: Rui, rT, tr: str):
 		super()._init__(self, ruit)
-		#TODO Add rT
 		self.relation = r
 		self.ruip = ruip
 		self.ruir = ruir
