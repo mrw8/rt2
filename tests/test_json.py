@@ -1,7 +1,7 @@
 import json
 
 from rt_core_v2.ids_codes.Rui import Rui
-from rt_core_v2.rttuple import Atuple
+from rt_core_v2.rttuple import ATuple
 from rt_core_v2.rttuple_formatter import format_rttuples
 
 def ordered(obj):
@@ -18,15 +18,15 @@ def test_json():
     ruia = Rui()
     ruit= Rui()
 
-    atuple = Atuple(ruip, ruia, ruit)
-    atuple_formated = format_rttuples(atuple)
-    expected_1 = f"{{\"ruip\": \"{ruip}\", \"ruia\": \"{ruia}\", \"ruit\": \"{ruit}\", \"type\": \"{atuple.tuple_type}\", \"unique\": \"{atuple.unique}\", \"ar\": \"{atuple.ar}\", \"t\": \"{atuple.t}\"}}"
+    Atuple = ATuple(ruit, ruia, ruip)
+    ATuple_formated = format_rttuples(Atuple)
+    expected_1 = f"{{\"ruip\": \"{ruip}\", \"ruia\": \"{ruia}\", \"ruit\": \"{ruit}\", \"type\": \"{Atuple.tuple_type}\", \"unique\": \"{Atuple.unique}\", \"ar\": \"{Atuple.ar}\", \"t\": \"{Atuple.t}\"}}"
     print("Expected:  \n" + expected_1)
-    print("Processed:  \n" + atuple_formated)
-    assert(ordered(json.loads(atuple_formated)) == ordered(json.loads(expected_1)))
+    print("Processed:  \n" + ATuple_formated)
+    assert(ordered(json.loads(ATuple_formated)) == ordered(json.loads(expected_1)))
 
-    # dtuple = Dtuple()
+    # DTuple = DTuple()
 
-    # ftuple = Ftuple()
+    # FTuple = FTuple()
 
 

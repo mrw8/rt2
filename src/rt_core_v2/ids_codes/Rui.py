@@ -30,8 +30,8 @@ class TempRef:
 	Attributes:
 	ref -- Identifier for the temporal reference
 	"""
-	def __init__(self, tr: Rui):
-		self.ref = tr if tr else uuid7()
+	def __init__(self, tr: Rui=None):
+		self.ref = tr if tr else Rui()
 	
 	def __str__(self):
 		return str(self.ref)

@@ -1,7 +1,7 @@
 import json
 import enum
 
-from rttuple import TupleComponents, TupleType, type_to_class
+from rt_core_v2.rttuple import TupleComponents, TupleType, type_to_class
 
 def rttuple_to_json(input_rttuples):
     """Converts either a list or an RtTuple to a json object"""

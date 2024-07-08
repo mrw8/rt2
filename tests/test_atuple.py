@@ -1,8 +1,8 @@
-from rt_core_v2.rttuple import Atuple
+from rt_core_v2.rttuple import ATuple
 from rt_core_v2.ids_codes.Rui import Rui
 from datetime import datetime, timezone
 
-def print_atuple(a):
+def print_ATuple(a):
 	print("tuple information:")
 	print("\truit: the rui that denotes tuple itself", str(a.ruit.uuid))
 	print("\truip: rui that was assigned to some PoR", str(a.ruip.uuid))
@@ -16,15 +16,15 @@ def print_atuple(a):
 a = Rui()
 
 x = Rui()
-y = Atuple(x)
-print_atuple(y)
+y = ATuple(x)
+print_ATuple(y)
 
 q = Rui()
-z = Atuple(q, ruia=a, unique="+SU", ar='R')
-print_atuple(z)
+z = ATuple(q, ruia=a, unique="+SU", ar='R')
+print_ATuple(z)
 
 s = Rui()
-w = Atuple(s, ruia=a, unique="+SU")
-print_atuple(w)
+w = ATuple(s, ruia=a, unique="+SU")
+print_ATuple(w)
 
 print(type(datetime.now(timezone.utc)))

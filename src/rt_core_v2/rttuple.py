@@ -9,7 +9,6 @@ from rt_core_v2.ids_codes.Rui import Rui, TempRef
 def enum_to_dict(entries: set):
 	return {entry: entry.value for entry in entries}
 
-
 """Enum for when the string representation of an enum instance is the value"""
 class ValueEnum(enum.Enum):
 	def __str__(self):
@@ -26,16 +25,15 @@ class TupleType(ValueEnum):
 	D = 'D'
 	F = 'F'
 	NtoDE = 'NtoDE'
-	NtoN = 'NtoN'
-	NtoR = 'NtoR'
+	NtoNTuple = 'NtoNTuple'
+	NtoRTuple = 'NtoRTuple'
 	NtoC = 'NtoC'
-	NtoLackR = 'NtoR(-)'
+	NtoLackR = 'NtoRTuple(-)'
 
 """Enum representing portions of reality types"""
 class PorType(ValueEnum):
 	singular = '+SU'
 	non_singular = '-SU'
-
 
 #TODO Move this into the classes, as it is not a semantically sound placement here
 class TupleComponents(enum.Enum):
@@ -68,7 +66,6 @@ class TupleComponents(enum.Enum):
 	data = 'data'
 	ruidt = 'ruidt'
 
-
 class RtTuple(ABC):
 	tuple_type = None
 	params = {**enum_to_dict({TupleComponents.ruit, TupleComponents.type})}
@@ -96,9 +93,9 @@ class ATuple(RtTuple):
 	Attributes:
 	ar -- The status of ruip
 	ruip -- The Rui that is being assigned for the first time
-	ruia -- The Rui of the author of this Atuple
-	unique -- 
-	t -- The time of the creation of the Atuple
+	ruia -- The Rui of the author of this ATuple
+	unique -- Asserts whether this is a non-repeatable or repeatable portion of reality
+	t -- The time of the creation of the ATuple
 	"""
 	params = {**RtTuple.params, **enum_to_dict({TupleComponents.ar, TupleComponents.t, 
 											 TupleComponents.ruia, TupleComponents.unique, TupleComponents.ruip})}
@@ -154,17 +151,16 @@ class ATuple(RtTuple):
 			return self
 		else:
 			#TODO Figure out the process for creating d-tuples
-			# return Atuple(self.ruip, self.ruia, self.ruit, self.unique, RuiStatus())
+			# return ATuple(self.ruip, self.ruia, self.ruit, self.unique, RuiStatus())
 			pass
-
 
 class DTuple(RtTuple):
 	# D#< RUId, RUIT, t, ‘I’/E, R, S >
 
 	tuple_type = TupleType.D
 	params = {**RtTuple.params, **enum_to_dict({TupleComponents.ruid, TupleComponents.event, 
-											 TupleComponents.event_reason, TupleComponents.error, 
-											 TupleComponents.td, TupleComponents.replacements})}
+											 TupleComponents.event_reason, TupleComponents.td, 
+											 TupleComponents.replacements})}
 
 	def __init__(self, ruid: Rui, ruit: Rui, t, event, event_reason, replacements=None):
 		super().__init__(ruid)
@@ -203,8 +199,9 @@ class FTuple(RtTuple):
 	
 	def __init__(self, ruit: Rui=None, ruid: Rui=None, ta: TempRef=None, ruia: Rui=None, ruitn: Rui=None, C: float=1.0):
 		super().__init__(ruit)
-		self.ruitn = ruitn
+		self.ruid = ruid
 		self.ruia = ruia
+		self.ruitn = ruitn
 		self.ta = ta
 		self.C = C
 
@@ -212,8 +209,9 @@ class FTuple(RtTuple):
 		"""Get the attributes of this tuple as a string"""
 		#TODO Get the attributes set for ruid.
 		attributes = super().get_str_attributes()
-		attributes[self.params[TupleComponents.ruitn]] = str(self.ruitn)
+		attributes[self.params[TupleComponents.ruid]] = str(self.ruid)
 		attributes[self.params[TupleComponents.ruia]] = str(self.ruia)
+		attributes[self.params[TupleComponents.ruitn]] = str(self.ruitn)
 		attributes[self.params[TupleComponents.ta]] = str(self.ta)
 		attributes[self.params[TupleComponents.C]] = str(self.C)
 
@@ -221,8 +219,8 @@ class FTuple(RtTuple):
 
 class NtoNTuple(RtTuple):
 	"""Tuple type that relates two or more non-repeatable portions of reality to one another"""
-	#NtoN#< ‘+’/‘-’, r, P, rT/‘-’, tr/‘-’ >
-	tuple_type = TupleType.NtoN
+	#NtoNTuple#< ‘+’/‘-’, r, P, rT/‘-’, tr/‘-’ >
+	tuple_type = TupleType.NtoNTuple
 	params = {**RtTuple.params, **enum_to_dict({TupleComponents.polarity, TupleComponents.r, 
 											 TupleComponents.p_list, TupleComponents.rT, TupleComponents.tr})}
 
@@ -247,9 +245,9 @@ class NtoNTuple(RtTuple):
 	
 class NtoRTuple(RtTuple):
 	"""Tuple type that relates a non-repeatable portion of reality to a repeatable portion of reality"""
-	#NtoR#< ‘+’/‘-’, inst, RUIn, RUIr, rT/‘-’, tr/‘-’ >
+	#NtoRTuple#< ‘+’/‘-’, inst, RUIn, RUIr, rT/‘-’, tr/‘-’ >
 
-	tuple_type = TupleType.NtoR
+	tuple_type = TupleType.NtoRTuple
 	params = {**RtTuple.params, **enum_to_dict({TupleComponents.polarity, TupleComponents.inst, TupleComponents.ruin, 
 											   TupleComponents.ruir, TupleComponents.rT, TupleComponents.tr})}
 
@@ -308,8 +306,8 @@ class NtoCTuple(RtTuple):
 
 # We use NtoDE instead of NtoI, and we use an instance for the identifying descriptor
 # or IdD associated with:
-#	(1) and NtoR tuple that says what type of IdD it is, 
-#	(2) an NtoN tuple to relate the name to what the IdD denotes, and 
+#	(1) and NtoRTuple tuple that says what type of IdD it is, 
+#	(2) an NtoNTuple tuple to relate the name to what the IdD denotes, and 
 #	(3) an NtoDE tuple to hold the actual written (or "string") form of the IdD. 
 # Note that an IdD can be a name, identifier, etc.
 #TODO Figure out if data should be a string or generic data
@@ -342,7 +340,7 @@ class NtoLackRTuple(RtTuple):
 	"""Tuple type that asserts that for all instances of a given type, a specific
 		non-repeatable portion of reality is not related to any of them by a 
 		given relation"""
-	#NtoR(-) -tuple NtoR(-)#< r, RUIp, RUIr, rT/‘-’, tr/‘-’ >
+	#NtoRTuple(-) -tuple NtoRTuple(-)#< r, RUIp, RUIr, rT/‘-’, tr/‘-’ >
 
 	tuple_type = TupleType.NtoLackR
 	params = {**RtTuple.params, **enum_to_dict({TupleComponents.r, TupleComponents.ruip, 
@@ -374,8 +372,8 @@ type_to_class = {
 	TupleType.D: DTuple,
 	TupleType.F: FTuple,
 	TupleType.NtoDE: NtoDETuple,
-	TupleType.NtoN: NtoNTuple,
-	TupleType.NtoR: NtoRTuple,
+	TupleType.NtoNTuple: NtoNTuple,
+	TupleType.NtoRTuple: NtoRTuple,
 	TupleType.NtoC: NtoCTuple,
 	TupleType.NtoLackR: NtoLackRTuple,
 }
