@@ -39,37 +39,39 @@ class PorType(ValueEnum):
 
 #TODO Move this into the classes, as it is not a semantically sound placement here
 class TupleComponents(enum.Enum):
+	ruit = 'ruit'
+	type = 'type'
 	ar = 'ar'
-	C = 'C'
-	code = 'code'
-	data = 'data'
-	error = 'error'
+	ruip = 'ruip'
+	ruia = 'ruia'
+	unique = 'unique'
+	t = 't'
+	ruid = 'ruid'
 	event = 'event'
 	event_reason = 'event_reason'
-	p_list = 'p_list'
+	td = 'td'
+	replacements = 'replacements'
+	ruitn = 'ruitn'
+	ta = 'ta'
+	C = 'C'
 	polarity = 'polarity'
 	r = 'r'
-	replacements = 'replacements'
-	ruia = 'ruia'
-	ruics = 'ruics'
-	ruid = 'ruid'
-	ruidt = 'ruidt'
-	ruin = 'ruin'
-	ruins = 'ruins'
-	ruip = 'ruip'
-	ruir = 'ruir'
-	ruit = 'ruit'
-	ruitn = 'ruitn'
-	t = 't'
-	ta = 'ta'
-	td = 'td'
+	p_list = 'p_list'
+	rT = 'rT'
 	tr = 'tr'
-	type = 'type'
-	unique = 'unique'
+	inst = 'inst'
+	ruin = 'ruin'
+	ruir = 'ruir'
+	ruics = 'ruics'
+	code = 'code'
+	ruins = 'ruins'
+	data = 'data'
+	ruidt = 'ruidt'
+
 
 class RtTuple(ABC):
 	tuple_type = None
-	params = {TupleComponents.ruit:TupleComponents.ruit.value, TupleComponents.type:TupleComponents.type.value}
+	params = {**enum_to_dict({TupleComponents.ruit, TupleComponents.type})}
 	def __init__(self, rui: Rui=None):
 		self._rui = rui if rui else Rui()
 
@@ -88,7 +90,7 @@ class RtTuple(ABC):
 		"""Get the attributes of this tuple as a string"""
 		return {self.params[TupleComponents.ruit]:str(self._rui), self.params[TupleComponents.type]:str(self.tuple_type)}
 
-class Atuple(RtTuple):
+class ATuple(RtTuple):
 	"""Referent Tracking assignment tuple that registers assignment of an RUI to a PoR
 	
 	Attributes:
@@ -102,8 +104,9 @@ class Atuple(RtTuple):
 											 TupleComponents.ruia, TupleComponents.unique, TupleComponents.ruip})}
 	tuple_type = TupleType.A
 
-	def __init__(self, ruip: Rui=None, ruia: Rui=None, ruit: Rui=None, unique: PorType=PorType.singular, ar: RuiStatus=RuiStatus.assigned, 
+	def __init__(self, ruit: Rui=None, ruia: Rui=None, ruip: Rui=None, ar: RuiStatus=RuiStatus.assigned, unique: PorType=PorType.singular,
 			  t=datetime.now(timezone.utc)):
+		#TODO Change time to be a tempref
 		super().__init__(ruit)
 		self.ar = ar
 		self.ruip = ruip if ruip else Rui()
@@ -137,11 +140,11 @@ class Atuple(RtTuple):
 	def get_str_attributes(self):
 		"""Get the attributes of this tuple as a string"""
 		attributes = super().get_str_attributes()
-		attributes[self.params[TupleComponents.ar]] = str(self.ar)
-		attributes[self.params[TupleComponents.t]] = str(self._t)
 		attributes[self.params[TupleComponents.ruia]] = str(self.ruia)
-		attributes[self.params[TupleComponents.unique]] = str(self.unique)
 		attributes[self.params[TupleComponents.ruip]] = str(self.ruip)
+		attributes[self.params[TupleComponents.ar]] = str(self.ar)
+		attributes[self.params[TupleComponents.unique]] = str(self.unique)
+		attributes[self.params[TupleComponents.t]] = str(self._t)
 		return attributes
 
 	def create_assigned(self):
@@ -151,176 +154,11 @@ class Atuple(RtTuple):
 			return self
 		else:
 			#TODO Figure out the process for creating d-tuples
-			return Atuple(self.ruip, self.ruia, self.ruit, self.unique, RuiStatus())
+			# return Atuple(self.ruip, self.ruia, self.ruit, self.unique, RuiStatus())
+			pass
 
-	
 
-
-# This class is the superclass of all Nto* tuples. They all relate some
-#	non-repeatable portion of reality to some portion of reality (in 
-#	some cases a repeatable PoR, and in others non-repeatable ones) or
-#	in the case of NtoC, it is asserting that the N is "annotated by"
-#	the "concept" from some concept system.
-# We require the NtoXGenericTuple to accomodate NtoLackR
-#	All the other Nto* tuples extend NtoXTuple
-#
-class NtoXGenericTuple(RtTuple):
-	params = {**RtTuple.params, **enum_to_dict({TupleComponents.ruin, TupleComponents.r})}
-
-	def __init__(self, ruit: Rui, ruin: Rui, r: str):
-		super().__init__(ruit)
-		if ruin is None:
-			raise Exception("must provide a value for RUIn")
-		if r is None:
-			raise Exception("must provide a value for r")
-		
-		self.ruin = ruin
-		self.r = r 
-
-	def get_str_attributes(self):
-		"""Get the attributes of this tuple as a string"""
-		attributes = super().get_str_attributes()
-		attributes[self.params[TupleComponents.ruin]] = str(self.ruin)
-		attributes[self.params[TupleComponents.r]] = str(self.r)
-		return attributes
-
-# Except for NtoLackR, Nto* tuples can be asserted as being
-#  true or false (i.e., "it is not the case that...")
-class NtoXTuple(NtoXGenericTuple):
-
-	params = {**NtoXGenericTuple.params, **enum_to_dict({TupleComponents.polarity})}
-
-	def __init__(self, ruit: Rui, ruin: Rui, r: str, polarity: bool):
-		super().__init__(ruit, ruin, r)
-		self.polarity = polarity
-
-	def isPositive(self):
-		"""Returns whehther the polarity is positive"""
-		return self.polarity
-
-	def isNegated(self):
-		"""Returns whether the polarity is negative"""
-		return not self.polarity
-	
-	def get_str_attributes(self):
-		"""Get the attributes of this tuple as a string"""
-		attributes = super().get_str_attributes()
-		attributes[self.params[TupleComponents.polarity]] = str(self.polarity)
-		return attributes
-
-class NtoN(NtoXTuple):
-	"""Tuple type that relates two or more non-repeatable portions of reality to one another"""
-	#NtoN#< ‘+’/‘-’, r, P, rT/‘-’, tr/‘-’ >
-
-	params = {**NtoXTuple.params, **enum_to_dict({TupleComponents.p_list, TupleComponents.tr})}
-
-	def __init__(self, ruit: Rui, ruin: Rui, polarity: bool, r: str, p_list: list[Rui], tr: str):
-		#TODO Add rt, remove ruin
-		super().__init__(ruit, ruin, r, polarity)
-		self.p_list = p_list.copy()
-		self.tr = tr
-	
-	def get_str_attributes(self):
-		"""Get the attributes of this tuple as a string"""
-		attributes = super().get_str_attributes()
-		attributes[self.params[TupleComponents.p_list]] = str(self.p_list)
-		attributes[self.params[TupleComponents.tr]] = str(self.tr)
-		return attributes
-	
-class NtoR(NtoXTuple):
-	"""Tuple type that relates a non-repeatable portion of reality to a repeatable portion of reality"""
-	#NtoR#< ‘+’/‘-’, inst, RUIn, RUIr, rT/‘-’, tr/‘-’ >
-
-	tuple_type = TupleType.NtoR
-	params = {**NtoXTuple.params, **enum_to_dict({TupleComponents.ruir, TupleComponents.tr})}
-
-	def __init__(self, ruit: Rui, ruin: Rui, polarity: bool, r: str, ruir: Rui, tr: str):
-		#TODO Add rT, change r to inst
-		super().__init__(ruit, ruin, r, polarity)
-		self.tr = tr 
-		self.ruir = ruir
-
-	def get_str_attributes(self):
-		"""Get the attributes of this tuple as a string"""
-		attributes = super().get_str_attributes()
-		attributes[self.params[TupleComponents.ruir]] = str(self.ruir)
-		attributes[self.params[TupleComponents.tr]] = str(self.tr)
-		return attributes
-
-#TODO Figure out the type of code
-class NtoC(NtoXTuple):
-	"""Tuple type that annotates a non-repeatable portion of reality with a "concept" code from a
-		concept-based system"""
-	#NtoC#< ‘+’/‘-’, r, RUIcs, RUIp, code, rT, tr >
-
-	tuple_type = TupleType.NtoC
-	params = {**NtoXTuple.params, **enum_to_dict({TupleComponents.ruics, TupleComponents.code})}
-	
-	def __init__(self, ruit: Rui, ruin: Rui, polarity: bool, r: str, ruics: Rui, code, tr: str):
-		#TODO Add rT, ruip. Remove ruin
-		super().__init__(ruit, ruin, r, polarity)
-		self.tr = tr 
-		self.ruics = ruics
-		self.code = code 
-
-	def get_str_attributes(self):
-		"""Get the attributes of this tuple as a string"""
-		attributes = super().get_str_attributes()
-		attributes[self.params[TupleComponents.ruics]] = str(self.ruics)
-		attributes[self.params[TupleComponents.code]] = str(self.code)
-		return attributes
-
-# We use NtoDE instead of NtoI, and we use an instance for the identifying descriptor
-# or IdD associated with:
-#	(1) and NtoR tuple that says what type of IdD it is, 
-#	(2) an NtoN tuple to relate the name to what the IdD denotes, and 
-#	(3) an NtoDE tuple to hold the actual written (or "string") form of the IdD. 
-# Note that an IdD can be a name, identifier, etc.
-#TODO Figure out if data should be a string or generic data
-class NtoDE(NtoXTuple):
-	#NtoDE#< '+/-', r, ruin, ruins, data, ruidt >
-
-	tuple_type = TupleType.NtoDE
-	params = {**NtoXTuple.params, **enum_to_dict({TupleComponents.ruins, TupleComponents.data, TupleComponents.ruidt})}
-
-	def __init__(self, ruit: Rui, ruin: Rui, polarity: bool, r: str, ruins: Rui, data, ruidt: Rui):
-		super().__init__(ruit, ruin, r, polarity)
-		self.ruins = ruins
-		self.data = data
-		self.ruidt = ruidt
-	
-	def get_str_attributes(self):
-		"""Get the attributes of this tuple as a string"""
-		attributes = super().get_str_attributes()
-		attributes[self.params[TupleComponents.ruins]] = str(self.ruins)
-		attributes[self.params[TupleComponents.data]] = str(self.data)
-		attributes[self.params[TupleComponents.ruidt]] = str(self.ruidt)
-		return attributes
-
-class NtoLackR(NtoXGenericTuple):
-	"""Tuple type that asserts that for all instances of a given type, a specific
-		non-repeatable portion of reality is not related to any of them by a 
-		given relation"""
-	#NtoR(-) -tuple NtoR(-)#< r, RUIp, RUIr, rT/‘-’, tr/‘-’ >
-
-	tuple_type = TupleType.NtoLackR
-	params = {**NtoXGenericTuple.params, **enum_to_dict({TupleComponents.ruir, TupleComponents.tr})}
-	
-
-	def __init__(self, ruit: Rui, ruin: Rui, r: str, ruir: Rui, tr: str):
-		super()._init__(self, ruit, ruin, r)
-		#TODO Add rT
-		self.ruir = ruir
-		self.tr = tr 
-
-	def get_str_attributes(self):
-		"""Get the attributes of this tuple as a string"""
-		attributes = super().get_str_attributes()
-		attributes[self.params[TupleComponents.ruir]] = str(self.ruir)
-		attributes[self.params[TupleComponents.tr]] = str(self.tr)
-		return attributes
-
-class Dtuple(RtTuple):
+class DTuple(RtTuple):
 	# D#< RUId, RUIT, t, ‘I’/E, R, S >
 
 	tuple_type = TupleType.D
@@ -328,48 +166,45 @@ class Dtuple(RtTuple):
 											 TupleComponents.event_reason, TupleComponents.error, 
 											 TupleComponents.td, TupleComponents.replacements})}
 
-	def __init__(self, ruit: Rui, ruid: Rui, event, event_reason, error, td=None, replacements=None):
+	def __init__(self, ruid: Rui, ruit: Rui, t, event, event_reason, replacements=None):
 		super().__init__(ruid)
 		#TODO Figure out the argument count discrepancy between the parameter count and the D-tuple outline
 		self.ruit_ref = ruit
 		self.event = event
 		self.event_reason = event_reason
-		self.error = error
-		self.td = td if td else datetime.now(timezone.utc)
+		self.td = t if t else datetime.now(timezone.utc)
 		self.replacements = replacements.copy() if replacements else None
 
 	def get_str_attributes(self):
 		"""Get the attributes of this tuple as a string"""
 		attributes = {}
-		attributes[self.params[TupleComponents.ruid]] = str(self.ruit)
 		attributes[self.params[TupleComponents.type]] = str(self.tuple_type)
+		attributes[self.params[TupleComponents.ruid]] = str(self.ruid)
 		attributes[self.params[TupleComponents.ruit]] = str(self.ruit_ref)
 		attributes[self.params[TupleComponents.event]] = str(self.event)
 		attributes[self.params[TupleComponents.event_reason]] = str(self.event_reason)
-		attributes[self.params[TupleComponents.error]] = str(self.error)
-		attributes[self.params[TupleComponents.td]] = str(self.td)
+		attributes[self.params[TupleComponents.t]] = str(self.td)
 		attributes[self.params[TupleComponents.replacements]] = str(self.replacements)
 		return attributes
 	
 	@property
 	def ruid(self):
-		return self.ruid
+		return self.ruit
 	
 	@ruid.setter
 	def ruid(self, ruid):
 		self.ruit = ruid
 
-class Ftuple(RtTuple):
+class FTuple(RtTuple):
 	#F#< RUId, ta, RUIa, RUIT, C >
 
 	tuple_type = TupleType.F
 	params = {**RtTuple.params, **enum_to_dict({TupleComponents.ruitn, TupleComponents.ruia, TupleComponents.ta, TupleComponents.C})}
 	
-	def __init__(self, ruitn: Rui, ruia: Rui, ta: TempRef, C: float, ruit: Rui=None):
+	def __init__(self, ruit: Rui=None, ruid: Rui=None, ta: TempRef=None, ruia: Rui=None, ruitn: Rui=None, C: float=1.0):
 		super().__init__(ruit)
 		self.ruitn = ruitn
 		self.ruia = ruia
-		#TODO - we need to figure out how to do time parameters
 		self.ta = ta
 		self.C = C
 
@@ -383,15 +218,164 @@ class Ftuple(RtTuple):
 		attributes[self.params[TupleComponents.C]] = str(self.C)
 
 		return attributes
+
+class NtoNTuple(RtTuple):
+	"""Tuple type that relates two or more non-repeatable portions of reality to one another"""
+	#NtoN#< ‘+’/‘-’, r, P, rT/‘-’, tr/‘-’ >
+	tuple_type = TupleType.NtoN
+	params = {**RtTuple.params, **enum_to_dict({TupleComponents.polarity, TupleComponents.r, 
+											 TupleComponents.p_list, TupleComponents.rT, TupleComponents.tr})}
+
+	def __init__(self, ruit: Rui, polarity: bool, r: str, p: list[Rui], rT, tr: str):
+		#TODO Add rt
+		super().__init__(ruit)
+		self.polarity = polarity
+		self.reason = r
+		self.p_list = p.copy()
+		self.time_relation = rT
+		self.time = tr
+	
+	def get_str_attributes(self):
+		"""Get the attributes of this tuple as a string"""
+		attributes = super().get_str_attributes()
+		attributes[self.params[TupleComponents.polarity]] = str(self.polarity)
+		attributes[self.params[TupleComponents.r]] = str(self.reason)
+		attributes[self.params[TupleComponents.p_list]] = str(self.p_list)
+		attributes[self.params[TupleComponents.rT]] = str(self.time_relation)
+		attributes[self.params[TupleComponents.tr]] = str(self.time)
+		return attributes
+	
+class NtoRTuple(RtTuple):
+	"""Tuple type that relates a non-repeatable portion of reality to a repeatable portion of reality"""
+	#NtoR#< ‘+’/‘-’, inst, RUIn, RUIr, rT/‘-’, tr/‘-’ >
+
+	tuple_type = TupleType.NtoR
+	params = {**RtTuple.params, **enum_to_dict({TupleComponents.polarity, TupleComponents.inst, TupleComponents.ruin, 
+											   TupleComponents.ruir, TupleComponents.rT, TupleComponents.tr})}
+
+	def __init__(self, ruit: Rui, polarity: bool, inst: str, ruin: Rui, ruir: Rui, rT, tr: str):
+		super().__init__(ruit)
+		self.polarity = polarity
+		self.inst = inst
+		self.ruin = ruin
+		self.ruir = ruir
+		self.time_relation = rT
+		self.time = tr 
+
+	def get_str_attributes(self):
+		"""Get the attributes of this tuple as a string"""
+		attributes = super().get_str_attributes()
+		attributes[self.params[TupleComponents.polarity]] = str(self.polarity)
+		attributes[self.params[TupleComponents.inst]] = str(self.inst)
+		attributes[self.params[TupleComponents.ruin]] = str(self.ruin)
+		attributes[self.params[TupleComponents.ruir]] = str(self.ruir)
+		attributes[self.params[TupleComponents.rT]] = str(self.time_relation)
+		attributes[self.params[TupleComponents.tr]] = str(self.time)
+		return attributes
+
+#TODO Figure out the type of code
+class NtoCTuple(RtTuple):
+	"""Tuple type that annotates a non-repeatable portion of reality with a "concept" code from a
+		concept-based system"""
+	#NtoC#< ‘+’/‘-’, r, RUIcs, RUIp, code, rT, tr >
+
+	tuple_type = TupleType.NtoC
+	params = {**RtTuple.params, **enum_to_dict({TupleComponents.polarity, TupleComponents.r, TupleComponents.ruics, 
+											   TupleComponents.ruip, TupleComponents.code, TupleComponents.rT, TupleComponents.tr})}
+	
+	def __init__(self, ruit: Rui, polarity: bool, r: str, ruics: Rui, ruip: Rui, code, rT, tr: str):
+		#TODO Add rT
+		super().__init__(ruit)
+		self.polarity = polarity
+		self.reason = r
+		self.ruics = ruics
+		self.ruip = ruip
+		self.code = code
+		self.time_relation = rT
+		self.time = tr
+
+	def get_str_attributes(self):
+		"""Get the attributes of this tuple as a string"""
+		attributes = super().get_str_attributes()
+		attributes[self.params[TupleComponents.polarity]] = str(self.polarity)
+		attributes[self.params[TupleComponents.r]] = str(self.reason)
+		attributes[self.params[TupleComponents.ruics]] = str(self.ruics)
+		attributes[self.params[TupleComponents.ruip]] = str(self.ruip)
+		attributes[self.params[TupleComponents.code]] = str(self.code)
+		attributes[self.params[TupleComponents.tr]] = str(self.time_relation)
+		attributes[self.params[TupleComponents.t]] = str(self.time)
+		return attributes
+
+# We use NtoDE instead of NtoI, and we use an instance for the identifying descriptor
+# or IdD associated with:
+#	(1) and NtoR tuple that says what type of IdD it is, 
+#	(2) an NtoN tuple to relate the name to what the IdD denotes, and 
+#	(3) an NtoDE tuple to hold the actual written (or "string") form of the IdD. 
+# Note that an IdD can be a name, identifier, etc.
+#TODO Figure out if data should be a string or generic data
+class NtoDETuple(RtTuple):
+	#NtoDE#< '+/-', r, ruin, ruins, data, ruidt >
+
+	tuple_type = TupleType.NtoDE
+	params = {**RtTuple.params, **enum_to_dict({TupleComponents.polarity, TupleComponents.ruin, 
+											   TupleComponents.ruins, TupleComponents.data, TupleComponents.ruidt})}
+
+	def __init__(self, ruit: Rui, polarity: bool, ruin: Rui, ruins: Rui, data, ruidt: Rui):
+		super().__init__(ruit)
+		self.polarity = polarity
+		self.ruin = ruin
+		self.ruins = ruins
+		self.data = data
+		self.ruidt = ruidt
+	0
+	def get_str_attributes(self):
+		"""Get the attributes of this tuple as a string"""
+		attributes = super().get_str_attributes()
+		attributes[self.params[TupleComponents.polarity]] = str(self.polarity)
+		attributes[self.params[TupleComponents.ruin]] = str(self.ruin)
+		attributes[self.params[TupleComponents.ruins]] = str(self.ruins)
+		attributes[self.params[TupleComponents.data]] = str(self.data)
+		attributes[self.params[TupleComponents.ruidt]] = str(self.ruidt)
+		return attributes
+
+class NtoLackRTuple(RtTuple):
+	"""Tuple type that asserts that for all instances of a given type, a specific
+		non-repeatable portion of reality is not related to any of them by a 
+		given relation"""
+	#NtoR(-) -tuple NtoR(-)#< r, RUIp, RUIr, rT/‘-’, tr/‘-’ >
+
+	tuple_type = TupleType.NtoLackR
+	params = {**RtTuple.params, **enum_to_dict({TupleComponents.r, TupleComponents.ruip, 
+													  TupleComponents.ruir, TupleComponents.rT, TupleComponents.tr})}
+	
+
+	def __init__(self, ruit: Rui, r: str, ruip: Rui, ruir: Rui, rT, tr: str):
+		super()._init__(self, ruit)
+		#TODO Add rT
+		self.relation = r
+		self.ruip = ruip
+		self.ruir = ruir
+		self.time_relation = rT
+		self.time = tr 
+
+	def get_str_attributes(self):
+		"""Get the attributes of this tuple as a string"""
+		attributes = super().get_str_attributes()
+		attributes[self.params[TupleComponents.r]] = str(self.relation)
+		attributes[self.params[TupleComponents.ruip]] = str(self.ruip)
+		attributes[self.params[TupleComponents.ruir]] = str(self.ruir)
+		attributes[self.params[TupleComponents.rT]] = str(self.time_relation)
+		attributes[self.params[TupleComponents.tr]] = str(self.time)
+		return attributes
 	
 """Mapping from tuple id to the corresponding tuple class"""
 type_to_class = {
-	TupleType.A: Atuple,
-	TupleType.D: Dtuple,
-	TupleType.F: Ftuple,
-	TupleType.NtoDE: NtoDE,
-	TupleType.NtoN: NtoN,
-	TupleType.NtoR: NtoR,
-	TupleType.NtoC: NtoC,
-	TupleType.NtoLackR: NtoLackR,
+	TupleType.A: ATuple,
+	TupleType.D: DTuple,
+	TupleType.F: FTuple,
+	TupleType.NtoDE: NtoDETuple,
+	TupleType.NtoN: NtoNTuple,
+	TupleType.NtoR: NtoRTuple,
+	TupleType.NtoC: NtoCTuple,
+	TupleType.NtoLackR: NtoLackRTuple,
 }
