@@ -67,6 +67,12 @@ class TupleComponents(enum.Enum):
 	ruidt = 'ruidt'
 
 class RtTuple(ABC):
+	"""Abstract Referent Tracking tuple that contains the information that all referent tracking tuples contain
+	
+	Attributes:
+	ruit -- The rui of this tuple
+	type -- The id of the tuple component
+	"""
 	tuple_type = None
 	params = {**enum_to_dict({TupleComponents.ruit, TupleComponents.type})}
 	def __init__(self, rui: Rui=None):
@@ -171,9 +177,8 @@ class DTuple(RtTuple):
 											 TupleComponents.event_reason, TupleComponents.td, 
 											 TupleComponents.replacements})}
 
-	def __init__(self, ruid: Rui, ruit: Rui, t, event, event_reason, replacements=[]):
+	def __init__(self, ruid: Rui, ruit: Rui, t: TempRef, event, event_reason, replacements=[]):
 		super().__init__(ruid)
-		#TODO Figure out the argument count discrepancy between the parameter count and the D-tuple outline
 		self.ruit_ref = ruit
 		self.event = event
 		self.event_reason = event_reason
@@ -204,36 +209,43 @@ class FTuple(RtTuple):
 	"""Referent Tracking metadata tuple that stores information regarding the confidence level in another tuple's assertions
 
 	Attributes:
-	ruid -- 
-	ruia -- The id of the author making the assertion
-	ruitn -- The id of the tuple refered to by this tuple's confidence assertion.
+	ruid -- The ruid of this tuple
+	ruia -- The ruid of the author making the assertion
+	ruitn -- The ruid of the tuple refered to by this tuple's confidence assertion.
 	ta -- The time instance of the confidence assertion.
 	C -- The level of confidence from 0.00-1.00 in the assertion.
 	"""
 	#F#< RUId, ta, RUIa, RUIT, C >
 
 	tuple_type = TupleType.F
-	params = {**RtTuple.params, **enum_to_dict({TupleComponents.ruitn, TupleComponents.ruia, TupleComponents.ta, TupleComponents.C})}
+	params = {**RtTuple.params, **enum_to_dict({TupleComponents.ruid, TupleComponents.ruia, TupleComponents.ta, TupleComponents.C})}
 	
-	def __init__(self, ruit: Rui=None, ruid: Rui=None, ta: TempRef=None, ruia: Rui=None, ruitn: Rui=None, C: float=1.0):
-		super().__init__(ruit)
-		self.ruid = ruid
+	def __init__(self, ruit: Rui=None, ruid: Rui=None, ta: TempRef=None, ruia: Rui=None, C: float=1.0):
+		super().__init__(ruid)
+		self.ruit_ref = ruit
 		self.ruia = ruia
-		self.ruitn = ruitn
 		self.ta = ta
 		self.C = C
 
 	def get_str_attributes(self):
 		"""Get the attributes of this tuple as a string"""
-		#TODO Get the attributes set for ruid.
-		attributes = super().get_str_attributes()
+		attributes = {}
+		attributes[self.params[TupleComponents.type]] = str(self.tuple_type)
 		attributes[self.params[TupleComponents.ruid]] = str(self.ruid)
+		attributes[self.params[TupleComponents.ruit]] = str(self.ruit_ref)
 		attributes[self.params[TupleComponents.ruia]] = str(self.ruia)
-		attributes[self.params[TupleComponents.ruitn]] = str(self.ruitn)
 		attributes[self.params[TupleComponents.ta]] = str(self.ta)
 		attributes[self.params[TupleComponents.C]] = str(self.C)
 
 		return attributes
+
+	@property
+	def ruid(self):
+		return self.ruit
+	
+	@ruid.setter
+	def ruid(self, ruid):
+		self.ruit = ruid
 
 class NtoNTuple(RtTuple):
 	"""Tuple type that relates two or more non-repeatable portions of reality to one another
@@ -274,9 +286,9 @@ class NtoRTuple(RtTuple):
 	
 	Attribtues:
 	polarity -- Boolean describing whether the relation is as stated or negated
-	inst -- 
-	ruin -- 
-	ruir -- 
+	inst -- The instantiation relationship between the non-repeatable PoR an the repeatable PoR
+	ruin -- The Rui of the non-repeatable PoR in the relation
+	ruir -- The Rui of the repeatable Por in the relation
 	time_relation -- The relationship between the time of the creation of this tuple and variable time
 	time -- A temporal reference 
 	"""
@@ -313,10 +325,10 @@ class NtoCTuple(RtTuple):
 		
 		Attributes:
 		polarity -- Boolean describing whether the relation is as stated or negated
-		reason -- 
-		ruics -- 
-		ruip -- 
-		code -- 
+		relation -- The relationship between the non-repeatable PoR and the concept
+		ruics -- The Rui of the concept class the concept for the relation is from
+		ruip -- The Rui of the non-repeatable PoR in the relation
+		code -- The code for the concept within the concept class referred to by Ruics
 		time_relation -- The relationship between the time of the creation of this tuple and variable time
 		time -- A temporal reference
 		"""
@@ -326,7 +338,7 @@ class NtoCTuple(RtTuple):
 	params = {**RtTuple.params, **enum_to_dict({TupleComponents.polarity, TupleComponents.r, TupleComponents.ruics, 
 											   TupleComponents.ruip, TupleComponents.code, TupleComponents.rT, TupleComponents.tr})}
 	
-	def __init__(self, ruit: Rui, polarity: bool, r: str, ruics: Rui, ruip: Rui, code, rT, tr: str):
+	def __init__(self, ruit: Rui, polarity: bool, r: str, ruics: Rui, ruip: Rui, code: str, rT, tr: TempRef):
 		#TODO Add rT
 		super().__init__(ruit)
 		self.polarity = polarity
@@ -363,7 +375,7 @@ class NtoDETuple(RtTuple):
 	polarity -- Boolean describing whether the relation is as stated or negated
 	ruin -- 
 	ruins -- 
-	data --
+	data -- The data in the relationship
 	ruidt -- 
 	"""
 	#NtoDE#< '+/-', r, ruin, ruins, data, ruidt >
@@ -400,14 +412,6 @@ class NtoLackRTuple(RtTuple):
 	time_relation -- The relationship between the time of the creation of this tuple and variable time
 	time -- A temporal reference 
 	"""
-	"""Tuple type that relates two or more non-repeatable portions of reality to one another
-	
-	Attributes:
-	relation -- A relation between the non-repeatable portions of reality in p_list
-	p_list -- A list of non-repeatable portions of reality that have the relationship described
-	time_relation -- The relationship between the time of the creation of this tuple and variable time
-	time -- A temporal reference 
-	"""
 	#NtoRTuple(-) -tuple NtoRTuple(-)#< r, RUIp, RUIr, rT/‘-’, tr/‘-’ >
 
 	tuple_type = TupleType.NtoLackR
@@ -415,7 +419,7 @@ class NtoLackRTuple(RtTuple):
 													  TupleComponents.ruir, TupleComponents.rT, TupleComponents.tr})}
 	
 
-	def __init__(self, ruit: Rui, r: str, ruip: Rui, ruir: Rui, rT, tr: str):
+	def __init__(self, ruit: Rui, r: str, ruip: Rui, ruir: Rui, rT, tr: TempRef):
 		super()._init__(self, ruit)
 		self.relation = r
 		self.ruip = ruip

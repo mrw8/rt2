@@ -1,7 +1,7 @@
 import json
 
 from rt_core_v2.ids_codes.Rui import Rui
-from rt_core_v2.rttuple import ATuple
+from rt_core_v2.rttuple import ATuple, DTuple
 from rt_core_v2.rttuple_formatter import format_rttuples
 
 def ordered(obj):
@@ -25,8 +25,8 @@ def test_json():
     print("Processed:  \n" + ATuple_formated)
     assert(ordered(json.loads(ATuple_formated)) == ordered(json.loads(expected_1)))
 
-    # DTuple = DTuple()
-
+    d = DTuple()
+    
     # FTuple = FTuple()
 
 
