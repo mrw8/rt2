@@ -1,7 +1,7 @@
 import json
 
 from rt_core_v2.ids_codes.Rui import Rui, TempRef
-from rt_core_v2.rttuple import ATuple, DTuple, FTuple, NtoNTuple, NtoRTuple, NtoCTuple
+from rt_core_v2.rttuple import ATuple, DTuple, FTuple, NtoNTuple, NtoRTuple, NtoCTuple, NtoDETuple, NtoLackRTuple
 from rt_core_v2.rttuple_formatter import format_rttuples
 from rt_core_v2.metadata_accessory import TupleEventType, RtChangeReason
 
@@ -20,6 +20,9 @@ ruid = Rui()
 ruics = Rui()
 ruir = Rui()
 ruin = Rui()
+ruidt = Rui()
+ruins = Rui()
+
 time_1 = TempRef()
 event = TupleEventType.INSERT
 reason = RtChangeReason.BELIEF
@@ -28,8 +31,9 @@ polarity = False
 relation = "part of"
 p_list = [ruid]
 time_relation = "at"
-code = "1234"
+code = "code insert"
 inst = "instance of"
+data = "data insert"
 
 def compare(formatted, expected):
     return ordered(json.loads(formatted)) == ordered(json.loads(expected))
@@ -89,3 +93,23 @@ def test_ntoc_json():
     print("Ntoctuple Processed:  \n" + formatted_ntoc)
 
     assert compare(formatted_ntoc, expected_ntoc)
+
+def test_ntode_json():
+    ntode = NtoDETuple(ruit, polarity, ruin, ruins, data, ruidt)
+    formatted_ntode = format_rttuples(ntode)
+    expected_ntode = f"{{\"ruit\": \"{ruit}\", \"type\": \"{ntode.tuple_type}\", \"polarity\": \"{polarity}\", \"ruin\": \"{ruin}\", \"ruins\": \"{ruins}\", \"ruidt\": \"{ruidt}\", \"data\": \"{data}\"}}"
+
+    print("Ntoctuple Expected:  \n" + expected_ntode)
+    print("Ntoctuple Processed:  \n" + formatted_ntode)
+
+    assert compare(formatted_ntode, expected_ntode)
+
+def test_ntolackr_json():
+    ntolackr = NtoLackRTuple(ruit, relation, ruip, ruir, time_relation, time_1)
+    formatted_ntolackr = format_rttuples(ntolackr)
+    expected_ntolackr = f"{{\"ruit\": \"{ruit}\", \"type\": \"{ntolackr.tuple_type}\", \"r\": \"{relation}\", \"ruir\": \"{ruir}\", \"ruip\": \"{ruip}\", \"tr\": \"{time_1}\", \"rT\": \"{time_relation}\"}}"
+
+    print("Ntortuple Expected:  \n" + expected_ntolackr)
+    print("Ntonrtuple Processed:  \n" + formatted_ntolackr)
+
+    assert compare(formatted_ntolackr, expected_ntolackr)

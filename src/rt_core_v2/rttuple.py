@@ -372,7 +372,7 @@ class NtoDETuple(RtTuple):
 	ruin -- 
 	ruins -- 
 	data -- The data in the relationship
-	ruidt -- 
+	ruidt -- An Rui containing the data type of data
 	"""
 	#NtoDE#< '+/-', r, ruin, ruins, data, ruidt >
 
@@ -416,7 +416,7 @@ class NtoLackRTuple(RtTuple):
 	
 
 	def __init__(self, ruit: Rui, r: str, ruip: Rui, ruir: Rui, rT, tr: TempRef):
-		super()._init__(self, ruit)
+		super().__init__(ruit)
 		self.relation = r
 		self.ruip = ruip
 		self.ruir = ruir
