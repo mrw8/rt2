@@ -27,7 +27,7 @@ def print_NtoNTuple_tuple(NtoNTuple):
 	print("\tP: the list of ruis that denote the non-repeatable PoRs that are related by r:")
 	for i in NtoNTuple.p_list:
 		print("\t\t", i.uuid)
-	print("\tr: the relationship between the non-repeatable PoR and the repeatable PoR --", str(NtoNTuple.reason))
+	print("\tr: the relationship between the non-repeatable PoR and the repeatable PoR --", str(NtoNTuple.relation))
 	print("\ttr: the time at which the relationship between the non-repeatable PoR and the repeatable PoR holds --", str(NtoNTuple.time.ref.uuid))
 	print("\tpolarity: the relationship holds (true) or does not hold (false) --", str(NtoNTuple.polarity))
 	print()

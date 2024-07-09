@@ -1,4 +1,5 @@
 from uuid6 import uuid7, UUID
+import json
 
 class Rui:
 	"""Referent Unique Identifier
@@ -21,11 +22,13 @@ class Rui:
 
 	def __str__(self):
 		return str(self._uuid)
+	
+	def toJSON(self):
+		return str(self._uuid)
 
 
 class TempRef:
-	"""Temporal Reference
-	A tuple component that contains is either a calendar date or a unique identifier that represents a instance or interval of time
+	"""A tuple component that contains is either a calendar date or a unique identifier that represents a instance or interval of time
 
 	Attributes:
 	ref -- Identifier for the temporal reference
@@ -35,3 +38,6 @@ class TempRef:
 	
 	def __str__(self):
 		return str(self.ref)
+	
+	def toJSON(self):
+		return str(self._uuid)

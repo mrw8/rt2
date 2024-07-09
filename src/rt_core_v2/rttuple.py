@@ -4,6 +4,7 @@ from datetime import datetime, timezone
 import logging
 
 from rt_core_v2.ids_codes.Rui import Rui, TempRef
+from rt_core_v2.metadata_accessory import TupleEventType
 
 """Takes an set of enums and converts them into a dict with mapping entry:value"""
 def enum_to_dict(entries: set):
@@ -25,10 +26,10 @@ class TupleType(ValueEnum):
 	D = 'D'
 	F = 'F'
 	NtoDE = 'NtoDE'
-	NtoNTuple = 'NtoNTuple'
-	NtoRTuple = 'NtoRTuple'
+	NtoNTuple = 'NtoN'
+	NtoRTuple = 'NtoRT'
 	NtoC = 'NtoC'
-	NtoLackR = 'NtoRTuple(-)'
+	NtoLackR = 'NtoR(-)'
 
 """Enum representing portions of reality types"""
 class PorType(ValueEnum):
@@ -49,7 +50,6 @@ class TupleComponents(enum.Enum):
 	event_reason = 'event_reason'
 	td = 'td'
 	replacements = 'replacements'
-	ruitn = 'ruitn'
 	ta = 'ta'
 	C = 'C'
 	polarity = 'polarity'
@@ -108,8 +108,7 @@ class ATuple(RtTuple):
 	tuple_type = TupleType.A
 
 	def __init__(self, ruit: Rui=None, ruia: Rui=None, ruip: Rui=None, ar: RuiStatus=RuiStatus.assigned, unique: PorType=PorType.singular,
-			  t=datetime.now(timezone.utc)):
-		#TODO Change time to be a tempref
+			  t: TempRef=None):
 		super().__init__(ruit)
 		self.ar = ar
 		self.ruip = ruip if ruip else Rui()
@@ -122,7 +121,7 @@ class ATuple(RtTuple):
 		#	itself, and thus should be equal
 		self.ruia = ruia if ruia else Rui(self.ruip.uuid)
 		self.unique = unique if type(unique) is PorType else PorType(unique)
-		self._t = t
+		self._t = t if t else TempRef()
 	@property
 	def t(self):
 		"""Get t"""
@@ -174,16 +173,16 @@ class DTuple(RtTuple):
 
 	tuple_type = TupleType.D
 	params = {**RtTuple.params, **enum_to_dict({TupleComponents.ruid, TupleComponents.event, 
-											 TupleComponents.event_reason, TupleComponents.td, 
+											 TupleComponents.event_reason, TupleComponents.t, 
 											 TupleComponents.replacements})}
 
-	def __init__(self, ruid: Rui, ruit: Rui, t: TempRef, event, event_reason, replacements=[]):
+	def __init__(self, ruid: Rui, ruit: Rui, t: TempRef, event: TupleEventType, event_reason, replacements: list[Rui]=[]):
 		super().__init__(ruid)
 		self.ruit_ref = ruit
 		self.event = event
 		self.event_reason = event_reason
-		self.td = t if t else datetime.now(timezone.utc)
-		self.replacements = replacements.copy() if replacements else None
+		self.td = t if t else TempRef()
+		self.replacements = replacements.copy()
 
 	def get_str_attributes(self):
 		"""Get the attributes of this tuple as a string"""
@@ -211,7 +210,7 @@ class FTuple(RtTuple):
 	Attributes:
 	ruid -- The ruid of this tuple
 	ruia -- The ruid of the author making the assertion
-	ruitn -- The ruid of the tuple refered to by this tuple's confidence assertion.
+	ruit_ref -- The ruid of the tuple refered to by this tuple's confidence assertion.
 	ta -- The time instance of the confidence assertion.
 	C -- The level of confidence from 0.00-1.00 in the assertion.
 	"""
@@ -220,7 +219,7 @@ class FTuple(RtTuple):
 	tuple_type = TupleType.F
 	params = {**RtTuple.params, **enum_to_dict({TupleComponents.ruid, TupleComponents.ruia, TupleComponents.ta, TupleComponents.C})}
 	
-	def __init__(self, ruit: Rui=None, ruid: Rui=None, ta: TempRef=None, ruia: Rui=None, C: float=1.0):
+	def __init__(self, ruid: Rui=None, ruit: Rui=None, ta: TempRef=None, ruia: Rui=None, C: float=1.0):
 		super().__init__(ruid)
 		self.ruit_ref = ruit
 		self.ruia = ruia
@@ -263,10 +262,9 @@ class NtoNTuple(RtTuple):
 											 TupleComponents.p_list, TupleComponents.rT, TupleComponents.tr})}
 
 	def __init__(self, ruit: Rui, polarity: bool, r: str, p: list[Rui], rT, tr: str):
-		#TODO Add rt
 		super().__init__(ruit)
 		self.polarity = polarity
-		self.reason = r
+		self.relation = r
 		self.p_list = p.copy()
 		self.time_relation = rT
 		self.time = tr
@@ -275,8 +273,8 @@ class NtoNTuple(RtTuple):
 		"""Get the attributes of this tuple as a string"""
 		attributes = super().get_str_attributes()
 		attributes[self.params[TupleComponents.polarity]] = str(self.polarity)
-		attributes[self.params[TupleComponents.r]] = str(self.reason)
-		attributes[self.params[TupleComponents.p_list]] = str(self.p_list)
+		attributes[self.params[TupleComponents.r]] = str(self.relation)
+		attributes[self.params[TupleComponents.p_list]] = self.p_list
 		attributes[self.params[TupleComponents.rT]] = str(self.time_relation)
 		attributes[self.params[TupleComponents.tr]] = str(self.time)
 		return attributes
@@ -318,7 +316,6 @@ class NtoRTuple(RtTuple):
 		attributes[self.params[TupleComponents.tr]] = str(self.time)
 		return attributes
 
-#TODO Figure out the type of code
 class NtoCTuple(RtTuple):
 	"""Tuple type that annotates a non-repeatable portion of reality with a "concept" code from a
 		concept-based system
@@ -339,7 +336,6 @@ class NtoCTuple(RtTuple):
 											   TupleComponents.ruip, TupleComponents.code, TupleComponents.rT, TupleComponents.tr})}
 	
 	def __init__(self, ruit: Rui, polarity: bool, r: str, ruics: Rui, ruip: Rui, code: str, rT, tr: TempRef):
-		#TODO Add rT
 		super().__init__(ruit)
 		self.polarity = polarity
 		self.reason = r
@@ -357,8 +353,8 @@ class NtoCTuple(RtTuple):
 		attributes[self.params[TupleComponents.ruics]] = str(self.ruics)
 		attributes[self.params[TupleComponents.ruip]] = str(self.ruip)
 		attributes[self.params[TupleComponents.code]] = str(self.code)
-		attributes[self.params[TupleComponents.tr]] = str(self.time_relation)
-		attributes[self.params[TupleComponents.t]] = str(self.time)
+		attributes[self.params[TupleComponents.rT]] = str(self.time_relation)
+		attributes[self.params[TupleComponents.tr]] = str(self.time)
 		return attributes
 
 # We use NtoDE instead of NtoI, and we use an instance for the identifying descriptor
@@ -391,7 +387,7 @@ class NtoDETuple(RtTuple):
 		self.ruins = ruins
 		self.data = data
 		self.ruidt = ruidt
-	0
+
 	def get_str_attributes(self):
 		"""Get the attributes of this tuple as a string"""
 		attributes = super().get_str_attributes()

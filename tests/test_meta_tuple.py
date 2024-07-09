@@ -11,7 +11,7 @@ def print_d_tuple(dt):
 	print()
 
 def print_f_tuple(ft):
-	print("<", ft.ruia.uuid, "> has confidence level '", ft.C, "' in tuple <", ft.ruitn.uuid, "> at ", ft.ta)
+	print("<", ft.ruia.uuid, "> has confidence level '", ft.C, "' in tuple <", ft.ruit.uuid, "> at ", ft.ta)
 	print("\ttuple rui: ", ft.ruit.uuid)
 
 # create two ATuples with a = rui of person assigning rui to things
