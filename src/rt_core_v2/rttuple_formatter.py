@@ -19,4 +19,13 @@ def format_rttuples(tuples, format: RtTupleFormat=RtTupleFormat.json_format, str
 def json_to_rttuple(tuple_json):
     """Map a json to an rttuple"""
     tuple_dict = json.loads(tuple_json)
+    for key, value in tuple_dict:
+        entry = TupleComponents(key)
+        match entry:
+            case TupleComponents.ruit | TupleComponents.ruip | TupleComponents.ruia | \
+                TupleComponents.ruid | TupleComponents.ruin | TupleComponents.ruir | \
+                TupleComponents.ruics | TupleComponents.ruins | TupleComponents.ruidt:
+                pass
+
+
     return type_to_class[TupleType(tuple_dict[TupleComponents.type])](**tuple_dict)
