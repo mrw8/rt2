@@ -51,6 +51,7 @@ def jsonify_list(iterable):
 def compare(formatted, expected):
     return ordered(json.loads(formatted)) == ordered(json.loads(expected))
 
+"""All of the below tuple tests first check whether converting from a tuple object to a json functions correclty then checks whether the reverse change is correct."""
 def test_atuple_json():
     a = ATuple(ruit, ruia, ruip)
     formatted_a = format_rttuples(a)
@@ -107,7 +108,7 @@ def test_nton_json():
     print(f"Original NtonTuple:  {nton.get_str_attributes()}")
     print(f"Recreated NtonTuple:  {recreated_nton.get_str_attributes()}")
     
-    # assert nton == recreated_nton
+    assert nton == recreated_nton
 
 def test_ntor_json():
     ntor = NtoRTuple(ruit, polarity, inst, ruin, ruir, time_relation, time_1)
@@ -123,7 +124,7 @@ def test_ntor_json():
     print(f"Original NtorTuple:  {ntor.get_str_attributes()}")
     print(f"Recreated NtorTuple:  {recreated_ntor.get_str_attributes()}")
     
-    # assert ntor == recreated_ntor
+    assert ntor == recreated_ntor
 
 def test_ntoc_json():
     ntoc = NtoCTuple(ruit, polarity, relation, ruics, ruip, code, time_relation, time_1)
@@ -139,7 +140,7 @@ def test_ntoc_json():
     print(f"Original NtocTuple:  {ntoc.get_str_attributes()}")
     print(f"Recreated NtocTuple:  {recreated_ntoc.get_str_attributes()}")
     
-    # assert ntoc == recreated_ntoc
+    assert ntoc == recreated_ntoc
 
 def test_ntode_json():
     ntode = NtoDETuple(ruit, polarity, ruin, ruins, data, ruidt)
@@ -155,7 +156,8 @@ def test_ntode_json():
     print(f"Original NtodeTuple:  {ntode.get_str_attributes()}")
     print(f"Recreated NtodeTuple:  {recreated_ntode.get_str_attributes()}")
     
-    # assert ntode == recreated_ntode
+    assert ntode == recreated_ntode
+
 
 def test_ntolackr_json():
     ntolackr = NtoLackRTuple(ruit, relation, ruip, ruir, time_relation, time_1)
