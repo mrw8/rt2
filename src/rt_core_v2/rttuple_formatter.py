@@ -11,17 +11,22 @@ def rttuple_to_json(input_rttuples):
     """Converts either a list or an RtTuple to a json object"""
     return json.dumps(input_rttuples.get_str_attributes(), default=lambda o: o.toJSON() if hasattr(o, 'toJSON') else str(o))
 
-"""Enum mapping formats to functions to convert RtTuples into the format"""
 class RtTupleFormat(enum.Enum):
+    """Enum mapping formats to functions to convert RtTuples into the format"""
     json_format = rttuple_to_json
 
-def format_rttuples(tuples, format: RtTupleFormat=RtTupleFormat.json_format, stream=StringIO):
+def format_rttuple(tuples, format: RtTupleFormat=RtTupleFormat.json_format):
     """Convert the rttuple to the specified format"""
     return format(tuples)
 
-"""Function collection for mapping"""
-class JsonEntryConverter():
+def write_tuples(tuples, stream=StringIO, format: RtTupleFormat=RtTupleFormat.json_format):
+    """Writes all RTtuples to the output stream in the specified format"""
+    formatted_tuples= [formatted_tuple for formatted_tuple in [format_rttuple(tup, format) for tup in tuples] if formatted_tuple]
+    for tup in formatted_tuples:
+        stream.write(tup)
 
+class JsonEntryConverter():
+    """Contains functions for converting correclty formatted json representations of tuple fields to tuple fields"""
     @staticmethod
     def str_to_rui(x):
         return Rui(UUID(x))
@@ -55,7 +60,6 @@ json_entry_converter = {
     TupleComponents.ar: lambda x: RuiStatus(x),
     TupleComponents.unique: lambda x: PorType(x),
     TupleComponents.event: lambda x: TupleEventType(x),
-    #TODO Figure out type of event_reason
     TupleComponents.event_reason: lambda x: RtChangeReason(x),
     TupleComponents.replacements: JsonEntryConverter.lst_to_ruis,
     TupleComponents.p_list: JsonEntryConverter.lst_to_ruis,
@@ -84,9 +88,3 @@ def json_to_rttuple(tuple_json):
     tuple_class = type_to_class[tuple_dict[TupleComponents.type.value]]
     del tuple_dict[TupleComponents.type.value]
     return tuple_class(**tuple_dict)
-
-
-            
-
-
-    return type_to_class[TupleType(tuple_dict[TupleComponents.type])](**tuple_dict)
