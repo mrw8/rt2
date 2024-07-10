@@ -261,7 +261,7 @@ class NtoNTuple(RtTuple):
 	params = {**RtTuple.params, **enum_to_dict({TupleComponents.polarity, TupleComponents.r, 
 											 TupleComponents.p_list, TupleComponents.rT, TupleComponents.tr})}
 
-	def __init__(self, ruit: Rui, polarity: bool, r: str, p: list[Rui], rT, tr: str):
+	def __init__(self, ruit: Rui, polarity: bool, r: str, p: list[Rui], rT, tr: TempRef):
 		super().__init__(ruit)
 		self.polarity = polarity
 		self.relation = r
@@ -296,7 +296,7 @@ class NtoRTuple(RtTuple):
 	params = {**RtTuple.params, **enum_to_dict({TupleComponents.polarity, TupleComponents.inst, TupleComponents.ruin, 
 											   TupleComponents.ruir, TupleComponents.rT, TupleComponents.tr})}
 
-	def __init__(self, ruit: Rui, polarity: bool, inst: str, ruin: Rui, ruir: Rui, rT, tr: str):
+	def __init__(self, ruit: Rui, polarity: bool, inst: str, ruin: Rui, ruir: Rui, rT, tr: TempRef):
 		super().__init__(ruit)
 		self.polarity = polarity
 		self.inst = inst
