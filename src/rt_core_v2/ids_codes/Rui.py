@@ -1,5 +1,4 @@
 from uuid6 import uuid7, UUID
-import json
 
 class Rui:
 	"""Referent Unique Identifier
@@ -25,6 +24,14 @@ class Rui:
 	
 	def toJSON(self):
 		return str(self._uuid)
+	
+	def __eq__(self, other):
+		if not isinstance(other, type(self)):
+			return False
+		return self.__dict__ == other.__dict__
+	
+	def __repr__(self):
+		return self.__str__()
 
 
 class TempRef:
@@ -41,3 +48,9 @@ class TempRef:
 	
 	def toJSON(self):
 		return str(self.ref)
+	
+	def __eq__(self, other):
+		if not isinstance(other, type(self)):
+			return False
+		return self.__dict__ == other.__dict__
+

@@ -49,7 +49,7 @@ class TupleComponents(enum.Enum):
 	C = 'C'
 	polarity = 'polarity'
 	r = 'r'
-	p_list = 'p_list'
+	p_list = 'p'
 	rT = 'rT'
 	tr = 'tr'
 	inst = 'inst'
@@ -82,6 +82,10 @@ class RtTuple(ABC):
 		"""Set the rui identifying this RtTuple"""
 		self._rui = ruit
 
+	def __eq__(self, other):
+		if not isinstance(other, type(self)):
+			return False
+		return self.__dict__ == other.__dict__
 
 	@abstractmethod
 	def get_str_attributes(self):
@@ -229,7 +233,7 @@ class FTuple(RtTuple):
 		attributes[self.params[TupleComponents.ruit]] = str(self.ruit_ref)
 		attributes[self.params[TupleComponents.ruia]] = str(self.ruia)
 		attributes[self.params[TupleComponents.ta]] = str(self.ta)
-		attributes[self.params[TupleComponents.C]] = str(self.C)
+		attributes[self.params[TupleComponents.C]] = self.C
 
 		return attributes
 
@@ -240,6 +244,8 @@ class FTuple(RtTuple):
 	@ruid.setter
 	def ruid(self, ruid):
 		self.ruit = ruid
+
+
 
 class NtoNTuple(RtTuple):
 	"""Tuple type that relates two or more non-repeatable portions of reality to one another
@@ -267,7 +273,7 @@ class NtoNTuple(RtTuple):
 	def get_str_attributes(self):
 		"""Get the attributes of this tuple as a string"""
 		attributes = super().get_str_attributes()
-		attributes[self.params[TupleComponents.polarity]] = str(self.polarity)
+		attributes[self.params[TupleComponents.polarity]] = self.polarity
 		attributes[self.params[TupleComponents.r]] = str(self.relation)
 		attributes[self.params[TupleComponents.p_list]] = self.p_list
 		attributes[self.params[TupleComponents.rT]] = str(self.time_relation)
@@ -303,7 +309,7 @@ class NtoRTuple(RtTuple):
 	def get_str_attributes(self):
 		"""Get the attributes of this tuple as a string"""
 		attributes = super().get_str_attributes()
-		attributes[self.params[TupleComponents.polarity]] = str(self.polarity)
+		attributes[self.params[TupleComponents.polarity]] = self.polarity
 		attributes[self.params[TupleComponents.inst]] = str(self.inst)
 		attributes[self.params[TupleComponents.ruin]] = str(self.ruin)
 		attributes[self.params[TupleComponents.ruir]] = str(self.ruir)
@@ -311,6 +317,7 @@ class NtoRTuple(RtTuple):
 		attributes[self.params[TupleComponents.tr]] = str(self.time)
 		return attributes
 
+#TODO Use concepts
 class NtoCTuple(RtTuple):
 	"""Tuple type that annotates a non-repeatable portion of reality with a "concept" code from a
 		concept-based system
@@ -343,7 +350,7 @@ class NtoCTuple(RtTuple):
 	def get_str_attributes(self):
 		"""Get the attributes of this tuple as a string"""
 		attributes = super().get_str_attributes()
-		attributes[self.params[TupleComponents.polarity]] = str(self.polarity)
+		attributes[self.params[TupleComponents.polarity]] = self.polarity
 		attributes[self.params[TupleComponents.r]] = str(self.reason)
 		attributes[self.params[TupleComponents.ruics]] = str(self.ruics)
 		attributes[self.params[TupleComponents.ruip]] = str(self.ruip)
@@ -386,7 +393,7 @@ class NtoDETuple(RtTuple):
 	def get_str_attributes(self):
 		"""Get the attributes of this tuple as a string"""
 		attributes = super().get_str_attributes()
-		attributes[self.params[TupleComponents.polarity]] = str(self.polarity)
+		attributes[self.params[TupleComponents.polarity]] = self.polarity
 		attributes[self.params[TupleComponents.ruin]] = str(self.ruin)
 		attributes[self.params[TupleComponents.ruins]] = str(self.ruins)
 		attributes[self.params[TupleComponents.data]] = str(self.data)
