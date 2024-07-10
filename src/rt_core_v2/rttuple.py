@@ -4,16 +4,11 @@ from datetime import datetime, timezone
 import logging
 
 from rt_core_v2.ids_codes.Rui import Rui, TempRef
-from rt_core_v2.metadata_accessory import TupleEventType
+from rt_core_v2.metadata_accessory import TupleEventType, ValueEnum, RtChangeReason
 
 """Takes an set of enums and converts them into a dict with mapping entry:value"""
 def enum_to_dict(entries: set):
 	return {entry: entry.value for entry in entries}
-
-"""Enum for when the string representation of an enum instance is the value"""
-class ValueEnum(enum.Enum):
-	def __str__(self):
-		return str(self.value)
 	
 """Enum representing RUI statuses"""
 class RuiStatus(ValueEnum):
@@ -176,7 +171,7 @@ class DTuple(RtTuple):
 											 TupleComponents.event_reason, TupleComponents.t, 
 											 TupleComponents.replacements})}
 
-	def __init__(self, ruid: Rui, ruit: Rui, t: TempRef, event: TupleEventType, event_reason, replacements: list[Rui]=[]):
+	def __init__(self, ruid: Rui, ruit: Rui, t: TempRef, event: TupleEventType, event_reason: RtChangeReason, replacements: list[Rui]=[]):
 		super().__init__(ruid)
 		self.ruit_ref = ruit
 		self.event = event
@@ -187,13 +182,13 @@ class DTuple(RtTuple):
 	def get_str_attributes(self):
 		"""Get the attributes of this tuple as a string"""
 		attributes = {}
-		attributes[self.params[TupleComponents.type]] = str(self.tuple_type)
-		attributes[self.params[TupleComponents.ruid]] = str(self.ruid)
-		attributes[self.params[TupleComponents.ruit]] = str(self.ruit_ref)
-		attributes[self.params[TupleComponents.event]] = str(self.event)
-		attributes[self.params[TupleComponents.event_reason]] = str(self.event_reason)
-		attributes[self.params[TupleComponents.t]] = str(self.td)
-		attributes[self.params[TupleComponents.replacements]] = str(self.replacements)
+		attributes[self.params[TupleComponents.type]] = self.tuple_type
+		attributes[self.params[TupleComponents.ruid]] = self.ruid
+		attributes[self.params[TupleComponents.ruit]] = self.ruit_ref
+		attributes[self.params[TupleComponents.event]] = self.event.value
+		attributes[self.params[TupleComponents.event_reason]] = self.event_reason.value
+		attributes[self.params[TupleComponents.t]] = self.td
+		attributes[self.params[TupleComponents.replacements]] = self.replacements
 		return attributes
 	
 	@property

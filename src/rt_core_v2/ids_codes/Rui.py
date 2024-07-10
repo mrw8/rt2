@@ -40,4 +40,4 @@ class TempRef:
 		return str(self.ref)
 	
 	def toJSON(self):
-		return str(self._uuid)
+		return str(self.ref)

@@ -39,34 +39,34 @@ class JsonEntryConverter():
         return x
 
 json_entry_converter = {
-    TupleComponents.ruit: JsonEntryConverter.RtChangeReason.str_to_rui,
-    TupleComponents.ruip: RtChangeReason.str_to_rui,
-    TupleComponents.ruia: RtChangeReason.str_to_rui,
-    TupleComponents.ruid: RtChangeReason.str_to_rui,
-    TupleComponents.ruin: RtChangeReason.str_to_rui,
-    TupleComponents.ruir: RtChangeReason.str_to_rui,
-    TupleComponents.ruics: RtChangeReason.str_to_rui,
-    TupleComponents.ruins: RtChangeReason.str_to_rui,
-    TupleComponents.ruidt: RtChangeReason.str_to_rui,
-    TupleComponents.t: RtChangeReason.str_to_temp,
-    TupleComponents.td: RtChangeReason.str_to_temp,
-    TupleComponents.ta: RtChangeReason.str_to_temp,
-    TupleComponents.tr: RtChangeReason.str_to_temp,
+    TupleComponents.ruit: JsonEntryConverter.str_to_rui,
+    TupleComponents.ruip: JsonEntryConverter.str_to_rui,
+    TupleComponents.ruia: JsonEntryConverter.str_to_rui,
+    TupleComponents.ruid: JsonEntryConverter.str_to_rui,
+    TupleComponents.ruin: JsonEntryConverter.str_to_rui,
+    TupleComponents.ruir: JsonEntryConverter.str_to_rui,
+    TupleComponents.ruics: JsonEntryConverter.str_to_rui,
+    TupleComponents.ruins: JsonEntryConverter.str_to_rui,
+    TupleComponents.ruidt: JsonEntryConverter.str_to_rui,
+    TupleComponents.t: JsonEntryConverter.str_to_temp,
+    TupleComponents.td: JsonEntryConverter.str_to_temp,
+    TupleComponents.ta: JsonEntryConverter.str_to_temp,
+    TupleComponents.tr: JsonEntryConverter.str_to_temp,
     TupleComponents.ar: lambda x: RuiStatus(x),
     TupleComponents.unique: lambda x: PorType(x),
     TupleComponents.event: lambda x: TupleEventType(x),
     #TODO Figure out type of event_reason
     TupleComponents.event_reason: lambda x: RtChangeReason(x),
-    TupleComponents.replacements: RtChangeReason.lst_to_ruis,
-    TupleComponents.p_list: RtChangeReason.lst_to_ruis,
+    TupleComponents.replacements: JsonEntryConverter.lst_to_ruis,
+    TupleComponents.p_list: JsonEntryConverter.lst_to_ruis,
     TupleComponents.C: lambda x: float(x),
     TupleComponents.polarity: lambda x: bool(x),
-    TupleComponents.r: RtChangeReason.str_to_str,
+    TupleComponents.r: JsonEntryConverter.str_to_str,
     #TODO Figure out type of rT, inst, code, data
-    TupleComponents.rT: RtChangeReason.str_to_str,
-    TupleComponents.inst: RtChangeReason.str_to_str,
-    TupleComponents.code: RtChangeReason.str_to_str,
-    TupleComponents.data: RtChangeReason.str_to_str,
+    TupleComponents.rT: JsonEntryConverter.str_to_str,
+    TupleComponents.inst: JsonEntryConverter.str_to_str,
+    TupleComponents.code: JsonEntryConverter.str_to_str,
+    TupleComponents.data: JsonEntryConverter.str_to_str,
     TupleComponents.type: lambda x: TupleType(x)
 }
 
@@ -76,12 +76,14 @@ def json_to_rttuple(tuple_json):
     for key, value in tuple_dict.items():
         try:
             entry = TupleComponents(key)
-            entry[key] = json_entry_converter[entry](value)
+            tuple_dict[key] = json_entry_converter[entry](value)
         except ValueError: 
             #TODO Log error
             tuple_dict = None
             return None
-    return type_to_class[tuple_dict[TupleComponents.type]](**tuple_dict)
+    tuple_class = type_to_class[tuple_dict[TupleComponents.type.value]]
+    del tuple_dict[TupleComponents.type.value]
+    return tuple_class(**tuple_dict)
 
 
             

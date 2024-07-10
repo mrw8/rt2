@@ -2,7 +2,7 @@ import json
 
 from rt_core_v2.ids_codes.Rui import Rui, TempRef
 from rt_core_v2.rttuple import ATuple, DTuple, FTuple, NtoNTuple, NtoRTuple, NtoCTuple, NtoDETuple, NtoLackRTuple
-from rt_core_v2.rttuple_formatter import format_rttuples
+from rt_core_v2.rttuple_formatter import format_rttuples, json_to_rttuple
 from rt_core_v2.metadata_accessory import TupleEventType, RtChangeReason
 
 def ordered(obj):
@@ -49,10 +49,12 @@ def test_atuple_json():
 def test_dtuple_json():
     d = DTuple(ruid, ruit, time_1, TupleEventType.INSERT, RtChangeReason.BELIEF, replacements)
     formatted_d = format_rttuples(d)
-    expected_d = f"{{\"type\": \"{d.tuple_type}\", \"ruid\": \"{ruid}\", \"ruit\": \"{ruit}\", \"t\": \"{time_1}\", \"event\": \"{event}\", \"event_reason\": \"{reason}\", \"replacements\": \"{replacements}\"}}"
+    expected_d = f"{{\"type\": \"{d.tuple_type}\", \"ruid\": \"{ruid}\", \"ruit\": \"{ruit}\", \"t\": \"{time_1}\", \"event\": {event}, \"event_reason\": {reason}, \"replacements\": {replacements}}}"
     print("Dtuple Expected:  \n" + expected_d)
     print("Dtuple Processed:  \n" + formatted_d)
     assert compare(formatted_d, expected_d)
+
+    assert d == json_to_rttuple(formatted_d)
 
 def test_ftuple_json():
     C = 0.753
