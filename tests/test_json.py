@@ -19,7 +19,7 @@ def test_json():
 
     atuple_1 = Atuple(ruip, ruia, ruit)
     formated_1 = format_rttuples(atuple_1)
-    print(formated_1)
+    print("Processed:  \n" + formated_1)
     expected_1 = f"{{\"ruip\": \"{ruip}\", \"ruia\": \"{ruia}\", \"ruit\": \"{ruit}\", \"type\": \"{atuple_1.tuple_type}\", \"unique\": \"{atuple_1.unique}\", \"ar\": \"{atuple_1.ar}\", \"t\": \"{atuple_1.t}\"}}"
-    print(expected_1)
+    print("Expected:  \n" + expected_1)
     assert(ordered(json.loads(formated_1)) == ordered(json.loads(expected_1)))

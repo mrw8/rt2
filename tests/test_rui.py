@@ -1,5 +1,5 @@
-from ids_codes.Rui import Rui, TempRef
-from rttuple import RuiStatus
+from rt_core_v2.ids_codes.Rui import Rui, TempRef, TempRefType
+from rt_core_v2.rttuple import RuiStatus
 from uuid6 import uuid7
 from datetime import datetime, timezone
 
@@ -11,23 +11,33 @@ def print_info(rui):
 
 def print_tr(tr):
 	print(tr)
-	print("uuid field=", tr.uuid)
-	if (tr.cal != None):
-		print("cal field=", tr.cal.isoformat('T'))
-	else:
-		print("cal field=", tr.cal)
+	print("ref field=", tr.ref)
 
 
 def test_ruistatus():
-	pass
+	default_rui_1 = Rui()
+	default_rui_2 = Rui()
 
-#TODO Add actual testing assertions 
+	uuid_1 = uuid7()
+	uuid_2 = uuid7()
+	set_rui_1 = Rui(uuid_1)
+	set_rui_2 = Rui(uuid_2)
+	clone_rui_1 = Rui(uuid_1)
+
+	assert(default_rui_1.uuid != default_rui_2.uuid)
+	assert(set_rui_1.uuid != set_rui_2.uuid)
+	assert(set_rui_1.uuid == clone_rui_1.uuid)
+
+
+
 def test_tempref():
-	j = TempRef(uuid7())
-	k = TempRef(datetime.now(timezone.utc))
-	m = TempRef(datetime.now())
-	n = TempRef(None,'U')
-	p = TempRef(None,'C')
+	j = TempRef(uuid7(), TempRefType.id)
+	k = TempRef(datetime.now(timezone.utc), TempRefType.calendar)
+	m = TempRef(datetime.now(), TempRefType.calendar)
+	n = TempRef(None,TempRefType.id)
+	p = TempRef(None,TempRefType.calendar)
+
+	assert(j.ref != n.ref and k.ref != m.ref)
 
 	print("\n### Temporal reference initialized with UUID ###")
 	print_tr(j)
