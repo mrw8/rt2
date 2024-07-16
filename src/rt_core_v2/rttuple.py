@@ -1,6 +1,5 @@
 import enum
 from abc import ABC, abstractmethod
-from datetime import datetime, timezone
 import logging
 
 from rt_core_v2.ids_codes.Rui import Rui, TempRef
@@ -88,7 +87,7 @@ class RtTuple(ABC):
 		return self.__dict__ == other.__dict__
 
 	@abstractmethod
-	def get_str_attributes(self):
+	def get_str_attributes(self) -> dict:
 		"""Get the attributes of this tuple as a string"""
 		return {self.params[TupleComponents.ruit]:str(self._rui), self.params[TupleComponents.type]:str(self.tuple_type)}
 
@@ -376,7 +375,7 @@ class NtoDETuple(RtTuple):
 	data -- The data in the relationship
 	ruidt -- An Rui containing the data type of data
 	"""
-	#NtoDE#< '+/-', r, ruin, ruins, data, ruidt >
+	#NtoDE#< '+/-', r, ruin, ruins, data, ruidt>
 
 	tuple_type = TupleType.NtoDE
 	params = {**RtTuple.params, **enum_to_dict({TupleComponents.polarity, TupleComponents.ruin, 

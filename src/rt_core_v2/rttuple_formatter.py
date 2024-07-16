@@ -3,7 +3,7 @@ import enum
 from io import StringIO
 from uuid import UUID
 
-from rt_core_v2.rttuple import TupleComponents, TupleType, type_to_class, RuiStatus, PorType
+from rt_core_v2.rttuple import RtTuple, TupleComponents, TupleType, type_to_class, RuiStatus, PorType
 from rt_core_v2.ids_codes.Rui import Rui, TempRef
 from rt_core_v2.metadata_accessory import TupleEventType, RtChangeReason
 
@@ -15,11 +15,11 @@ class RtTupleFormat(enum.Enum):
     """Enum mapping formats to functions to convert RtTuples into the format"""
     json_format = rttuple_to_json
 
-def format_rttuple(tuples, format: RtTupleFormat=RtTupleFormat.json_format):
+def format_rttuple(tuple: RtTuple, format: RtTupleFormat=RtTupleFormat.json_format):
     """Convert the rttuple to the specified format"""
-    return format(tuples)
+    return format(tuple)
 
-def write_tuples(tuples, stream=StringIO, format: RtTupleFormat=RtTupleFormat.json_format):
+def write_tuples(tuples: list[RtTuple], stream=StringIO, format: RtTupleFormat=RtTupleFormat.json_format):
     """Writes all RTtuples to the output stream in the specified format"""
     formatted_tuples= [formatted_tuple for formatted_tuple in [format_rttuple(tup, format) for tup in tuples] if formatted_tuple]
     for tup in formatted_tuples:
@@ -28,15 +28,15 @@ def write_tuples(tuples, stream=StringIO, format: RtTupleFormat=RtTupleFormat.js
 class JsonEntryConverter():
     """Contains functions for converting correclty formatted json representations of tuple fields to tuple fields"""
     @staticmethod
-    def str_to_rui(x):
+    def str_to_rui(x) -> Rui:
         return Rui(UUID(x))
     
     @staticmethod
-    def str_to_temp(x):
+    def str_to_temp(x) -> TempRef:
         return TempRef(Rui(UUID(x)))
     
     @staticmethod
-    def lst_to_ruis(x):
+    def lst_to_ruis(x) -> list[Rui]:
         return [Rui(UUID(entry)) for entry in x]
     
     @staticmethod
@@ -74,7 +74,7 @@ json_entry_converter = {
     TupleComponents.type: lambda x: TupleType(x)
 }
 
-def json_to_rttuple(tuple_json):
+def json_to_rttuple(tuple_json) -> RtTuple:
     """Map a json to an rttuple"""
     tuple_dict = json.loads(tuple_json)
     for key, value in tuple_dict.items():
@@ -83,7 +83,7 @@ def json_to_rttuple(tuple_json):
             tuple_dict[key] = json_entry_converter[entry](value)
         except ValueError: 
             #TODO Log error
-            tuple_dict = None
+            print("Invalid rttuple-json processed. The processing of this tuple has been skipped.")
             return None
     tuple_class = type_to_class[tuple_dict[TupleComponents.type.value]]
     del tuple_dict[TupleComponents.type.value]
