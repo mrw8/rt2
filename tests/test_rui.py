@@ -1,5 +1,4 @@
-from rt_core_v2.ids_codes.Rui import Rui, TempRef, TempRefType
-from rt_core_v2.rttuple import RuiStatus
+from rt_core_v2.ids_codes.Rui import Rui, TempRef
 from uuid6 import uuid7
 from datetime import datetime, timezone
 
@@ -31,11 +30,11 @@ def test_ruistatus():
 
 
 def test_tempref():
-	j = TempRef(uuid7(), TempRefType.id)
-	k = TempRef(datetime.now(timezone.utc), TempRefType.calendar)
-	m = TempRef(datetime.now(), TempRefType.calendar)
-	n = TempRef(None,TempRefType.id)
-	p = TempRef(None,TempRefType.calendar)
+	j = TempRef(uuid7())
+	k = TempRef(datetime.now(timezone.utc))
+	m = TempRef(datetime.now())
+	n = TempRef(None)
+	p = TempRef(None)
 
 	assert(j.ref != n.ref and k.ref != m.ref)
 
