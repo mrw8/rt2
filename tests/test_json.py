@@ -21,15 +21,14 @@ ruics = Rui()
 ruir = Rui()
 ruin = Rui()
 ruidt = Rui()
-ruins = Rui()
 
 time_1 = TempRef()
 event = TupleEventType.INSERT
 reason = RtChangeReason.BELIEF
-replacements = [ruins, ruidt, ruin]
+replacements = [ruin, ruidt, ruin]
 polarity = False
 relation = "part of"
-p_list = [ruid, ruins]
+p_list = [ruid, ruin]
 time_relation = "at"
 code = "code insert"
 inst = "instance of"
@@ -143,9 +142,9 @@ def test_ntoc_json():
     assert ntoc == recreated_ntoc
 
 def test_ntode_json():
-    ntode = NtoDETuple(ruit, polarity, ruin, ruins, data, ruidt)
+    ntode = NtoDETuple(ruit, polarity, ruin, data, ruidt)
     formatted_ntode = format_rttuple(ntode)
-    expected_ntode = f"{{\"ruit\": \"{ruit}\", \"type\": \"{ntode.tuple_type}\", \"polarity\": {str(polarity).lower()}, \"ruin\": \"{ruin}\", \"ruins\": \"{ruins}\", \"ruidt\": \"{ruidt}\", \"data\": \"{data}\"}}"
+    expected_ntode = f"{{\"ruit\": \"{ruit}\", \"type\": \"{ntode.tuple_type}\", \"polarity\": {str(polarity).lower()}, \"ruin\": \"{ruin}\", \"ruidt\": \"{ruidt}\", \"data\": \"{data}\"}}"
 
     print("Ntoctuple Expected:  \n" + expected_ntode)
     print("Ntoctuple Processed:  \n" + formatted_ntode)

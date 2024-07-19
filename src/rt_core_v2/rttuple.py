@@ -56,7 +56,6 @@ class TupleComponents(enum.Enum):
 	ruir = 'ruir'
 	ruics = 'ruics'
 	code = 'code'
-	ruins = 'ruins'
 	data = 'data'
 	ruidt = 'ruidt'
 
@@ -370,22 +369,20 @@ class NtoDETuple(RtTuple):
 	
 	Attributes:
 	polarity -- Boolean describing whether the relation is as stated or negated
-	ruin -- 
-	ruins -- 
+	ruin -- The Rui of the tuple that the data is atrributed to
 	data -- The data in the relationship
 	ruidt -- An Rui containing the data type of data
 	"""
-	#NtoDE#< '+/-', r, ruin, ruins, data, ruidt>
+	#NtoDE#< '+/-', r, ruin, data, ruidt>
 
 	tuple_type = TupleType.NtoDE
 	params = {**RtTuple.params, **enum_to_dict({TupleComponents.polarity, TupleComponents.ruin, 
-											   TupleComponents.ruins, TupleComponents.data, TupleComponents.ruidt})}
+											   TupleComponents.data, TupleComponents.ruidt})}
 
-	def __init__(self, ruit: Rui, polarity: bool, ruin: Rui, ruins: Rui, data, ruidt: Rui):
+	def __init__(self, ruit: Rui, polarity: bool, ruin: Rui, data, ruidt: Rui):
 		super().__init__(ruit)
 		self.polarity = polarity
 		self.ruin = ruin
-		self.ruins = ruins
 		self.data = data
 		self.ruidt = ruidt
 
@@ -394,7 +391,6 @@ class NtoDETuple(RtTuple):
 		attributes = super().get_str_attributes()
 		attributes[self.params[TupleComponents.polarity]] = self.polarity
 		attributes[self.params[TupleComponents.ruin]] = str(self.ruin)
-		attributes[self.params[TupleComponents.ruins]] = str(self.ruins)
 		attributes[self.params[TupleComponents.data]] = str(self.data)
 		attributes[self.params[TupleComponents.ruidt]] = str(self.ruidt)
 		return attributes

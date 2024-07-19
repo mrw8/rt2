@@ -51,7 +51,6 @@ json_entry_converter = {
     TupleComponents.ruin: JsonEntryConverter.str_to_rui,
     TupleComponents.ruir: JsonEntryConverter.str_to_rui,
     TupleComponents.ruics: JsonEntryConverter.str_to_rui,
-    TupleComponents.ruins: JsonEntryConverter.str_to_rui,
     TupleComponents.ruidt: JsonEntryConverter.str_to_rui,
     TupleComponents.t: JsonEntryConverter.str_to_temp,
     TupleComponents.td: JsonEntryConverter.str_to_temp,
@@ -88,3 +87,4 @@ def json_to_rttuple(tuple_json) -> RtTuple:
     tuple_class = type_to_class[tuple_dict[TupleComponents.type.value]]
     del tuple_dict[TupleComponents.type.value]
     return tuple_class(**tuple_dict)
+
