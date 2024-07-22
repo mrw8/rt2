@@ -60,8 +60,8 @@ def test_atuple_json():
     assert compare(formatted_a, expected_a)
 
     recreated_a = json_to_rttuple(formatted_a)
-    print(f"Original ATuple:  {a.get_str_attributes()}")
-    print(f"Recreated ATuple:  {recreated_a.get_str_attributes()}")
+    print(f"Original ATuple:  {a.get_attributes()}")
+    print(f"Recreated ATuple:  {recreated_a.get_attributes()}")
     assert a == recreated_a
 
 def test_dtuple_json():
@@ -74,8 +74,8 @@ def test_dtuple_json():
     assert compare(formatted_d, expected_d)
 
     recreated_d = json_to_rttuple(formatted_d)
-    print(f"Original DTuple:  {d.get_str_attributes()}")
-    print(f"Recreated DTuple:  {recreated_d.get_str_attributes()}")
+    print(f"Original DTuple:  {d.get_attributes()}")
+    print(f"Recreated DTuple:  {recreated_d.get_attributes()}")
     assert d == recreated_d
 
 def test_ftuple_json():
@@ -89,12 +89,13 @@ def test_ftuple_json():
     assert compare(formatted_f, expected_f)
 
     recreated_f = json_to_rttuple(formatted_f)
-    print(f"Original FTuple:  {f.get_str_attributes()}")
-    print(f"Recreated FTuple:  {recreated_f.get_str_attributes()}")
+    print(f"Original FTuple:  {f.get_attributes()}")
+    print(f"Recreated FTuple:  {recreated_f.get_attributes()}")
     assert f == recreated_f
 
 def test_nton_json():
     nton = NtoNTuple(ruit, polarity, relation, p_list, time_relation, time_1)
+    print(nton.get_attributes())
     formatted_nton = format_rttuple(nton)
     expected_nton = f"{{\"type\": \"{nton.tuple_type}\", \"ruit\": \"{ruit}\", \"polarity\": {str(polarity).lower()}, \"r\": \"{relation}\", \"p\": {jsonify_list(p_list)}, \"tr\": \"{time_1}\", \"rT\": \"{time_relation}\"}}"
 
@@ -104,8 +105,8 @@ def test_nton_json():
     assert compare(formatted_nton, expected_nton)
 
     recreated_nton = json_to_rttuple(formatted_nton)
-    print(f"Original NtonTuple:  {nton.get_str_attributes()}")
-    print(f"Recreated NtonTuple:  {recreated_nton.get_str_attributes()}")
+    print(f"Original NtonTuple:  {nton.get_attributes()}")
+    print(f"Recreated NtonTuple:  {recreated_nton.get_attributes()}")
     
     assert nton == recreated_nton
 
@@ -120,8 +121,8 @@ def test_ntor_json():
     assert compare(formatted_ntor, expected_ntor)
 
     recreated_ntor = json_to_rttuple(formatted_ntor)
-    print(f"Original NtorTuple:  {ntor.get_str_attributes()}")
-    print(f"Recreated NtorTuple:  {recreated_ntor.get_str_attributes()}")
+    print(f"Original NtorTuple:  {ntor.get_attributes()}")
+    print(f"Recreated NtorTuple:  {recreated_ntor.get_attributes()}")
     
     assert ntor == recreated_ntor
 
@@ -136,8 +137,8 @@ def test_ntoc_json():
     assert compare(formatted_ntoc, expected_ntoc)
 
     recreated_ntoc = json_to_rttuple(formatted_ntoc)
-    print(f"Original NtocTuple:  {ntoc.get_str_attributes()}")
-    print(f"Recreated NtocTuple:  {recreated_ntoc.get_str_attributes()}")
+    print(f"Original NtocTuple:  {ntoc.get_attributes()}")
+    print(f"Recreated NtocTuple:  {recreated_ntoc.get_attributes()}")
     
     assert ntoc == recreated_ntoc
 
@@ -152,8 +153,8 @@ def test_ntode_json():
     assert compare(formatted_ntode, expected_ntode)
 
     recreated_ntode = json_to_rttuple(formatted_ntode)
-    print(f"Original NtodeTuple:  {ntode.get_str_attributes()}")
-    print(f"Recreated NtodeTuple:  {recreated_ntode.get_str_attributes()}")
+    print(f"Original NtodeTuple:  {ntode.get_attributes()}")
+    print(f"Recreated NtodeTuple:  {recreated_ntode.get_attributes()}")
     
     assert ntode == recreated_ntode
 
@@ -169,7 +170,7 @@ def test_ntolackr_json():
     assert compare(formatted_ntolackr, expected_ntolackr)
 
     recreated_ntolackr = json_to_rttuple(formatted_ntolackr)
-    print(f"Original NtolackrTuple:  {ntolackr.get_str_attributes()}")
-    print(f"Recreated NtolackrTuple:  {recreated_ntolackr.get_str_attributes()}")
+    print(f"Original NtolackrTuple:  {ntolackr.get_attributes()}")
+    print(f"Recreated NtolackrTuple:  {recreated_ntolackr.get_attributes()}")
 
     assert ntolackr == recreated_ntolackr

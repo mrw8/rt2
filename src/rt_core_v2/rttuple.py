@@ -86,9 +86,9 @@ class RtTuple(ABC):
 		return self.__dict__ == other.__dict__
 
 	@abstractmethod
-	def get_str_attributes(self) -> dict:
-		"""Get the attributes of this tuple as a string"""
-		return {self.params[TupleComponents.ruit]:str(self._rui), self.params[TupleComponents.type]:str(self.tuple_type)}
+	def get_attributes(self) -> dict:
+		"""Get the attributes of this tuplestring"""
+		return {self.params[TupleComponents.ruit]:str(self._rui), self.params[TupleComponents.type]:self.tuple_type.value}
 
 class ATuple(RtTuple):
 	"""Referent Tracking assignment tuple that registers assignment of an RUI to a PoR
@@ -136,9 +136,9 @@ class ATuple(RtTuple):
 		"""Returns whether this tuple is a reservation or not"""
 		return self.ar is RuiStatus.reserved
 
-	def get_str_attributes(self):
-		"""Get the attributes of this tuple as a string"""
-		attributes = super().get_str_attributes()
+	def get_attributes(self):
+		"""Get the attributes of this tuplestring"""
+		attributes = super().get_attributes()
 		attributes[self.params[TupleComponents.ruia]] = str(self.ruia)
 		attributes[self.params[TupleComponents.ruip]] = str(self.ruip)
 		attributes[self.params[TupleComponents.ar]] = str(self.ar)
@@ -181,15 +181,15 @@ class DTuple(RtTuple):
 		self.td = t if t else TempRef()
 		self.replacements = replacements.copy()
 
-	def get_str_attributes(self):
-		"""Get the attributes of this tuple as a string"""
+	def get_attributes(self):
+		"""Get the attributes of this tuplestring"""
 		attributes = {}
-		attributes[self.params[TupleComponents.type]] = self.tuple_type
-		attributes[self.params[TupleComponents.ruid]] = self.ruid
-		attributes[self.params[TupleComponents.ruit]] = self.ruit_ref
+		attributes[self.params[TupleComponents.type]] = self.tuple_type.value
+		attributes[self.params[TupleComponents.ruid]] = str(self.ruid)
+		attributes[self.params[TupleComponents.ruit]] = str(self.ruit_ref)
 		attributes[self.params[TupleComponents.event]] = self.event.value
 		attributes[self.params[TupleComponents.event_reason]] = self.event_reason.value
-		attributes[self.params[TupleComponents.t]] = self.td
+		attributes[self.params[TupleComponents.t]] = str(self.td)
 		attributes[self.params[TupleComponents.replacements]] = self.replacements
 		return attributes
 	
@@ -223,8 +223,8 @@ class FTuple(RtTuple):
 		self.ta = ta
 		self.C = C
 
-	def get_str_attributes(self):
-		"""Get the attributes of this tuple as a string"""
+	def get_attributes(self):
+		"""Get the attributes of this tuple"""
 		attributes = {}
 		attributes[self.params[TupleComponents.type]] = str(self.tuple_type)
 		attributes[self.params[TupleComponents.ruid]] = str(self.ruid)
@@ -268,9 +268,9 @@ class NtoNTuple(RtTuple):
 		self.time_relation = rT
 		self.time = tr
 	
-	def get_str_attributes(self):
-		"""Get the attributes of this tuple as a string"""
-		attributes = super().get_str_attributes()
+	def get_attributes(self):
+		"""Get the attributes of this tuplestring"""
+		attributes = super().get_attributes()
 		attributes[self.params[TupleComponents.polarity]] = self.polarity
 		attributes[self.params[TupleComponents.r]] = str(self.relation)
 		attributes[self.params[TupleComponents.p_list]] = self.p_list
@@ -304,9 +304,9 @@ class NtoRTuple(RtTuple):
 		self.time_relation = rT
 		self.time = tr 
 
-	def get_str_attributes(self):
-		"""Get the attributes of this tuple as a string"""
-		attributes = super().get_str_attributes()
+	def get_attributes(self):
+		"""Get the attributes of this tuplestring"""
+		attributes = super().get_attributes()
 		attributes[self.params[TupleComponents.polarity]] = self.polarity
 		attributes[self.params[TupleComponents.inst]] = str(self.inst)
 		attributes[self.params[TupleComponents.ruin]] = str(self.ruin)
@@ -345,9 +345,9 @@ class NtoCTuple(RtTuple):
 		self.time_relation = rT
 		self.time = tr
 
-	def get_str_attributes(self):
-		"""Get the attributes of this tuple as a string"""
-		attributes = super().get_str_attributes()
+	def get_attributes(self):
+		"""Get the attributes of this tuplestring"""
+		attributes = super().get_attributes()
 		attributes[self.params[TupleComponents.polarity]] = self.polarity
 		attributes[self.params[TupleComponents.r]] = str(self.reason)
 		attributes[self.params[TupleComponents.ruics]] = str(self.ruics)
@@ -386,9 +386,9 @@ class NtoDETuple(RtTuple):
 		self.data = data
 		self.ruidt = ruidt
 
-	def get_str_attributes(self):
-		"""Get the attributes of this tuple as a string"""
-		attributes = super().get_str_attributes()
+	def get_attributes(self):
+		"""Get the attributes of this tuplestring"""
+		attributes = super().get_attributes()
 		attributes[self.params[TupleComponents.polarity]] = self.polarity
 		attributes[self.params[TupleComponents.ruin]] = str(self.ruin)
 		attributes[self.params[TupleComponents.data]] = str(self.data)
@@ -396,7 +396,7 @@ class NtoDETuple(RtTuple):
 		return attributes
 
 class NtoLackRTuple(RtTuple):
-	"""Tuple type that relates a non-repeatable portion of reality to a repeatable portion of reality in a negative relationship
+	"""Tuple type that asserts that a repeatable portion of reality in a does not have a specified relationship with a non-repeateble portion of reality
 	
 	Attribtues:
 	relation -- A relationship between a non-repeatable portion of reality and a repeatable portion of reality
@@ -420,9 +420,9 @@ class NtoLackRTuple(RtTuple):
 		self.time_relation = rT
 		self.time = tr 
 
-	def get_str_attributes(self):
-		"""Get the attributes of this tuple as a string"""
-		attributes = super().get_str_attributes()
+	def get_attributes(self):
+		"""Get the attributes of this tuplestring"""
+		attributes = super().get_attributes()
 		attributes[self.params[TupleComponents.r]] = str(self.relation)
 		attributes[self.params[TupleComponents.ruip]] = str(self.ruip)
 		attributes[self.params[TupleComponents.ruir]] = str(self.ruir)

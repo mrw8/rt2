@@ -7,10 +7,30 @@ from rt_core_v2.rttuple import RtTuple, TupleComponents, TupleType, type_to_clas
 from rt_core_v2.ids_codes.Rui import Rui, TempRef
 from rt_core_v2.metadata_accessory import TupleEventType, RtChangeReason
 
-def rttuple_to_json(input_rttuples):
-    """Converts either a list or an RtTuple to a json object"""
-    return json.dumps(input_rttuples.get_str_attributes(), default=lambda o: o.toJSON() if hasattr(o, 'toJSON') else str(o))
 
+
+class RtTupleJSONEncoder(json.JSONEncoder):
+
+    encoded_classes = {Rui, TempRef}
+
+    def __init__(self, *args, **kwargs):
+        json.JSONEncoder.__init__(self, *args, **kwargs)
+    
+    def default(self, obj):
+        """If the object is an instance of an entry in encoded_classes then convert it to a string for the JSON"""
+        if any(isinstance(obj, cls) for cls in self.encoded_classes):
+            print(obj)
+            return str(obj)
+        else:
+            super().default(obj)
+
+
+def rttuple_to_json(input_rttuple: RtTuple):
+    """Convert an RtTuple to a json object"""
+    # return json.dumps(input_rttuple.get_attributes(), default=lambda o: o.toJSON() if hasattr(o, 'toJSON') else str(o))
+    return json.dumps(input_rttuple.get_attributes(), cls=RtTupleJSONEncoder)
+
+#TODO Swap this from an enum to a dictionary
 class RtTupleFormat(enum.Enum):
     """Enum mapping formats to functions to convert RtTuples into the format"""
     json_format = rttuple_to_json
