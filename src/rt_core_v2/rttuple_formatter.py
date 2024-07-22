@@ -11,7 +11,7 @@ from rt_core_v2.metadata_accessory import TupleEventType, RtChangeReason
 
 class RtTupleJSONEncoder(json.JSONEncoder):
 
-    encoded_classes = {Rui, TempRef}
+    encoded_classes = {Rui, TempRef, PorType, RuiStatus, TupleType}
 
     def __init__(self, *args, **kwargs):
         json.JSONEncoder.__init__(self, *args, **kwargs)
