@@ -118,15 +118,7 @@ class ATuple(RtTuple):
 		#	itself, and thus should be equal
 		self.ruia = ruia if ruia else Rui(self.ruip.uuid)
 		self.unique = unique 
-		self._t = t if t else TempRef()
-	@property
-	def t(self):
-		"""Get t"""
-		return self._t
-	@t.setter
-	def t(self, t):
-		"""Set t"""
-		self._t = t
+		self.t = t if t else TempRef()
 
 	def is_assigned(self):
 		"""Returns whether this tuple is an assignment or not"""
@@ -143,18 +135,8 @@ class ATuple(RtTuple):
 		attributes[self.params[TupleComponents.ruip]] = self.ruip
 		attributes[self.params[TupleComponents.ar]] = self.ar
 		attributes[self.params[TupleComponents.unique]] = self.unique
-		attributes[self.params[TupleComponents.t]] = self._t
+		attributes[self.params[TupleComponents.t]] = self.t
 		return attributes
-
-	def create_assigned(self):
-		"""Create an assignment A-tuple if this tuple is reserved"""
-		if self.status is RuiStatus.assigned:
-			logging.warning("status of Rui instance is already assigned. No change.")
-			return self
-		else:
-			#TODO Figure out the process for creating d-tuples
-			# return ATuple(self.ruip, self.ruia, self.ruit, self.unique, RuiStatus())
-			pass
 
 class DTuple(RtTuple):
 	""" Referent Tracking metadata tuple that stores information regarding the instantation of other tuple types
@@ -173,13 +155,13 @@ class DTuple(RtTuple):
 											 TupleComponents.event_reason, TupleComponents.t, 
 											 TupleComponents.replacements})}
 
-	def __init__(self, ruid: Rui, ruit: Rui, t: TempRef, event: TupleEventType, event_reason: RtChangeReason, replacements: list[Rui]=[]):
+	def __init__(self, ruit: Rui, t: TempRef, event: TupleEventType, event_reason: RtChangeReason, ruid: Rui=None, replacements: list[Rui]=None):
 		super().__init__(ruid)
 		self.ruit_ref = ruit
 		self.event = event
 		self.event_reason = event_reason
 		self.td = t if t else TempRef()
-		self.replacements = replacements.copy()
+		self.replacements = replacements.copy() if replacements else []
 
 	def get_attributes(self):
 		"""Get the attributes of this tuplestring"""
@@ -218,9 +200,9 @@ class FTuple(RtTuple):
 	
 	def __init__(self, ruid: Rui=None, ruit: Rui=None, ta: TempRef=None, ruia: Rui=None, C: float=1.0):
 		super().__init__(ruid)
-		self.ruit_ref = ruit
-		self.ruia = ruia
-		self.ta = ta
+		self.ruit_ref = ruit if ruit else Rui()
+		self.ruia = ruia if ruia else Rui()
+		self.ta = ta 
 		self.C = C
 	def get_attributes(self):
 		"""Get the attributes of this tuple"""
@@ -259,13 +241,13 @@ class NtoNTuple(RtTuple):
 	params = {**RtTuple.params, **enum_to_dict({TupleComponents.polarity, TupleComponents.r, 
 											 TupleComponents.p_list, TupleComponents.rT, TupleComponents.tr})}
 
-	def __init__(self, ruit: Rui, polarity: bool, r: str, p: list[Rui], rT, tr: TempRef):
+	def __init__(self, polarity: bool=True, r: str="", p: list[Rui]=None, rT="", tr: TempRef=None, ruit: Rui=None):
 		super().__init__(ruit)
 		self.polarity = polarity
 		self.relation = r
-		self.p_list = p.copy()
+		self.p_list = p.copy() if p else []
 		self.time_relation = rT
-		self.time = tr
+		self.time = tr 
 	
 	def get_attributes(self):
 		"""Get the attributes of this tuplestring"""
@@ -294,12 +276,12 @@ class NtoRTuple(RtTuple):
 	params = {**RtTuple.params, **enum_to_dict({TupleComponents.polarity, TupleComponents.inst, TupleComponents.ruin, 
 											   TupleComponents.ruir, TupleComponents.rT, TupleComponents.tr})}
 
-	def __init__(self, ruit: Rui, polarity: bool, inst: str, ruin: Rui, ruir: Rui, rT, tr: TempRef):
+	def __init__(self, ruit: Rui=None, polarity: bool=True, inst: str="", ruin: Rui=None, ruir: Rui=None, rT="", tr: TempRef=None):
 		super().__init__(ruit)
 		self.polarity = polarity
 		self.inst = inst
-		self.ruin = ruin
-		self.ruir = ruir
+		self.ruin = ruin if ruin else Rui()
+		self.ruir = ruir if ruir else Rui()
 		self.time_relation = rT
 		self.time = tr 
 
@@ -334,15 +316,16 @@ class NtoCTuple(RtTuple):
 	params = {**RtTuple.params, **enum_to_dict({TupleComponents.polarity, TupleComponents.r, TupleComponents.ruics, 
 											   TupleComponents.ruip, TupleComponents.code, TupleComponents.rT, TupleComponents.tr})}
 	#TODO Change code to be bytecode
-	def __init__(self, ruit: Rui, polarity: bool, r: str, ruics: Rui, ruip: Rui, code: str, rT, tr: TempRef):
+	#TODO Make creating a tempref create an underlying time instance
+	def __init__(self, ruit: Rui=None, polarity: bool=True, r: str="", ruics: Rui=None, ruip: Rui=None, code: str="", rT="", tr: TempRef=None):
 		super().__init__(ruit)
 		self.polarity = polarity
 		self.reason = r
-		self.ruics = ruics
-		self.ruip = ruip
-		self.code = code
+		self.ruics = ruics if ruics else Rui()
+		self.ruip = ruip if ruip else Rui()
+		self.code = code 
 		self.time_relation = rT
-		self.time = tr
+		self.time = tr 
 
 	def get_attributes(self):
 		"""Get the attributes of this tuplestring"""
@@ -378,12 +361,12 @@ class NtoDETuple(RtTuple):
 	params = {**RtTuple.params, **enum_to_dict({TupleComponents.polarity, TupleComponents.ruin, 
 											   TupleComponents.data, TupleComponents.ruidt})}
 
-	def __init__(self, ruit: Rui, polarity: bool, ruin: Rui, data, ruidt: Rui):
+	def __init__(self, ruit: Rui=None, polarity: bool=True, ruin: Rui=None, data="", ruidt: Rui=None):
 		super().__init__(ruit)
 		self.polarity = polarity
-		self.ruin = ruin
+		self.ruin = ruin if ruin else Rui()
 		self.data = data
-		self.ruidt = ruidt
+		self.ruidt = ruidt if ruidt else Rui()
 
 	def get_attributes(self):
 		"""Get the attributes of this tuplestring"""
@@ -411,12 +394,12 @@ class NtoLackRTuple(RtTuple):
 													  TupleComponents.ruir, TupleComponents.rT, TupleComponents.tr})}
 	
 
-	def __init__(self, ruit: Rui, r: str, ruip: Rui, ruir: Rui, rT, tr: TempRef):
+	def __init__(self, ruit: Rui=None, r: str="", ruip: Rui=None, ruir: Rui=None, rT="", tr: TempRef=None):
 		super().__init__(ruit)
 		self.relation = r
-		self.ruip = ruip
-		self.ruir = ruir
-		self.time_relation = rT
+		self.ruip = ruip if ruip else Rui()
+		self.ruir = ruir if ruir else Rui()
+		self.time_relation = rT 
 		self.time = tr 
 
 	def get_attributes(self):

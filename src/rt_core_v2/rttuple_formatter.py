@@ -10,7 +10,7 @@ from rt_core_v2.metadata_accessory import TupleEventType, RtChangeReason
 
 
 class RtTupleJSONEncoder(json.JSONEncoder):
-
+    """Converts contents of RtTuples into a json representation"""
     encoded_classes = {Rui, TempRef, PorType, RuiStatus, TupleType}
 
     def __init__(self, *args, **kwargs):
@@ -19,7 +19,6 @@ class RtTupleJSONEncoder(json.JSONEncoder):
     def default(self, obj):
         """If the object is an instance of an entry in encoded_classes then convert it to a string for the JSON"""
         if any(isinstance(obj, cls) for cls in self.encoded_classes):
-            print(obj)
             return str(obj)
         else:
             super().default(obj)
