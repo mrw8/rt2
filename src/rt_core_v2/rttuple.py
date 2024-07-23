@@ -1,8 +1,8 @@
 import enum
 from abc import ABC, abstractmethod
 
-from rt_core_v2.ids_codes.Rui import Rui, TempRef
-from rt_core_v2.metadata_accessory import TupleEventType, ValueEnum, RtChangeReason
+from rt_core_v2.ids_codes.rui import Rui, TempRef
+from rt_core_v2.metadata import TupleEventType, ValueEnum, RtChangeReason
 
 """Takes an set of enums and converts them into a dict with mapping entry:value"""
 
@@ -27,8 +27,8 @@ class TupleType(ValueEnum):
     D = "D"
     F = "F"
     NtoDE = "NtoDE"
-    NtoNTuple = "NtoN"
-    NtoRTuple = "NtoRT"
+    NtoN = "NtoN"
+    NtoR = "NtoR"
     NtoC = "NtoC"
     NtoLackR = "NtoR(-)"
 
@@ -145,7 +145,6 @@ class ATuple(RtTuple):
     ):
         super().__init__(ruit)
         self.ar = ar
-        self.ruip = ruip if ruip else Rui()
 
         # If we don't get an author Rui for the tuple, then autogenerate one,
         # unless we don't get a Ruip either, in which case set it to the
@@ -153,7 +152,8 @@ class ATuple(RtTuple):
         # This means that the default behavior is that if neither Ruia nor Ruip
         # are provided, we are assuming some entity is assigning a Ruip to
         # itself, and thus should be equal
-        self.ruia = ruia if ruia else Rui(self.ruip.uuid)
+        self.ruia = ruia if ruia else (Rui() if ruip else (ruip := Rui()))
+        self.ruip = ruip if ruip else Rui()
         self.unique = unique
         self.t = t if t else TempRef()
 
@@ -313,7 +313,7 @@ class NtoNTuple(RtTuple):
     """
 
     # NtoNTuple#< ‘+’/‘-’, r, P, rT/‘-’, tr/‘-’ >
-    tuple_type = TupleType.NtoNTuple
+    tuple_type = TupleType.NtoN
     params = {
         **RtTuple.params,
         **enum_to_dict(
@@ -329,12 +329,12 @@ class NtoNTuple(RtTuple):
 
     def __init__(
         self,
+        ruit: Rui = None,
         polarity: bool = True,
         r: str = "",
         p: list[Rui] = None,
         rT="",
         tr: TempRef = None,
-        ruit: Rui = None,
     ):
         super().__init__(ruit)
         self.polarity = polarity
@@ -368,7 +368,7 @@ class NtoRTuple(RtTuple):
 
     # NtoRTuple#< ‘+’/‘-’, inst, RUIn, RUIr, rT/‘-’, tr/‘-’ >
 
-    tuple_type = TupleType.NtoRTuple
+    tuple_type = TupleType.NtoR
     params = {
         **RtTuple.params,
         **enum_to_dict(
@@ -597,8 +597,8 @@ type_to_class = {
     TupleType.D: DTuple,
     TupleType.F: FTuple,
     TupleType.NtoDE: NtoDETuple,
-    TupleType.NtoNTuple: NtoNTuple,
-    TupleType.NtoRTuple: NtoRTuple,
+    TupleType.NtoN: NtoNTuple,
+    TupleType.NtoR: NtoRTuple,
     TupleType.NtoC: NtoCTuple,
     TupleType.NtoLackR: NtoLackRTuple,
 }

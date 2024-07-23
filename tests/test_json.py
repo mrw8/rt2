@@ -1,6 +1,6 @@
 import json
 
-from rt_core_v2.ids_codes.Rui import Rui, TempRef
+from rt_core_v2.ids_codes.rui import Rui, TempRef
 from rt_core_v2.rttuple import (
     ATuple,
     DTuple,
@@ -11,8 +11,8 @@ from rt_core_v2.rttuple import (
     NtoDETuple,
     NtoLackRTuple,
 )
-from rt_core_v2.rttuple_formatter import format_rttuple, json_to_rttuple
-from rt_core_v2.metadata_accessory import TupleEventType, RtChangeReason
+from rt_core_v2.formatter import format_rttuple, json_to_rttuple
+from rt_core_v2.metadata import TupleEventType, RtChangeReason
 
 
 def ordered(obj):
@@ -84,7 +84,7 @@ def test_atuple_json():
 
 def test_dtuple_json():
     d = DTuple(
-        ruid, ruit, time_1, TupleEventType.INSERT, RtChangeReason.BELIEF, replacements
+        ruit, time_1, TupleEventType.INSERT, RtChangeReason.BELIEF, ruid, replacements
     )
     formatted_d = format_rttuple(d)
     replacements_repr = jsonify_list(replacements)

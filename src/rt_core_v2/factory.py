@@ -1,9 +1,13 @@
 from rt_core_v2.rttuple import TupleType, DTuple, type_to_class
-from rt_core_v2.metadata_accessory import RtChangeReason, TupleEventType
+from rt_core_v2.metadata import RtChangeReason, TupleEventType
 
 
-# TODO Create testing that creates every tuple type using this function
-def rttuple_factory(tuple_arguments: dict, type: TupleType):
+def insert_rttuple(tuple_arguments: dict, type: TupleType):
+   return rttuple_factory(dict, type, TupleEventType.INSERT, RtChangeReason.BELIEF)
+
+
+# TODO Create testing that creates every tuple type using this functions
+def rttuple_factory(tuple_arguments: dict, type: TupleType, event: TupleEventType, event_reason: RtChangeReason):
     # DTuples should only be created in tandem with another tuple
     if type is TupleType.D:
         return None
@@ -12,8 +16,8 @@ def rttuple_factory(tuple_arguments: dict, type: TupleType):
         meta_tuple = DTuple(
             concrete_tuple.ruit,
             concrete_tuple.t,
-            TupleEventType.INSERT,
-            RtChangeReason.Belief,
+            event, 
+            event_reason
         )
     except TypeError:
         # TODO Log error where tuple has incorrect arguments
