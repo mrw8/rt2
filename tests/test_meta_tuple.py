@@ -3,15 +3,37 @@ from rt_core_v2.rttuple import DTuple, FTuple, ATuple
 from rt_core_v2.metadata_accessory import TupleEventType, RtChangeReason
 
 
-# print functions 
+# print functions
 def print_d_tuple(dt):
-	print("<", dt.ruit.uuid, "> did a(n) ", dt.event, " to tuple <", dt.ruit_ref.uuid, "> because of ", dt.event_reason, " at ", str(dt.td))
-	print("\tany replacement tuples: ", dt.replacements) 
-	print()
+    print(
+        "<",
+        dt.ruit.uuid,
+        "> did a(n) ",
+        dt.event,
+        " to tuple <",
+        dt.ruit_ref.uuid,
+        "> because of ",
+        dt.event_reason,
+        " at ",
+        str(dt.td),
+    )
+    print("\tany replacement tuples: ", dt.replacements)
+    print()
+
 
 def print_f_tuple(ft):
-	print("<", ft.ruia.uuid, "> has confidence level '", ft.C, "' in tuple <", ft.ruit.uuid, "> at ", ft.ta)
-	print("\ttuple rui: ", ft.ruit.uuid)
+    print(
+        "<",
+        ft.ruia.uuid,
+        "> has confidence level '",
+        ft.C,
+        "' in tuple <",
+        ft.ruit.uuid,
+        "> at ",
+        ft.ta,
+    )
+    print("\ttuple rui: ", ft.ruit.uuid)
+
 
 # create two ATuples with a = rui of person assigning rui to things
 a = Rui.Rui()
