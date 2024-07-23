@@ -40,7 +40,7 @@ class TempRef:
     ref -- Identifier for the temporal reference
     """
 
-    def __init__(self, tr: Union[Rui, datetime] = None):
+    def __init__(self, tr: Rui | datetime = None):
 
         if isinstance(tr, datetime):
             tr = tr.astimezone(timezone.utc)
