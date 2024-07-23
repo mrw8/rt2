@@ -1,4 +1,4 @@
-from rt_core_v2.ids_codes import Concept, Rui
+from rt_core_v2.ids_codes import concept, rui
 import sys
 
 sys.path.append("../src")
@@ -22,9 +22,9 @@ def print_attribute(a):
     print()
 
 
-csrui = Rui.Rui()
-c1 = Concept.Concept("12345678", csrui)
-c2 = Concept.Concept("98765432", csrui, "type 2 diabetes mellitus")
+csrui = rui.Rui()
+c1 = concept.Concept("12345678", csrui)
+c2 = concept.Concept("98765432", csrui, "type 2 diabetes mellitus")
 
 print("code 1")
 print_code(c1)
@@ -32,8 +32,8 @@ print_code(c1)
 print("code 2")
 print_code(c2)
 
-a1 = Concept.Attribute("456", csrui)
-a2 = Concept.Attribute("101", csrui, "narrower than")
+a1 = concept.Attribute("456", csrui)
+a2 = concept.Attribute("101", csrui, "narrower than")
 
 print_attribute(a1)
 print_attribute(a2)

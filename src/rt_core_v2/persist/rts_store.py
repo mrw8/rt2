@@ -2,8 +2,8 @@ from abc import ABC, abstractmethod
 from typing import Optional
 
 from rt_core_v2.rttuple import RtTuple, TupleType
-from rt_core_v2.ids_codes.Rui import Rui, TempRef
-from rt_core_v2.metadata_accessory import RtChangeReason, TupleEventType
+from rt_core_v2.ids_codes.rui import Rui, TempRef
+from rt_core_v2.metadata import RtChangeReason, TupleEventType
 
 
 # TODO Change fields to be up to date with referent tracking 2.0
@@ -69,7 +69,7 @@ class TupleQuery:
         return True
 
     def match_ntontuple(self):
-        if self.types and TupleType.NtoNTuple not in self.types:
+        if self.types and TupleType.NtoN not in self.types:
             return False
         if (
             self.datatype
@@ -82,7 +82,7 @@ class TupleQuery:
         return True
 
     def match_ntortuple(self):
-        if self.types and TupleType.NtoRTuple not in self.types:
+        if self.types and TupleType.NtoR not in self.types:
             return False
         if (
             self.data
