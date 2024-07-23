@@ -1,5 +1,6 @@
 from uuid6 import uuid7, UUID
-
+from typing import Union
+from datetime import datetime, timezone
 
 class Rui:
     """Referent Unique Identifier
@@ -39,7 +40,10 @@ class TempRef:
     ref -- Identifier for the temporal reference
     """
 
-    def __init__(self, tr: Rui = None):
+    def __init__(self, tr: Union[Rui, datetime] = None):
+
+        if isinstance(tr, datetime):
+            tr = tr.astimezone(timezone.utc)
         self.ref = tr if tr else Rui()
 
     def __str__(self):
