@@ -11,8 +11,8 @@ from rt_core_v2.rttuple import (
     RuiStatus,
     PorType,
 )
-from rt_core_v2.ids_codes.Rui import Rui, TempRef
-from rt_core_v2.metadata_accessory import TupleEventType, RtChangeReason
+from rt_core_v2.ids_codes.rui import Rui, TempRef
+from rt_core_v2.metadata import TupleEventType, RtChangeReason
 
 
 class RtTupleJSONEncoder(json.JSONEncoder):

@@ -1,6 +1,6 @@
 from rt_core_v2.rttuple import ATuple
 
-from rt_core_v2.ids_codes.Rui import Rui
+from rt_core_v2.ids_codes.rui import Rui
 from datetime import datetime, timezone
 
 

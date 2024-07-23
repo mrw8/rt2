@@ -1,4 +1,4 @@
-from rt_core_v2.metadata_accessory import (
+from rt_core_v2.metadata import (
     TupleEventType,
     RtChangeReason,
     pretty_print_dict,
