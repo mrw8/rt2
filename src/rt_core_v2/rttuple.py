@@ -60,7 +60,6 @@ class TupleComponents(enum.Enum):
     polarity = "polarity"
     r = "r"
     p_list = "p"
-    rT = "rT"
     tr = "tr"
     inst = "inst"
     ruin = "ruin"
@@ -312,7 +311,7 @@ class NtoNTuple(RtTuple):
     time -- A temporal reference
     """
 
-    # NtoNTuple#< ‘+’/‘-’, r, P, rT/‘-’, tr/‘-’ >
+    # NtoNTuple#< ‘+’/‘-’, r, P, tr/‘-’ >
     tuple_type = TupleType.NtoN
     params = {
         **RtTuple.params,
@@ -321,7 +320,6 @@ class NtoNTuple(RtTuple):
                 TupleComponents.polarity,
                 TupleComponents.r,
                 TupleComponents.p_list,
-                TupleComponents.rT,
                 TupleComponents.tr,
             }
         ),
@@ -333,14 +331,12 @@ class NtoNTuple(RtTuple):
         polarity: bool = True,
         r: str = "",
         p: list[Rui] = None,
-        rT="",
         tr: TempRef = None,
     ):
         super().__init__(ruit)
         self.polarity = polarity
         self.relation = r
         self.p_list = p.copy() if p else []
-        self.time_relation = rT
         self.time = tr
 
     def get_attributes(self):
@@ -349,7 +345,6 @@ class NtoNTuple(RtTuple):
         attributes[self.params[TupleComponents.polarity]] = self.polarity
         attributes[self.params[TupleComponents.r]] = self.relation
         attributes[self.params[TupleComponents.p_list]] = self.p_list
-        attributes[self.params[TupleComponents.rT]] = self.time_relation
         attributes[self.params[TupleComponents.tr]] = self.time
         return attributes
 
@@ -366,7 +361,7 @@ class NtoRTuple(RtTuple):
     time -- A temporal reference
     """
 
-    # NtoRTuple#< ‘+’/‘-’, inst, RUIn, RUIr, rT/‘-’, tr/‘-’ >
+    # NtoRTuple#< ‘+’/‘-’, inst, RUIn, RUIr, tr/‘-’ >
 
     tuple_type = TupleType.NtoR
     params = {
@@ -377,7 +372,6 @@ class NtoRTuple(RtTuple):
                 TupleComponents.inst,
                 TupleComponents.ruin,
                 TupleComponents.ruir,
-                TupleComponents.rT,
                 TupleComponents.tr,
             }
         ),
@@ -390,7 +384,6 @@ class NtoRTuple(RtTuple):
         inst: str = "",
         ruin: Rui = None,
         ruir: Rui = None,
-        rT="",
         tr: TempRef = None,
     ):
         super().__init__(ruit)
@@ -398,7 +391,6 @@ class NtoRTuple(RtTuple):
         self.inst = inst
         self.ruin = ruin if ruin else Rui()
         self.ruir = ruir if ruir else Rui()
-        self.time_relation = rT
         self.time = tr
 
     def get_attributes(self):
@@ -408,7 +400,6 @@ class NtoRTuple(RtTuple):
         attributes[self.params[TupleComponents.inst]] = self.inst
         attributes[self.params[TupleComponents.ruin]] = self.ruin
         attributes[self.params[TupleComponents.ruir]] = self.ruir
-        attributes[self.params[TupleComponents.rT]] = self.time_relation
         attributes[self.params[TupleComponents.tr]] = self.time
         return attributes
 
@@ -428,7 +419,7 @@ class NtoCTuple(RtTuple):
     time -- A temporal reference
     """
 
-    # NtoC#< ‘+’/‘-’, r, RUIcs, RUIp, code, rT, tr >
+    # NtoC#< ‘+’/‘-’, r, RUIcs, RUIp, code, tr >
 
     tuple_type = TupleType.NtoC
     params = {
@@ -440,7 +431,6 @@ class NtoCTuple(RtTuple):
                 TupleComponents.ruics,
                 TupleComponents.ruip,
                 TupleComponents.code,
-                TupleComponents.rT,
                 TupleComponents.tr,
             }
         ),
@@ -456,7 +446,6 @@ class NtoCTuple(RtTuple):
         ruics: Rui = None,
         ruip: Rui = None,
         code: str = "",
-        rT="",
         tr: TempRef = None,
     ):
         super().__init__(ruit)
@@ -465,7 +454,6 @@ class NtoCTuple(RtTuple):
         self.ruics = ruics if ruics else Rui()
         self.ruip = ruip if ruip else Rui()
         self.code = code
-        self.time_relation = rT
         self.time = tr
 
     def get_attributes(self):
@@ -476,7 +464,6 @@ class NtoCTuple(RtTuple):
         attributes[self.params[TupleComponents.ruics]] = self.ruics
         attributes[self.params[TupleComponents.ruip]] = self.ruip
         attributes[self.params[TupleComponents.code]] = self.code
-        attributes[self.params[TupleComponents.rT]] = self.time_relation
         attributes[self.params[TupleComponents.tr]] = self.time
         return attributes
 
@@ -558,7 +545,6 @@ class NtoLackRTuple(RtTuple):
                 TupleComponents.r,
                 TupleComponents.ruip,
                 TupleComponents.ruir,
-                TupleComponents.rT,
                 TupleComponents.tr,
             }
         ),
@@ -570,14 +556,12 @@ class NtoLackRTuple(RtTuple):
         r: str = "",
         ruip: Rui = None,
         ruir: Rui = None,
-        rT="",
         tr: TempRef = None,
     ):
         super().__init__(ruit)
         self.relation = r
         self.ruip = ruip if ruip else Rui()
         self.ruir = ruir if ruir else Rui()
-        self.time_relation = rT
         self.time = tr
 
     def get_attributes(self):
@@ -586,7 +570,6 @@ class NtoLackRTuple(RtTuple):
         attributes[self.params[TupleComponents.r]] = self.relation
         attributes[self.params[TupleComponents.ruip]] = self.ruip
         attributes[self.params[TupleComponents.ruir]] = self.ruir
-        attributes[self.params[TupleComponents.rT]] = self.time_relation
         attributes[self.params[TupleComponents.tr]] = self.time
         return attributes
 
