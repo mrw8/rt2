@@ -24,7 +24,7 @@ def print_d_tuple(dt):
 def print_f_tuple(ft):
     print(
         "<",
-        ft.ruia.uuid,
+        ft.ruid.uuid,
         "> has confidence level '",
         ft.C,
         "' in tuple <",

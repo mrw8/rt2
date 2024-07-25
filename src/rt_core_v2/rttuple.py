@@ -263,9 +263,9 @@ class FTuple(RtTuple):
         **enum_to_dict(
             {
                 TupleComponents.ruid,
-                TupleComponents.ruia,
                 TupleComponents.ta,
                 TupleComponents.C,
+                TupleComponents.ruis,
             }
         ),
     }
@@ -275,12 +275,12 @@ class FTuple(RtTuple):
         ruid: Rui = None,
         ruit: Rui = None,
         ta: TempRef = None,
-        ruia: Rui = None,
         C: float = 1.0,
+        ruis: Rui = None,
     ):
-        super().__init__(ruid)
+        super().__init__(ruis)
+        self.ruid = ruid if ruid else Rui()
         self.ruit_ref = ruit if ruit else Rui()
-        self.ruia = ruia if ruia else Rui()
         self.ta = ta
         self.C = C
 
@@ -290,19 +290,19 @@ class FTuple(RtTuple):
         attributes[self.params[TupleComponents.type]] = self.tuple_type.value
         attributes[self.params[TupleComponents.ruid]] = self.ruid
         attributes[self.params[TupleComponents.ruit]] = self.ruit_ref
-        attributes[self.params[TupleComponents.ruia]] = self.ruia
         attributes[self.params[TupleComponents.ta]] = self.ta
         attributes[self.params[TupleComponents.C]] = self.C
+        attributes[self.params[TupleComponents.ruis]] = self.ruis
 
         return attributes
 
     @property
-    def ruid(self):
+    def ruis(self):
         return self.ruit
 
-    @ruid.setter
-    def ruid(self, ruid):
-        self.ruit = ruid
+    @ruis.setter
+    def ruis(self, ruis):
+        self.ruit = ruis
 
 
 class NtoNTuple(RtTuple):
