@@ -38,7 +38,7 @@ def print_NtoRTuple_tuple(NtoRTuple):
     )
     print(
         "\ttr: the time at which the relationship between the non-repeatable PoR and the repeatable PoR holds --",
-        str(NtoRTuple.time.ref.uuid),
+        str(NtoRTuple.time.ref),
     )
     print(
         "\tpolarity: the relationship holds (true) or does not hold (false) --",
@@ -64,7 +64,7 @@ def print_NtoNTuple_tuple(NtoNTuple):
     )
     print(
         "\ttr: the time at which the relationship between the non-repeatable PoR and the repeatable PoR holds --",
-        str(NtoNTuple.time.ref.uuid),
+        str(NtoNTuple.time.ref),
     )
     print(
         "\tpolarity: the relationship holds (true) or does not hold (false) --",
@@ -81,7 +81,7 @@ h = rui.Rui()
 tr1 = rui.Rui()
 k = ATuple(tr1, ruia=a)
 
-NtoRTuple = NtoRTuple(None, True, "part of", a, h, "Part of", rui.TempRef())
+NtoRTuple = NtoRTuple(None, True, "part of", a, h, rui.TempRef())
 print_NtoRTuple_tuple(NtoRTuple)
 
 # let x be the RUI standing for Kuala Lumpur
@@ -101,5 +101,5 @@ print_ATuple(w)
 # let tr2 be interval over which kuala lumpur has been part of Malaysia
 tr2 = rui.Rui()
 j = ATuple(tr2, ruia=a)
-NtoNTuple = NtoNTuple(None, True, "part of", [x, s], "part of", rui.TempRef())
+NtoNTuple = NtoNTuple(None, True, "part of", [x, s], rui.TempRef())
 print_NtoNTuple_tuple(NtoNTuple)

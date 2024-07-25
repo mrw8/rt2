@@ -41,10 +41,10 @@ class TempRef:
     """
 
     def __init__(self, tr: Rui | datetime = None):
-
+        tr = tr if tr else datetime.now()
         if isinstance(tr, datetime):
             tr = tr.astimezone(timezone.utc)
-        self.ref = tr if tr else Rui()
+        self.ref = tr
 
     def __str__(self):
         return str(self.ref)

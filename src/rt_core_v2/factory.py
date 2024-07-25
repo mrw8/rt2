@@ -33,5 +33,5 @@ def rttuple_factory(tuple_arguments: dict, type: TupleType, event: TupleEventTyp
     return concrete_tuple, meta_tuple
 
 #TODO Make a factory for each tuple that calls rttuple_factory
-def create_atuple(ruit: Rui, ruia: Rui, ruip: Rui, ar: , unique, t, event=TupleEventType.INSERT, event_reason=RtChangeReason.BELIEF, replacements=[]):
+# def create_atuple(ruit: Rui, ruia: Rui, ruip: Rui, ar: , unique, t, event=TupleEventType.INSERT, event_reason=RtChangeReason.BELIEF, replacements=[]):
 
