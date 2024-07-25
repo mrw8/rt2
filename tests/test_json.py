@@ -101,9 +101,9 @@ def test_dtuple_json():
 
 def test_ftuple_json():
     C = 0.753
-    f = FTuple(ruid, ruit, time_1, ruia, C)
+    f = FTuple(ruid, ruit, time_1, C, ruis)
     formatted_f = format_rttuple(f)
-    expected_f = f'{{"type": "{f.tuple_type}", "ruid": "{ruid}", "ruit": "{ruit}", "ta": "{time_1}", "ruia": "{ruia}", "C": {C}}}'
+    expected_f = f'{{"type": "{f.tuple_type}", "ruid": "{ruid}", "ruit": "{ruit}", "ta": "{time_1}", "C": {C}, "ruis": "{ruis}"}}'
     print("Ftuple Expected:  \n" + expected_f)
     print("Ftuple Processed:  \n" + formatted_f)
 

@@ -37,7 +37,7 @@ def create_atuple(ruit: Rui=None, ruia: Rui=None, ruip: Rui=None, ar: RuiStatus=
     atuple_arguments = {TupleComponents.ruit:ruit, TupleComponents.ruia:ruia, TupleComponents.ruip:ruip, TupleComponents.ar:ar, TupleComponents.unique:unique, TupleComponents.t:t}
     return rttuple_factory(atuple_arguments, TupleType.A, event, event_reason, replacements)
 
-def create_dtuple(ruit: Rui=None, ruia: Rui=None, ruip: Rui=None, ar: RuiStatus=RuiStatus.assigned, unique: PorType=PorType.singular, t: TempRef=None, event=TupleEventType.INSERT, event_reason=RtChangeReason.BELIEF, replacements=[]):
-    dtuple_arguments = {TupleComponents.ruit:ruit, TupleComponents.ruia:ruia, TupleComponents.ruip:ruip, TupleComponents.ar:ar, TupleComponents.unique:unique, TupleComponents.t:t}
+def create_ftuple(ruid=None, ruit=None, ruis=None, t=None, event=TupleEventType.INSERT, event_reason=RtChangeReason.BELIEF, replacements=[]):
+    ftuple_arguments = {TupleComponents.ruit:ruit, TupleComponents.ruia:ruia, TupleComponents.ruip:ruip, TupleComponents.ar:ar, TupleComponents.unique:unique, TupleComponents.t:t}
     return rttuple_factory(atuple_arguments, TupleType.D, event, event_reason, replacements)
 
