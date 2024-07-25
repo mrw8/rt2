@@ -32,6 +32,7 @@ ruics = Rui()
 ruir = Rui()
 ruin = Rui()
 ruidt = Rui()
+ruis = Rui()
 
 time_1 = TempRef()
 event = TupleEventType.INSERT
@@ -83,11 +84,11 @@ def test_atuple_json():
 
 def test_dtuple_json():
     d = DTuple(
-        ruit, time_1, TupleEventType.INSERT, RtChangeReason.BELIEF, ruid, replacements
+        ruit, time_1, TupleEventType.INSERT, RtChangeReason.BELIEF, ruid, replacements, ruis
     )
     formatted_d = format_rttuple(d)
     replacements_repr = jsonify_list(replacements)
-    expected_d = f'{{"type": "{d.tuple_type}", "ruid": "{ruid}", "ruit": "{ruit}", "t": "{time_1}", "event": {event}, "event_reason": {reason}, "replacements": {replacements_repr}}}'
+    expected_d = f'{{"type": "{d.tuple_type}", "ruid": "{ruid}", "ruit": "{ruit}", "t": "{time_1}", "event": {event}, "event_reason": {reason}, "replacements": {replacements_repr}, "ruis": "{ruis}"}}'
     print("Dtuple Expected:  \n" + expected_d)
     print("Dtuple Processed:  \n" + formatted_d)
     assert compare(formatted_d, expected_d)
