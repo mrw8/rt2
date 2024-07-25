@@ -1,4 +1,4 @@
-from rt_core_v2.rttuple import TupleType, DTuple, type_to_class
+from rt_core_v2.rttuple import TupleType, DTuple, TupleComponents, RuiStatus, PorType, TempRef, type_to_class
 from rt_core_v2.metadata import RtChangeReason, TupleEventType
 from rt_core_v2.ids_codes.rui import Rui
 
@@ -33,5 +33,11 @@ def rttuple_factory(tuple_arguments: dict, type: TupleType, event: TupleEventTyp
     return concrete_tuple, meta_tuple
 
 #TODO Make a factory for each tuple that calls rttuple_factory
-# def create_atuple(ruit: Rui, ruia: Rui, ruip: Rui, ar: , unique, t, event=TupleEventType.INSERT, event_reason=RtChangeReason.BELIEF, replacements=[]):
+def create_atuple(ruit: Rui=None, ruia: Rui=None, ruip: Rui=None, ar: RuiStatus=RuiStatus.assigned, unique: PorType=PorType.singular, t: TempRef=None, event=TupleEventType.INSERT, event_reason=RtChangeReason.BELIEF, replacements=[]):
+    atuple_arguments = {TupleComponents.ruit:ruit, TupleComponents.ruia:ruia, TupleComponents.ruip:ruip, TupleComponents.ar:ar, TupleComponents.unique:unique, TupleComponents.t:t}
+    return rttuple_factory(atuple_arguments, TupleType.A, event, event_reason, replacements)
+
+def create_dtuple(ruit: Rui=None, ruia: Rui=None, ruip: Rui=None, ar: RuiStatus=RuiStatus.assigned, unique: PorType=PorType.singular, t: TempRef=None, event=TupleEventType.INSERT, event_reason=RtChangeReason.BELIEF, replacements=[]):
+    dtuple_arguments = {TupleComponents.ruit:ruit, TupleComponents.ruia:ruia, TupleComponents.ruip:ruip, TupleComponents.ar:ar, TupleComponents.unique:unique, TupleComponents.t:t}
+    return rttuple_factory(atuple_arguments, TupleType.D, event, event_reason, replacements)
 

@@ -68,6 +68,7 @@ class TupleComponents(enum.Enum):
     code = "code"
     data = "data"
     ruidt = "ruidt"
+    ruis = "ruis"
 
 
 class RtTuple(ABC):
@@ -198,6 +199,7 @@ class DTuple(RtTuple):
                 TupleComponents.event_reason,
                 TupleComponents.t,
                 TupleComponents.replacements,
+                TupleComponents.ruis
             }
         ),
     }
@@ -210,8 +212,10 @@ class DTuple(RtTuple):
         event_reason: RtChangeReason,
         ruid: Rui = None,
         replacements: list[Rui] = None,
+        ruis: Rui = None
     ):
-        super().__init__(ruid)
+        super().__init__(ruis)
+        self.ruid = ruid if ruid else Rui()
         self.ruit_ref = ruit
         self.event = event
         self.event_reason = event_reason
@@ -223,6 +227,7 @@ class DTuple(RtTuple):
         attributes = {}
         attributes[self.params[TupleComponents.type]] = self.tuple_type.value
         attributes[self.params[TupleComponents.ruid]] = self.ruid
+        attributes[self.params[TupleComponents.ruis]] = self.ruis
         attributes[self.params[TupleComponents.ruit]] = self.ruit_ref
         attributes[self.params[TupleComponents.event]] = self.event.value
         attributes[self.params[TupleComponents.event_reason]] = self.event_reason.value
@@ -231,12 +236,12 @@ class DTuple(RtTuple):
         return attributes
 
     @property
-    def ruid(self):
+    def ruis(self):
         return self.ruit
 
-    @ruid.setter
-    def ruid(self, ruid):
-        self.ruit = ruid
+    @ruis.setter
+    def ruis(self, ruis):
+        self.ruit = ruis
 
 
 class FTuple(RtTuple):
