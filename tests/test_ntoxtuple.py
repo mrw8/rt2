@@ -4,7 +4,7 @@ from rt_core_v2.rttuple import ATuple, NtoRTuple, NtoNTuple, RuiStatus
 
 def print_ATuple(a):
     print("A tuple information:")
-    print("\truit: the rui that denotes tuple itself", str(a.ruit.uuid))
+    print("\trui: the rui that denotes tuple itself", str(a.rui.uuid))
     print("\truip: rui that was assigned to some PoR", str(a.ruip.uuid))
     print("\tis ruip reserved? ", a.is_reserved())
     print(
@@ -21,8 +21,8 @@ def print_ATuple(a):
 def print_NtoRTuple_tuple(NtoRTuple):
     print("NtoRTuple tuple information:")
     print(
-        "\truit: the rui that the system assigned to the NtoRTuple tuple itself --",
-        str(NtoRTuple.ruit.uuid),
+        "\trui: the rui that the system assigned to the NtoRTuple tuple itself --",
+        str(NtoRTuple.rui.uuid),
     )
     print(
         "\truin: the rui that denotes the non-repeatable PoR that this tuple is about --",
@@ -50,8 +50,8 @@ def print_NtoRTuple_tuple(NtoRTuple):
 def print_NtoNTuple_tuple(NtoNTuple):
     print("NtoNTuple tuple information:")
     print(
-        "\truit: the rui that the system assigned to the NtoRTuple tuple itself --",
-        str(NtoNTuple.ruit.uuid),
+        "\trui: the rui that the system assigned to the NtoRTuple tuple itself --",
+        str(NtoNTuple.rui.uuid),
     )
     print(
         "\tP: the list of ruis that denote the non-repeatable PoRs that are related by r:"

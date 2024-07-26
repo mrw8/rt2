@@ -93,7 +93,7 @@ class JsonEntryConverter:
 
 
 json_entry_converter = {
-    TupleComponents.ruit: JsonEntryConverter.str_to_rui,
+    TupleComponents.rui: JsonEntryConverter.str_to_rui,
     TupleComponents.ruip: JsonEntryConverter.str_to_rui,
     TupleComponents.ruia: JsonEntryConverter.str_to_rui,
     TupleComponents.ruid: JsonEntryConverter.str_to_rui,
@@ -101,7 +101,7 @@ json_entry_converter = {
     TupleComponents.ruir: JsonEntryConverter.str_to_rui,
     TupleComponents.ruics: JsonEntryConverter.str_to_rui,
     TupleComponents.ruidt: JsonEntryConverter.str_to_rui,
-    TupleComponents.ruis: JsonEntryConverter.str_to_rui,
+    TupleComponents.ruit: JsonEntryConverter.str_to_rui,
     TupleComponents.t: JsonEntryConverter.process_temp_ref,
     TupleComponents.td: JsonEntryConverter.process_temp_ref,
     TupleComponents.ta: JsonEntryConverter.process_temp_ref,

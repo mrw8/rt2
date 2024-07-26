@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 
 def print_ATuple(a):
     print("tuple information:")
-    print("\truit: the rui that denotes tuple itself", str(a.ruit.uuid))
+    print("\trui: the rui that denotes tuple itself", str(a.rui.uuid))
     print("\truip: rui that was assigned to some PoR", str(a.ruip.uuid))
     print("\tis ruip reserved? ", a.is_reserved())
     print(
