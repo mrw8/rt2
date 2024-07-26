@@ -68,7 +68,7 @@ class TupleComponents(enum.Enum):
     code = "code"
     data = "data"
     ruidt = "ruidt"
-    ruis = "ruis"
+    rui = "rui"
 
 
 class RtTuple(ABC):
@@ -80,20 +80,20 @@ class RtTuple(ABC):
     """
 
     tuple_type = None
-    params = {**enum_to_dict({TupleComponents.ruit, TupleComponents.type})}
+    params = {**enum_to_dict({TupleComponents.rui, TupleComponents.type})}
 
     def __init__(self, rui: Rui = None):
         self._rui = rui if rui else Rui()
 
     @property
-    def ruit(self):
+    def rui(self):
         """Get the rui identifying this RtTuple"""
         return self._rui
 
-    @ruit.setter
-    def ruit(self, ruit):
+    @rui.setter
+    def rui(self, rui):
         """Set the rui identifying this RtTuple"""
-        self._rui = ruit
+        self._rui = rui
 
     def __eq__(self, other):
         if not isinstance(other, type(self)):
@@ -104,7 +104,7 @@ class RtTuple(ABC):
     def get_attributes(self) -> dict:
         """Get the attributes of this tuplestring"""
         return {
-            self.params[TupleComponents.ruit]: self._rui,
+            self.params[TupleComponents.rui]: self._rui,
             self.params[TupleComponents.type]: self.tuple_type,
         }
 
@@ -136,14 +136,14 @@ class ATuple(RtTuple):
 
     def __init__(
         self,
-        ruit: Rui = None,
+        rui: Rui = None,
         ruia: Rui = None,
         ruip: Rui = None,
         ar: RuiStatus = RuiStatus.assigned,
         unique: PorType = PorType.singular,
         t: TempRef = None,
     ):
-        super().__init__(ruit)
+        super().__init__(rui)
         self.ar = ar
 
         # If we don't get an author Rui for the tuple, then autogenerate one,
@@ -180,11 +180,11 @@ class DTuple(RtTuple):
     """Referent Tracking metadata tuple that stores information regarding the instantation of other tuple types
 
     Attributes:
-    ruit_ref -- The ruit of another tuple that this tuple stores information about
-    event -- The category of reason that caused the creation of tuple ruit_ref
+    ruit -- The ruit of another tuple that this tuple stores information about
+    event -- The category of reason that caused the creation of tuple ruit
     event_reason -- The reason for the event above occuring
     td -- The time of this tuple's creation
-    replacements -- Any tuples that will be replaced by ruit (if there are any)
+    replacements -- Any tuples that ruit replaces
     """
 
     # D#< RUId, RUIT, t, ‘I’/E, R, S >
@@ -199,7 +199,7 @@ class DTuple(RtTuple):
                 TupleComponents.event_reason,
                 TupleComponents.t,
                 TupleComponents.replacements,
-                TupleComponents.ruis
+                TupleComponents.ruit
             }
         ),
     }
@@ -212,11 +212,11 @@ class DTuple(RtTuple):
         event_reason: RtChangeReason,
         ruid: Rui = None,
         replacements: list[Rui] = None,
-        ruis: Rui = None
+        rui: Rui = None
     ):
-        super().__init__(ruis)
+        super().__init__(rui)
         self.ruid = ruid if ruid else Rui()
-        self.ruit_ref = ruit
+        self.ruit = ruit if ruit else Rui()
         self.event = event
         self.event_reason = event_reason
         self.td = t if t else TempRef()
@@ -227,21 +227,13 @@ class DTuple(RtTuple):
         attributes = {}
         attributes[self.params[TupleComponents.type]] = self.tuple_type.value
         attributes[self.params[TupleComponents.ruid]] = self.ruid
-        attributes[self.params[TupleComponents.ruis]] = self.ruis
-        attributes[self.params[TupleComponents.ruit]] = self.ruit_ref
+        attributes[self.params[TupleComponents.rui]] = self.rui
+        attributes[self.params[TupleComponents.ruit]] = self.ruit
         attributes[self.params[TupleComponents.event]] = self.event.value
         attributes[self.params[TupleComponents.event_reason]] = self.event_reason.value
         attributes[self.params[TupleComponents.t]] = self.td
         attributes[self.params[TupleComponents.replacements]] = self.replacements
         return attributes
-
-    @property
-    def ruis(self):
-        return self.ruit
-
-    @ruis.setter
-    def ruis(self, ruis):
-        self.ruit = ruis
 
 
 class FTuple(RtTuple):
@@ -250,7 +242,7 @@ class FTuple(RtTuple):
     Attributes:
     ruid -- The ruid of this tuple
     ruia -- The ruid of the author making the assertion
-    ruit_ref -- The ruid of the tuple refered to by this tuple's confidence assertion.
+    ruit -- The ruid of the tuple refered to by this tuple's confidence assertion.
     ta -- The time instance of the confidence assertion.
     C -- The level of confidence from 0.00-1.00 in the assertion.
     """
@@ -265,7 +257,7 @@ class FTuple(RtTuple):
                 TupleComponents.ruid,
                 TupleComponents.ta,
                 TupleComponents.C,
-                TupleComponents.ruis,
+                TupleComponents.ruit,
             }
         ),
     }
@@ -276,11 +268,11 @@ class FTuple(RtTuple):
         ruit: Rui = None,
         ta: TempRef = None,
         C: float = 1.0,
-        ruis: Rui = None,
+        rui: Rui = None,
     ):
-        super().__init__(ruis)
+        super().__init__(rui)
         self.ruid = ruid if ruid else Rui()
-        self.ruit_ref = ruit if ruit else Rui()
+        self.ruit = ruit if ruit else Rui()
         self.ta = ta
         self.C = C
 
@@ -289,20 +281,12 @@ class FTuple(RtTuple):
         attributes = {}
         attributes[self.params[TupleComponents.type]] = self.tuple_type.value
         attributes[self.params[TupleComponents.ruid]] = self.ruid
-        attributes[self.params[TupleComponents.ruit]] = self.ruit_ref
+        attributes[self.params[TupleComponents.ruit]] = self.ruit
         attributes[self.params[TupleComponents.ta]] = self.ta
         attributes[self.params[TupleComponents.C]] = self.C
-        attributes[self.params[TupleComponents.ruis]] = self.ruis
+        attributes[self.params[TupleComponents.rui]] = self.rui
 
         return attributes
-
-    @property
-    def ruis(self):
-        return self.ruit
-
-    @ruis.setter
-    def ruis(self, ruis):
-        self.ruit = ruis
 
 
 class NtoNTuple(RtTuple):
@@ -332,13 +316,13 @@ class NtoNTuple(RtTuple):
 
     def __init__(
         self,
-        ruit: Rui = None,
+        rui: Rui = None,
         polarity: bool = True,
         r: str = "",
         p: list[Rui] = None,
         tr: TempRef = None,
     ):
-        super().__init__(ruit)
+        super().__init__(rui)
         self.polarity = polarity
         self.relation = r
         self.p_list = p.copy() if p else []
@@ -384,14 +368,14 @@ class NtoRTuple(RtTuple):
 
     def __init__(
         self,
-        ruit: Rui = None,
+        rui: Rui = None,
         polarity: bool = True,
         inst: str = "",
         ruin: Rui = None,
         ruir: Rui = None,
         tr: TempRef = None,
     ):
-        super().__init__(ruit)
+        super().__init__(rui)
         self.polarity = polarity
         self.inst = inst
         self.ruin = ruin if ruin else Rui()
@@ -445,7 +429,7 @@ class NtoCTuple(RtTuple):
     # TODO Make creating a tempref create an underlying time instance
     def __init__(
         self,
-        ruit: Rui = None,
+        rui: Rui = None,
         polarity: bool = True,
         r: str = "",
         ruics: Rui = None,
@@ -453,7 +437,7 @@ class NtoCTuple(RtTuple):
         code: str = "",
         tr: TempRef = None,
     ):
-        super().__init__(ruit)
+        super().__init__(rui)
         self.polarity = polarity
         self.reason = r
         self.ruics = ruics if ruics else Rui()
@@ -507,13 +491,13 @@ class NtoDETuple(RtTuple):
 
     def __init__(
         self,
-        ruit: Rui = None,
+        rui: Rui = None,
         polarity: bool = True,
         ruin: Rui = None,
         data="",
         ruidt: Rui = None,
     ):
-        super().__init__(ruit)
+        super().__init__(rui)
         self.polarity = polarity
         self.ruin = ruin if ruin else Rui()
         self.data = data
@@ -557,13 +541,13 @@ class NtoLackRTuple(RtTuple):
 
     def __init__(
         self,
-        ruit: Rui = None,
+        rui: Rui = None,
         r: str = "",
         ruip: Rui = None,
         ruir: Rui = None,
         tr: TempRef = None,
     ):
-        super().__init__(ruit)
+        super().__init__(rui)
         self.relation = r
         self.ruip = ruip if ruip else Rui()
         self.ruir = ruir if ruir else Rui()

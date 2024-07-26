@@ -32,7 +32,7 @@ ruics = Rui()
 ruir = Rui()
 ruin = Rui()
 ruidt = Rui()
-ruis = Rui()
+rui = Rui()
 
 time_1 = TempRef()
 event = TupleEventType.INSERT
@@ -69,9 +69,9 @@ def compare(formatted, expected):
 
 
 def test_atuple_json():
-    a = ATuple(ruit, ruia, ruip)
+    a = ATuple(rui, ruia, ruip)
     formatted_a = format_rttuple(a)
-    expected_a = f'{{"ruip": "{ruip}", "ruia": "{ruia}", "ruit": "{ruit}", "type": "{a.tuple_type}", "unique": "{a.unique}", "ar": "{a.ar}", "t": "{a.t}"}}'
+    expected_a = f'{{"ruip": "{ruip}", "ruia": "{ruia}", "rui": "{rui}", "type": "{a.tuple_type}", "unique": "{a.unique}", "ar": "{a.ar}", "t": "{a.t}"}}'
     print("Atuple Expected:  \n" + expected_a)
     print("Atuple Processed:  \n" + formatted_a)
     assert compare(formatted_a, expected_a)
@@ -84,11 +84,11 @@ def test_atuple_json():
 
 def test_dtuple_json():
     d = DTuple(
-        ruit, time_1, TupleEventType.INSERT, RtChangeReason.BELIEF, ruid, replacements, ruis
+        ruit, time_1, TupleEventType.INSERT, RtChangeReason.BELIEF, ruid, replacements, rui
     )
     formatted_d = format_rttuple(d)
     replacements_repr = jsonify_list(replacements)
-    expected_d = f'{{"type": "{d.tuple_type}", "ruid": "{ruid}", "ruit": "{ruit}", "t": "{time_1}", "event": {event}, "event_reason": {reason}, "replacements": {replacements_repr}, "ruis": "{ruis}"}}'
+    expected_d = f'{{"type": "{d.tuple_type}", "ruid": "{ruid}", "ruit": "{ruit}", "t": "{time_1}", "event": {event}, "event_reason": {reason}, "replacements": {replacements_repr}, "rui": "{rui}"}}'
     print("Dtuple Expected:  \n" + expected_d)
     print("Dtuple Processed:  \n" + formatted_d)
     assert compare(formatted_d, expected_d)
@@ -101,9 +101,9 @@ def test_dtuple_json():
 
 def test_ftuple_json():
     C = 0.753
-    f = FTuple(ruid, ruit, time_1, C, ruis)
+    f = FTuple(ruid, ruit, time_1, C, rui)
     formatted_f = format_rttuple(f)
-    expected_f = f'{{"type": "{f.tuple_type}", "ruid": "{ruid}", "ruit": "{ruit}", "ta": "{time_1}", "C": {C}, "ruis": "{ruis}"}}'
+    expected_f = f'{{"type": "{f.tuple_type}", "ruid": "{ruid}", "ruit": "{ruit}", "ta": "{time_1}", "C": {C}, "rui": "{rui}"}}'
     print("Ftuple Expected:  \n" + expected_f)
     print("Ftuple Processed:  \n" + formatted_f)
 
@@ -116,10 +116,10 @@ def test_ftuple_json():
 
 
 def test_nton_json():
-    nton = NtoNTuple(ruit, polarity, relation, p_list, time_1)
+    nton = NtoNTuple(rui, polarity, relation, p_list, time_1)
     print(nton.get_attributes())
     formatted_nton = format_rttuple(nton)
-    expected_nton = f'{{"type": "{nton.tuple_type}", "ruit": "{ruit}", "polarity": {str(polarity).lower()}, "r": "{relation}", "p": {jsonify_list(p_list)}, "tr": "{time_1}"}}'
+    expected_nton = f'{{"type": "{nton.tuple_type}", "rui": "{rui}", "polarity": {str(polarity).lower()}, "r": "{relation}", "p": {jsonify_list(p_list)}, "tr": "{time_1}"}}'
 
     print("Ntontuple Expected:  \n" + expected_nton)
     print("Ntontuple Processed:  \n" + formatted_nton)
@@ -134,9 +134,9 @@ def test_nton_json():
 
 
 def test_ntor_json():
-    ntor = NtoRTuple(ruit, polarity, inst, ruin, ruir, time_1)
+    ntor = NtoRTuple(rui, polarity, inst, ruin, ruir, time_1)
     formatted_ntor = format_rttuple(ntor)
-    expected_ntor = f'{{"ruit": "{ruit}", "type": "{ntor.tuple_type}", "polarity": {str(polarity).lower()}, "inst": "{inst}", "ruir": "{ruir}", "ruin": "{ruin}", "tr": "{time_1}"}}'
+    expected_ntor = f'{{"rui": "{rui}", "type": "{ntor.tuple_type}", "polarity": {str(polarity).lower()}, "inst": "{inst}", "ruir": "{ruir}", "ruin": "{ruin}", "tr": "{time_1}"}}'
 
     print("Ntortuple Expected:  \n" + expected_ntor)
     print("Ntonrtuple Processed:  \n" + formatted_ntor)
@@ -151,9 +151,9 @@ def test_ntor_json():
 
 
 def test_ntoc_json():
-    ntoc = NtoCTuple(ruit, polarity, relation, ruics, ruip, code, time_1)
+    ntoc = NtoCTuple(rui, polarity, relation, ruics, ruip, code, time_1)
     formatted_ntoc = format_rttuple(ntoc)
-    expected_ntoc = f'{{"ruit": "{ruit}", "type": "{ntoc.tuple_type}", "polarity": {str(polarity).lower()}, "r": "{relation}", "tr": "{time_1}", "ruics": "{ruics}", "ruip": "{ruip}", "code": "{code}"}}'
+    expected_ntoc = f'{{"rui": "{rui}", "type": "{ntoc.tuple_type}", "polarity": {str(polarity).lower()}, "r": "{relation}", "tr": "{time_1}", "ruics": "{ruics}", "ruip": "{ruip}", "code": "{code}"}}'
 
     print("Ntoctuple Expected:  \n" + expected_ntoc)
     print("Ntoctuple Processed:  \n" + formatted_ntoc)
@@ -168,9 +168,9 @@ def test_ntoc_json():
 
 
 def test_ntode_json():
-    ntode = NtoDETuple(ruit, polarity, ruin, data, ruidt)
+    ntode = NtoDETuple(rui, polarity, ruin, data, ruidt)
     formatted_ntode = format_rttuple(ntode)
-    expected_ntode = f'{{"ruit": "{ruit}", "type": "{ntode.tuple_type}", "polarity": {str(polarity).lower()}, "ruin": "{ruin}", "ruidt": "{ruidt}", "data": "{data}"}}'
+    expected_ntode = f'{{"rui": "{rui}", "type": "{ntode.tuple_type}", "polarity": {str(polarity).lower()}, "ruin": "{ruin}", "ruidt": "{ruidt}", "data": "{data}"}}'
 
     print("Ntoctuple Expected:  \n" + expected_ntode)
     print("Ntoctuple Processed:  \n" + formatted_ntode)
@@ -185,9 +185,9 @@ def test_ntode_json():
 
 
 def test_ntolackr_json():
-    ntolackr = NtoLackRTuple(ruit, relation, ruip, ruir, time_1)
+    ntolackr = NtoLackRTuple(rui, relation, ruip, ruir, time_1)
     formatted_ntolackr = format_rttuple(ntolackr)
-    expected_ntolackr = f'{{"ruit": "{ruit}", "type": "{ntolackr.tuple_type}", "r": "{relation}", "ruir": "{ruir}", "ruip": "{ruip}", "tr": "{time_1}"}}'
+    expected_ntolackr = f'{{"rui": "{rui}", "type": "{ntolackr.tuple_type}", "r": "{relation}", "ruir": "{ruir}", "ruip": "{ruip}", "tr": "{time_1}"}}'
 
     print("Ntortuple Expected:  \n" + expected_ntolackr)
     print("Ntonrtuple Processed:  \n" + formatted_ntolackr)

@@ -19,7 +19,7 @@ def rttuple_factory(tuple_arguments: dict, type: TupleType, event: TupleEventTyp
     try:
         concrete_tuple = type_to_class[type](**tuple_arguments)
         meta_tuple = DTuple(
-            concrete_tuple.ruit,
+            concrete_tuple.rui,
             concrete_tuple.t,
             event, 
             event_reason, 
@@ -34,10 +34,10 @@ def rttuple_factory(tuple_arguments: dict, type: TupleType, event: TupleEventTyp
 
 #TODO Make a factory for each tuple that calls rttuple_factory
 def create_atuple(ruit: Rui=None, ruia: Rui=None, ruip: Rui=None, ar: RuiStatus=RuiStatus.assigned, unique: PorType=PorType.singular, t: TempRef=None, event=TupleEventType.INSERT, event_reason=RtChangeReason.BELIEF, replacements=[]):
-    atuple_arguments = {TupleComponents.ruit:ruit, TupleComponents.ruia:ruia, TupleComponents.ruip:ruip, TupleComponents.ar:ar, TupleComponents.unique:unique, TupleComponents.t:t}
+    atuple_arguments = {TupleComponents.rui:ruit, TupleComponents.ruia:ruia, TupleComponents.ruip:ruip, TupleComponents.ar:ar, TupleComponents.unique:unique, TupleComponents.t:t}
     return rttuple_factory(atuple_arguments, TupleType.A, event, event_reason, replacements)
 
-def create_ftuple(ruid=None, ruit=None, ruis=None, t=None, event=TupleEventType.INSERT, event_reason=RtChangeReason.BELIEF, replacements=[]):
-    ftuple_arguments = {TupleComponents.ruit:ruit, TupleComponents.ruia:ruia, TupleComponents.ruip:ruip, TupleComponents.ar:ar, TupleComponents.unique:unique, TupleComponents.t:t}
-    return rttuple_factory(atuple_arguments, TupleType.D, event, event_reason, replacements)
+# def create_ftuple(ruid=None, ruit=None, ruis=None, t=None, event=TupleEventType.INSERT, event_reason=RtChangeReason.BELIEF, replacements=[]):
+#     ftuple_arguments = {TupleComponents.ruit:ruit, TupleComponents.ruia:ruia, TupleComponents.ruip:ruip, TupleComponents.ar:ar, TupleComponents.unique:unique, TupleComponents.t:t}
+#     return rttuple_factory(atuple_arguments, TupleType.D, event, event_reason, replacements)
 
