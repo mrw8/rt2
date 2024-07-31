@@ -5,16 +5,16 @@ from rt_core_v2.rttuple import ATuple, NtoRTuple, NtoNTuple, RuiStatus
 def print_ATuple(a):
     print("A tuple information:")
     print("\trui: the rui that denotes tuple itself", str(a.rui.uuid))
-    print("\truip: rui that was assigned to some PoR", str(a.ruip.uuid))
-    print("\tis ruip reserved? ", a.is_reserved())
+    print("\truin: rui that was assigned to some PoR", str(a.ruin.uuid))
+    print("\tis ruin reserved? ", a.is_reserved())
     print(
-        "\tis ruip singularly unique vs. potentially non-singularly unique: ", a.unique
+        "\tis ruin singularly unique vs. potentially non-singularly unique: ", a.unique
     )
     print(
-        "\truia: rui that denotes person who assigned ruip to some PoR",
+        "\truia: rui that denotes person who assigned ruin to some PoR",
         str(a.ruia.uuid),
     )
-    print("\tt: time that ruia assigned/reserved ruip to/for some PoR", str(a.t))
+    print("\tt: time that ruia assigned/reserved ruin to/for some PoR", str(a.t))
     print()
 
 

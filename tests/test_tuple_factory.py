@@ -17,7 +17,7 @@ from rt_core_v2.rttuple import (
 from rt_core_v2.metadata import TupleEventType, RtChangeReason
 from rt_core_v2.factory import insert_rttuple
 
-ruip = Rui()
+ruin = Rui()
 ruia = Rui()
 ruit = Rui()
 ruid = Rui()
@@ -43,9 +43,9 @@ data = "data insert"
 
 #TODO Fill out tests for tuple factory usage
 def test_atuple_factory():
-    a = ATuple(ruit, ruia, ruip, ar, unique, time_1)
-    # a_args = {TupleComponents.ruit:ruit, TupleComponents.ruit:ruia, TupleComponents.ruit:ruip, TupleComponents.ruit:ar, TupleComponents.ruit:unique, TupleComponents.ruit:time_1}
-    # a_fac, d_fac = insert_rttuple({:ruit, :ruia, :ruip, :ar, :unique, :time_1}, TupleType.ATuple)
+    a = ATuple(ruit, ruia, ruin, ar, unique, time_1)
+    # a_args = {TupleComponents.ruit:ruit, TupleComponents.ruit:ruia, TupleComponents.ruit:ruin, TupleComponents.ruit:ar, TupleComponents.ruit:unique, TupleComponents.ruit:time_1}
+    # a_fac, d_fac = insert_rttuple({:ruit, :ruia, :ruin, :ar, :unique, :time_1}, TupleType.ATuple)
 # def test_dtuple_factory():
 
 # def test_ftuple_factory():

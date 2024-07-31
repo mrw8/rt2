@@ -34,8 +34,8 @@ def rttuple_factory(tuple_arguments: dict, type: TupleType, t: TempRef, event: T
     return concrete_tuple, meta_tuple
 
 #TODO Make a factory for each tuple that calls rttuple_factory
-def create_atuple(rui: Rui=None, ruia: Rui=None, ruip: Rui=None, ar: RuiStatus=RuiStatus.assigned, unique: PorType=PorType.singular, t: TempRef=None, event=TupleEventType.INSERT, event_reason=RtChangeReason.BELIEF, replacements=[], author=None):
-    atuple_arguments = {TupleComponents.rui:rui, TupleComponents.ruia:ruia, TupleComponents.ruip:ruip, TupleComponents.ar:ar, TupleComponents.unique:unique, TupleComponents.t:t}
+def create_atuple(rui: Rui=None, ruia: Rui=None, ruin: Rui=None, ar: RuiStatus=RuiStatus.assigned, unique: PorType=PorType.singular, t: TempRef=None, event=TupleEventType.INSERT, event_reason=RtChangeReason.BELIEF, replacements=[], author=None):
+    atuple_arguments = {TupleComponents.rui:rui, TupleComponents.ruia:ruia, TupleComponents.ruin:ruin, TupleComponents.ar:ar, TupleComponents.unique:unique, TupleComponents.t:t}
     author = author if author else ruia
     return rttuple_factory(atuple_arguments, TupleType.A, t, event, event_reason, replacements, author)
 
@@ -44,27 +44,27 @@ def create_ftuple(rui:Rui=None, ruid:Rui=None, ta:TempRef=None, C:float=1.0, rui
     author = author if author else Rui()
     return rttuple_factory(ftuple_arguments, TupleType.F, t, event, event_reason, replacements, author)
 
-def create_ntontuple(ruit: Rui=None, ruia: Rui=None, ruip: Rui=None, ar: RuiStatus=RuiStatus.assigned, unique: PorType=PorType.singular, t: TempRef=None, event=TupleEventType.INSERT, event_reason=RtChangeReason.BELIEF, replacements=[], author=None):
-    nton_arguments = {TupleComponents.rui:ruit, TupleComponents.ruia:ruia, TupleComponents.ruip:ruip, TupleComponents.ar:ar, TupleComponents.unique:unique, TupleComponents.t:t}
+def create_ntontuple(ruit: Rui=None, ruia: Rui=None, ruin: Rui=None, ar: RuiStatus=RuiStatus.assigned, unique: PorType=PorType.singular, t: TempRef=None, event=TupleEventType.INSERT, event_reason=RtChangeReason.BELIEF, replacements=[], author=None):
+    nton_arguments = {TupleComponents.rui:ruit, TupleComponents.ruia:ruia, TupleComponents.ruin:ruin, TupleComponents.ar:ar, TupleComponents.unique:unique, TupleComponents.t:t}
     author = author if author else Rui()
     return rttuple_factory(ntontuple_arguments, TupleType.NtoN, event, event_reason, replacements, author)
 
-def create_ntortuple(ruit: Rui=None, ruia: Rui=None, ruip: Rui=None, ar: RuiStatus=RuiStatus.assigned, unique: PorType=PorType.singular, t: TempRef=None, event=TupleEventType.INSERT, event_reason=RtChangeReason.BELIEF, replacements=[], author=None):
-    atuple_arguments = {TupleComponents.rui:ruit, TupleComponents.ruia:ruia, TupleComponents.ruip:ruip, TupleComponents.ar:ar, TupleComponents.unique:unique, TupleComponents.t:t}
+def create_ntortuple(ruit: Rui=None, ruia: Rui=None, ruin: Rui=None, ar: RuiStatus=RuiStatus.assigned, unique: PorType=PorType.singular, t: TempRef=None, event=TupleEventType.INSERT, event_reason=RtChangeReason.BELIEF, replacements=[], author=None):
+    atuple_arguments = {TupleComponents.rui:ruit, TupleComponents.ruia:ruia, TupleComponents.ruin:ruin, TupleComponents.ar:ar, TupleComponents.unique:unique, TupleComponents.t:t}
     author = author if author else ruia
     return rttuple_factory(ntortuple_arguments, TupleType.NtoR, event, event_reason, replacements, author)
 
-def create_ntodetuple(ruit: Rui=None, ruia: Rui=None, ruip: Rui=None, ar: RuiStatus=RuiStatus.assigned, unique: PorType=PorType.singular, t: TempRef=None, event=TupleEventType.INSERT, event_reason=RtChangeReason.BELIEF, replacements=[], author=None):
-    atuple_arguments = {TupleComponents.rui:ruit, TupleComponents.ruia:ruia, TupleComponents.ruip:ruip, TupleComponents.ar:ar, TupleComponents.unique:unique, TupleComponents.t:t}
+def create_ntodetuple(ruit: Rui=None, ruia: Rui=None, ruin: Rui=None, ar: RuiStatus=RuiStatus.assigned, unique: PorType=PorType.singular, t: TempRef=None, event=TupleEventType.INSERT, event_reason=RtChangeReason.BELIEF, replacements=[], author=None):
+    atuple_arguments = {TupleComponents.rui:ruit, TupleComponents.ruia:ruia, TupleComponents.ruin:ruin, TupleComponents.ar:ar, TupleComponents.unique:unique, TupleComponents.t:t}
     author = author if author else ruia
     return rttuple_factory(ntodetuple_arguments, TupleType.NtoDE, event, event_reason, replacements, author)
 
-def create_ntoctuple(ruit: Rui=None, ruia: Rui=None, ruip: Rui=None, ar: RuiStatus=RuiStatus.assigned, unique: PorType=PorType.singular, t: TempRef=None, event=TupleEventType.INSERT, event_reason=RtChangeReason.BELIEF, replacements=[], author=None):
-    atuple_arguments = {TupleComponents.rui:ruit, TupleComponents.ruia:ruia, TupleComponents.ruip:ruip, TupleComponents.ar:ar, TupleComponents.unique:unique, TupleComponents.t:t}
+def create_ntoctuple(ruit: Rui=None, ruia: Rui=None, ruin: Rui=None, ar: RuiStatus=RuiStatus.assigned, unique: PorType=PorType.singular, t: TempRef=None, event=TupleEventType.INSERT, event_reason=RtChangeReason.BELIEF, replacements=[], author=None):
+    atuple_arguments = {TupleComponents.rui:ruit, TupleComponents.ruia:ruia, TupleComponents.ruin:ruin, TupleComponents.ar:ar, TupleComponents.unique:unique, TupleComponents.t:t}
     author = author if author else ruia
     return rttuple_factory(ntoctuple_arguments, TupleType.NtoC, event, event_reason, replacements, author)
 
-def create_ntolackrtuple(ruit: Rui=None, ruia: Rui=None, ruip: Rui=None, ar: RuiStatus=RuiStatus.assigned, unique: PorType=PorType.singular, t: TempRef=None, event=TupleEventType.INSERT, event_reason=RtChangeReason.BELIEF, replacements=[], author=None):
-    atuple_arguments = {TupleComponents.rui:ruit, TupleComponents.ruia:ruia, TupleComponents.ruip:ruip, TupleComponents.ar:ar, TupleComponents.unique:unique, TupleComponents.t:t}
+def create_ntolackrtuple(ruit: Rui=None, ruia: Rui=None, ruin: Rui=None, ar: RuiStatus=RuiStatus.assigned, unique: PorType=PorType.singular, t: TempRef=None, event=TupleEventType.INSERT, event_reason=RtChangeReason.BELIEF, replacements=[], author=None):
+    atuple_arguments = {TupleComponents.rui:ruit, TupleComponents.ruia:ruia, TupleComponents.ruin:ruin, TupleComponents.ar:ar, TupleComponents.unique:unique, TupleComponents.t:t}
     author = author if author else ruia
     return rttuple_factory(ntolackrtuple_arguments, TupleType.NtoLackR, event, event_reason, replacements, author)

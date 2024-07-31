@@ -94,7 +94,7 @@ class JsonEntryConverter:
 
 json_entry_converter = {
     TupleComponents.rui: JsonEntryConverter.str_to_rui,
-    TupleComponents.ruip: JsonEntryConverter.str_to_rui,
+    TupleComponents.ruin: JsonEntryConverter.str_to_rui,
     TupleComponents.ruia: JsonEntryConverter.str_to_rui,
     TupleComponents.ruid: JsonEntryConverter.str_to_rui,
     TupleComponents.ruin: JsonEntryConverter.str_to_rui,
