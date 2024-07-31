@@ -24,7 +24,7 @@ def ordered(obj):
         return obj
 
 
-ruip = Rui()
+ruin = Rui()
 ruia = Rui()
 ruit = Rui()
 ruid = Rui()
@@ -69,9 +69,9 @@ def compare(formatted, expected):
 
 
 def test_atuple_json():
-    a = ATuple(rui, ruia, ruip)
+    a = ATuple(rui, ruia, ruin)
     formatted_a = format_rttuple(a)
-    expected_a = f'{{"ruip": "{ruip}", "ruia": "{ruia}", "rui": "{rui}", "type": "{a.tuple_type}", "unique": "{a.unique}", "ar": "{a.ar}", "t": "{a.t}"}}'
+    expected_a = f'{{"ruin": "{ruin}", "ruia": "{ruia}", "rui": "{rui}", "type": "{a.tuple_type}", "unique": "{a.unique}", "ar": "{a.ar}", "t": "{a.t}"}}'
     print("Atuple Expected:  \n" + expected_a)
     print("Atuple Processed:  \n" + formatted_a)
     assert compare(formatted_a, expected_a)
@@ -151,9 +151,9 @@ def test_ntor_json():
 
 
 def test_ntoc_json():
-    ntoc = NtoCTuple(rui, polarity, relation, ruics, ruip, code, time_1)
+    ntoc = NtoCTuple(rui, polarity, relation, ruics, ruin, code, time_1)
     formatted_ntoc = format_rttuple(ntoc)
-    expected_ntoc = f'{{"rui": "{rui}", "type": "{ntoc.tuple_type}", "polarity": {str(polarity).lower()}, "r": "{relation}", "tr": "{time_1}", "ruics": "{ruics}", "ruip": "{ruip}", "code": "{code}"}}'
+    expected_ntoc = f'{{"rui": "{rui}", "type": "{ntoc.tuple_type}", "polarity": {str(polarity).lower()}, "r": "{relation}", "tr": "{time_1}", "ruics": "{ruics}", "ruin": "{ruin}", "code": "{code}"}}'
 
     print("Ntoctuple Expected:  \n" + expected_ntoc)
     print("Ntoctuple Processed:  \n" + formatted_ntoc)
@@ -185,9 +185,9 @@ def test_ntode_json():
 
 
 def test_ntolackr_json():
-    ntolackr = NtoLackRTuple(rui, relation, ruip, ruir, time_1)
+    ntolackr = NtoLackRTuple(rui, relation, ruin, ruir, time_1)
     formatted_ntolackr = format_rttuple(ntolackr)
-    expected_ntolackr = f'{{"rui": "{rui}", "type": "{ntolackr.tuple_type}", "r": "{relation}", "ruir": "{ruir}", "ruip": "{ruip}", "tr": "{time_1}"}}'
+    expected_ntolackr = f'{{"rui": "{rui}", "type": "{ntolackr.tuple_type}", "r": "{relation}", "ruir": "{ruir}", "ruin": "{ruin}", "tr": "{time_1}"}}'
 
     print("Ntortuple Expected:  \n" + expected_ntolackr)
     print("Ntonrtuple Processed:  \n" + formatted_ntolackr)
