@@ -28,11 +28,11 @@ def print_f_tuple(ft):
         "> has confidence level '",
         ft.C,
         "' in tuple <",
-        ft.ruit.uuid,
+        ft.ruitn.uuid,
         "> at ",
         ft.ta,
     )
-    print("\ttuple rui: ", ft.ruit.uuid)
+    print("\ttuple rui: ", ft.rui.uuid)
 
 
 # create two ATuples with a = rui of person assigning rui to things

@@ -44,6 +44,7 @@ class PorType(ValueEnum):
 # TODO Move this into the classes, as it is not a semantically sound placement here
 class TupleComponents(enum.Enum):
     ruit = "ruit"
+    ruitn = "ruitn"
     type = "type"
     ar = "ar"
     ruip = "ruip"
@@ -75,7 +76,7 @@ class RtTuple(ABC):
     """Abstract Referent Tracking tuple that contains the information that all referent tracking tuples contain
 
     Attributes:
-    ruit -- The rui of this tuple
+    rui -- The rui of this tuple
     type -- The id of the tuple component
     """
 
@@ -247,7 +248,7 @@ class FTuple(RtTuple):
     C -- The level of confidence from 0.00-1.00 in the assertion.
     """
 
-    # F#< RUId, ta, RUIa, RUIT, C >
+    # F#< RUId, ta, RUIa, RUITN, C >
 
     tuple_type = TupleType.F
     params = {
@@ -257,7 +258,7 @@ class FTuple(RtTuple):
                 TupleComponents.ruid,
                 TupleComponents.ta,
                 TupleComponents.C,
-                TupleComponents.ruit,
+                TupleComponents.ruitn,
             }
         ),
     }
@@ -265,14 +266,14 @@ class FTuple(RtTuple):
     def __init__(
         self,
         ruid: Rui = None,
-        ruit: Rui = None,
+        ruitn: Rui = None,
         ta: TempRef = None,
         C: float = 1.0,
         rui: Rui = None,
     ):
         super().__init__(rui)
         self.ruid = ruid if ruid else Rui()
-        self.ruit = ruit if ruit else Rui()
+        self.ruitn = ruitn if ruitn else Rui()
         self.ta = ta
         self.C = C
 
@@ -281,7 +282,7 @@ class FTuple(RtTuple):
         attributes = {}
         attributes[self.params[TupleComponents.type]] = self.tuple_type.value
         attributes[self.params[TupleComponents.ruid]] = self.ruid
-        attributes[self.params[TupleComponents.ruit]] = self.ruit
+        attributes[self.params[TupleComponents.ruitn]] = self.ruitn
         attributes[self.params[TupleComponents.ta]] = self.ta
         attributes[self.params[TupleComponents.C]] = self.C
         attributes[self.params[TupleComponents.rui]] = self.rui
@@ -425,7 +426,6 @@ class NtoCTuple(RtTuple):
         ),
     }
 
-    # TODO Change code to be bytecode
     # TODO Make creating a tempref create an underlying time instance
     def __init__(
         self,
@@ -439,7 +439,7 @@ class NtoCTuple(RtTuple):
     ):
         super().__init__(rui)
         self.polarity = polarity
-        self.reason = r
+        self.relation = r
         self.ruics = ruics if ruics else Rui()
         self.ruip = ruip if ruip else Rui()
         self.code = code
@@ -449,7 +449,7 @@ class NtoCTuple(RtTuple):
         """Get the attributes of this tuplestring"""
         attributes = super().get_attributes()
         attributes[self.params[TupleComponents.polarity]] = self.polarity
-        attributes[self.params[TupleComponents.r]] = self.reason
+        attributes[self.params[TupleComponents.r]] = self.relation
         attributes[self.params[TupleComponents.ruics]] = self.ruics
         attributes[self.params[TupleComponents.ruip]] = self.ruip
         attributes[self.params[TupleComponents.code]] = self.code
