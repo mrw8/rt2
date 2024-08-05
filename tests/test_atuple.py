@@ -8,7 +8,7 @@ def print_ATuple(a):
     print("tuple information:")
     print("\trui: the rui that denotes tuple itself", str(a.rui.uuid))
     print("\truin: rui that was assigned to some PoR", str(a.ruin.uuid))
-    print("\tis ruin reserved? ", a.is_reserved())
+    print("\tis ruin reserved? ", a.ar)
     print(
         "\tis ruin singularly unique vs. potentially non-singularly unique: ", a.unique
     )

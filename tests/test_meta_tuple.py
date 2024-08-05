@@ -15,7 +15,7 @@ def print_d_tuple(dt):
         "> because of ",
         dt.event_reason,
         " at ",
-        str(dt.td),
+        str(dt.t),
     )
     print("\tany replacement tuples: ", dt.replacements)
     print()
@@ -45,16 +45,16 @@ x = ATuple(s, ruia=a)
 # the entity registering the tuples in the RTS
 dr = rui.Rui()
 # metadata or D tuple for w (ATuple)
-dt1 = DTuple(w.rui, rui.TempRef(), TupleEventType.INSERT, RtChangeReason.RELEVANCE, ruid=dr)
+dt1 = DTuple(ruid=a, ruit=a, event=TupleEventType.INSERT, event_reason=RtChangeReason.REALITY)
 # metadata or D tuple for x (ATuple)
-dt2 = DTuple(x.rui, rui.TempRef(), TupleEventType.INSERT, RtChangeReason.REALITY, ruid=dr)
+dt2 = DTuple(ruid=a, ruit=s, event=TupleEventType.INSERT, event_reason=RtChangeReason.REALITY)
 
 print_d_tuple(dt1)
 print_d_tuple(dt2)
 
 # now create an FTuple for each ATuple.  ruitn, ruia, ta, C, ruit=None):
 # actually at the moment this is a mistake. ATuples won't have associated FTuples. We just need to build the other template types first.
-ft1 = FTuple(w.rui, a, rui.TempRef(), rui.Rui(), rui.Rui())
-ft2 = FTuple(x.rui, a, rui.TempRef(), rui.Rui(), rui.Rui())
+ft1 = FTuple(ruitn=w.rui, ruid=a, ta=rui.TempRef(), C=0.76)
+ft2 = FTuple(ruitn=x.rui, ruid=a, ta=rui.TempRef(), C=0.5)
 print_f_tuple(ft1)
 print_f_tuple(ft2)
