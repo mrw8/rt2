@@ -11,6 +11,7 @@ from rt_core_v2.rttuple import (
     type_to_class,
     RuiStatus,
     PorType,
+    AttributesVisitor
 )
 from rt_core_v2.ids_codes.rui import Rui, TempRef
 from rt_core_v2.metadata import TupleEventType, RtChangeReason
@@ -31,10 +32,10 @@ class RtTupleJSONEncoder(json.JSONEncoder):
         else:
             super().default(obj)
 
-
+get_attributes = AttributesVisitor()
 def rttuple_to_json(input_rttuple: RtTuple):
     """Convert an RtTuple to a json object"""
-    return json.dumps(input_rttuple.get_attributes(), cls=RtTupleJSONEncoder)
+    return json.dumps(input_rttuple.accept(get_attributes), cls=RtTupleJSONEncoder)
 
 
 # TODO Swap this from an enum to a dictionary

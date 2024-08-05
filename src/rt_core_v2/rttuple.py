@@ -1,7 +1,7 @@
 import enum
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from typing import ClassVar
+from typing import ClassVar, override
 
 from rt_core_v2.ids_codes.rui import Rui, TempRef
 from rt_core_v2.metadata import TupleEventType, ValueEnum, RtChangeReason
@@ -72,7 +72,11 @@ class TupleComponents(enum.Enum):
     ruidt = "ruidt"
     rui = "rui"
 
-def Visitor():
+class RtTupleVisitor(ABC):
+    def __init__(self):
+        super().__init__()
+
+    @abstractmethod
     def visit(self, host):
         pass
 
@@ -94,16 +98,8 @@ class RtTuple(ABC):
             return False
         return self.__dict__ == other.__dict__
 
-    def accept(self, visitor: Visitor):
+    def accept(self, visitor: RtTupleVisitor):
         return visitor.visit(self)
-    
-    @abstractmethod
-    def get_attributes(self) -> dict:
-        """Get the attributes of this tuplestring"""
-        return {
-            self.params[TupleComponents.rui]: self.rui,
-            self.params[TupleComponents.type]: self.tuple_type,
-        }
 
 @dataclass
 class ATuple(RtTuple):
@@ -136,15 +132,6 @@ class ATuple(RtTuple):
     unique: PorType = PorType.singular
     t: TempRef = field(default_factory=TempRef)
 
-    def get_attributes(self):
-        """Get the attributes of this tuplestring"""
-        attributes = super().get_attributes()
-        attributes[self.params[TupleComponents.ruia]] = self.ruia
-        attributes[self.params[TupleComponents.ruin]] = self.ruin
-        attributes[self.params[TupleComponents.ar]] = self.ar
-        attributes[self.params[TupleComponents.unique]] = self.unique
-        attributes[self.params[TupleComponents.t]] = self.t
-        return attributes
 
 @dataclass
 class DTuple(RtTuple):
@@ -182,18 +169,6 @@ class DTuple(RtTuple):
     #TODO Make replacements a shallow copy
     replacements: list[Rui] = field(default_factory=list)
 
-    def get_attributes(self):
-        """Get the attributes of this tuplestring"""
-        attributes = {}
-        attributes[self.params[TupleComponents.type]] = self.tuple_type.value
-        attributes[self.params[TupleComponents.ruid]] = self.ruid
-        attributes[self.params[TupleComponents.rui]] = self.rui
-        attributes[self.params[TupleComponents.ruit]] = self.ruit
-        attributes[self.params[TupleComponents.event]] = self.event.value
-        attributes[self.params[TupleComponents.event_reason]] = self.event_reason.value
-        attributes[self.params[TupleComponents.t]] = self.t
-        attributes[self.params[TupleComponents.replacements]] = self.replacements
-        return attributes
 
 @dataclass
 class FTuple(RtTuple):
@@ -226,17 +201,6 @@ class FTuple(RtTuple):
     ta: TempRef = field(default_factory=TempRef)
     C: float = 1.0
 
-    def get_attributes(self):
-        """Get the attributes of this tuple"""
-        attributes = {}
-        attributes[self.params[TupleComponents.type]] = self.tuple_type.value
-        attributes[self.params[TupleComponents.ruid]] = self.ruid
-        attributes[self.params[TupleComponents.ruitn]] = self.ruitn
-        attributes[self.params[TupleComponents.ta]] = self.ta
-        attributes[self.params[TupleComponents.C]] = self.C
-        attributes[self.params[TupleComponents.rui]] = self.rui
-
-        return attributes
 
 @dataclass
 class NtoNTuple(RtTuple):
@@ -268,15 +232,6 @@ class NtoNTuple(RtTuple):
     #TODO Make a copy of p
     p: list[Rui] = field(default_factory=[])
     tr: TempRef = field(default_factory=TempRef)
-
-    def get_attributes(self):
-        """Get the attributes of this tuplestring"""
-        attributes = super().get_attributes()
-        attributes[self.params[TupleComponents.polarity]] = self.polarity
-        attributes[self.params[TupleComponents.r]] = self.r
-        attributes[self.params[TupleComponents.p_list]] = self.p
-        attributes[self.params[TupleComponents.tr]] = self.tr
-        return attributes
 
 @dataclass
 class NtoRTuple(RtTuple):
@@ -311,16 +266,6 @@ class NtoRTuple(RtTuple):
     ruin: Rui = field(default_factory=Rui)
     ruir: Rui = field(default_factory=Rui)
     tr: TempRef = field(default_factory=TempRef)
-
-    def get_attributes(self):
-        """Get the attributes of this tuplestring"""
-        attributes = super().get_attributes()
-        attributes[self.params[TupleComponents.polarity]] = self.polarity
-        attributes[self.params[TupleComponents.inst]] = self.inst
-        attributes[self.params[TupleComponents.ruin]] = self.ruin
-        attributes[self.params[TupleComponents.ruir]] = self.ruir
-        attributes[self.params[TupleComponents.tr]] = self.tr
-        return attributes
 
 
 # TODO Use concepts
@@ -363,17 +308,6 @@ class NtoCTuple(RtTuple):
     tr: TempRef = field(default_factory=TempRef)
     # TODO Make creating a tempref create an underlying time instance
 
-    def get_attributes(self):
-        """Get the attributes of this tuplestring"""
-        attributes = super().get_attributes()
-        attributes[self.params[TupleComponents.polarity]] = self.polarity
-        attributes[self.params[TupleComponents.r]] = self.r
-        attributes[self.params[TupleComponents.ruics]] = self.ruics
-        attributes[self.params[TupleComponents.ruin]] = self.ruin
-        attributes[self.params[TupleComponents.code]] = self.code
-        attributes[self.params[TupleComponents.tr]] = self.tr
-        return attributes
-
 
 # We use NtoDE instead of NtoI, and we use an instance for the identifying descriptor
 # or IdD associated with:
@@ -412,15 +346,6 @@ class NtoDETuple(RtTuple):
     data: str =""
     ruidt: Rui = field(default_factory=Rui)
 
-    def get_attributes(self):
-        """Get the attributes of this tuplestring"""
-        attributes = super().get_attributes()
-        attributes[self.params[TupleComponents.polarity]] = self.polarity
-        attributes[self.params[TupleComponents.ruin]] = self.ruin
-        attributes[self.params[TupleComponents.data]] = self.data
-        attributes[self.params[TupleComponents.ruidt]] = self.ruidt
-        return attributes
-
 @dataclass
 class NtoLackRTuple(RtTuple):
     """Tuple type that asserts that a repeatable portion of reality in a does not have a specified relationship with a non-repeateble portion of reality
@@ -452,16 +377,6 @@ class NtoLackRTuple(RtTuple):
     ruir: Rui = field(default_factory=Rui)
     tr: TempRef = field(default_factory=TempRef)
 
-    def get_attributes(self):
-        """Get the attributes of this tuplestring"""
-        attributes = super().get_attributes()
-        attributes[self.params[TupleComponents.r]] = self.r
-        attributes[self.params[TupleComponents.ruin]] = self.ruin
-        attributes[self.params[TupleComponents.ruir]] = self.ruir
-        attributes[self.params[TupleComponents.tr]] = self.tr
-        return attributes
-
-
 """Mapping from tuple id to the corresponding tuple class"""
 type_to_class = {
     TupleType.A: ATuple,
@@ -473,3 +388,103 @@ type_to_class = {
     TupleType.NtoC: NtoCTuple,
     TupleType.NtoLackR: NtoLackRTuple,
 }
+
+class AttributesVisitor(RtTupleVisitor):
+    def __init__(self):
+        super().__init__()
+
+    @override
+    def visit(self, host:RtTuple):
+        attributes = {}
+        attributes = {
+            host.params[TupleComponents.rui]: host.rui,
+            host.params[TupleComponents.type]: host.tuple_type,
+        }
+        match host.tuple_type:
+            case TupleType.A:
+                attributes |= self.visit_a(host)
+            case TupleType.D:
+                attributes |= self.visit_d(host)
+            case TupleType.F:
+                attributes |= self.visit_f(host)
+            case TupleType.NtoN:
+                attributes |= self.visit_nton(host)
+            case TupleType.NtoR:
+                attributes |= self.visit_ntor(host)
+            case TupleType.NtoC:
+                attributes |= self.visit_ntoc(host)
+            case TupleType.NtoDE:
+                attributes |= self.visit_ntode(host)
+            case TupleType.NtoLackR:
+                attributes |= self.visit_ntolackr(host)
+        return attributes
+
+    def visit_a(self, host:ATuple):
+        attributes = {}
+        attributes[host.params[TupleComponents.ruia]] = host.ruia
+        attributes[host.params[TupleComponents.ruin]] = host.ruin
+        attributes[host.params[TupleComponents.ar]] = host.ar
+        attributes[host.params[TupleComponents.unique]] = host.unique
+        attributes[host.params[TupleComponents.t]] = host.t
+        return attributes
+
+    def visit_d(self, host:DTuple):
+        attributes = {}
+        attributes[host.params[TupleComponents.ruid]] = host.ruid
+        attributes[host.params[TupleComponents.ruit]] = host.ruit
+        attributes[host.params[TupleComponents.event]] = host.event.value
+        attributes[host.params[TupleComponents.event_reason]] = host.event_reason.value
+        attributes[host.params[TupleComponents.t]] = host.t
+        attributes[host.params[TupleComponents.replacements]] = host.replacements
+        return attributes
+
+    def visit_f(self, host:FTuple):
+        attributes = {}
+        attributes[host.params[TupleComponents.ruid]] = host.ruid
+        attributes[host.params[TupleComponents.ruitn]] = host.ruitn
+        attributes[host.params[TupleComponents.ta]] = host.ta
+        attributes[host.params[TupleComponents.C]] = host.C
+        return attributes
+
+    def visit_nton(self, host:NtoNTuple):
+        attributes = {}
+        attributes[host.params[TupleComponents.polarity]] = host.polarity
+        attributes[host.params[TupleComponents.r]] = host.r
+        attributes[host.params[TupleComponents.p_list]] = host.p
+        attributes[host.params[TupleComponents.tr]] = host.tr
+        return attributes
+
+    def visit_ntor(self, host:NtoRTuple):
+        attributes = {}
+        attributes[host.params[TupleComponents.polarity]] = host.polarity
+        attributes[host.params[TupleComponents.inst]] = host.inst
+        attributes[host.params[TupleComponents.ruin]] = host.ruin
+        attributes[host.params[TupleComponents.ruir]] = host.ruir
+        attributes[host.params[TupleComponents.tr]] = host.tr
+        return attributes
+
+    def visit_ntoc(self, host:NtoCTuple):
+        attributes = {}
+        attributes[host.params[TupleComponents.polarity]] = host.polarity
+        attributes[host.params[TupleComponents.r]] = host.r
+        attributes[host.params[TupleComponents.ruics]] = host.ruics
+        attributes[host.params[TupleComponents.ruin]] = host.ruin
+        attributes[host.params[TupleComponents.code]] = host.code
+        attributes[host.params[TupleComponents.tr]] = host.tr
+        return attributes
+
+    def visit_ntode(self, host:NtoDETuple):
+        attributes = {}
+        attributes[host.params[TupleComponents.polarity]] = host.polarity
+        attributes[host.params[TupleComponents.ruin]] = host.ruin
+        attributes[host.params[TupleComponents.data]] = host.data
+        attributes[host.params[TupleComponents.ruidt]] = host.ruidt
+        return attributes
+
+    def visit_ntolackr(self, host:NtoLackRTuple):
+        attributes = {}
+        attributes[host.params[TupleComponents.r]] = host.r
+        attributes[host.params[TupleComponents.ruin]] = host.ruin
+        attributes[host.params[TupleComponents.ruir]] = host.ruir
+        attributes[host.params[TupleComponents.tr]] = host.tr
+        return attributes
