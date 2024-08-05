@@ -104,7 +104,6 @@ json_entry_converter = {
     TupleComponents.ruit: JsonEntryConverter.str_to_rui,
     TupleComponents.ruitn: JsonEntryConverter.str_to_rui,
     TupleComponents.t: JsonEntryConverter.process_temp_ref,
-    TupleComponents.td: JsonEntryConverter.process_temp_ref,
     TupleComponents.ta: JsonEntryConverter.process_temp_ref,
     TupleComponents.tr: JsonEntryConverter.process_temp_ref,
     TupleComponents.ar: lambda x: RuiStatus(x),
