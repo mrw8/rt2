@@ -23,36 +23,34 @@ class RtChangeReason(ValueEnum):
     These reasons include:
       (1) change in belief
       (2) change in reality
-      (3) change in relevance
-      (4) recognition of an error or mistake"""
+      (3) change in relevance"""
 
     BELIEF = 4
     REALITY = 5
     RELEVANCE = 6
-    MISTAKE = 7
-    A1 = 8
-    A2 = 9
-    A3 = 10
-    A4 = 11
-    R01 = 12
-    R02 = 13
-    R03 = 14
-    R04 = 15
-    R05 = 16
-    R06 = 17
-    R07 = 18
-    R08 = 19
-    R09 = 20
-    R10 = 21
-    P1 = 22
-    P2 = 23
-    P3 = 24
-    AM1 = 25
-    AM2 = 26
-    RM1 = 27
-    RM2 = 28
-    PM1 = 29
-    PM2 = 30
+    A1 = 7
+    A2 = 8
+    A3 = 9
+    A4 = 10
+    R01 = 11
+    R02 = 12
+    R03 = 13
+    R04 = 14
+    R05 = 15
+    R06 = 16
+    R07 = 17
+    R08 = 18
+    R09 = 19
+    R10 = 20
+    P1 = 21
+    P2 = 22
+    P3 = 23
+    AM1 = 24
+    AM2 = 25
+    RM1 = 26
+    RM2 = 27
+    PM1 = 28
+    PM2 = 39
 
 
 pretty_print_dict = {
@@ -62,7 +60,6 @@ pretty_print_dict = {
     RtChangeReason.BELIEF: "change in belief",
     RtChangeReason.REALITY: "change in reality",
     RtChangeReason.RELEVANCE: "change in relevance",
-    RtChangeReason.MISTAKE: "recognizing a mistake",
     RtChangeReason.A1: "The RUI does not refer",
     RtChangeReason.A2: "The RUI refers to two or more distinct portions of reality",
     RtChangeReason.A3: "The RUI is not the only RUI in the RTS that refers to this portion of reality",
