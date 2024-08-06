@@ -1,4 +1,3 @@
-from datetime import datetime, timezone
 from rt_core_v2.ids_codes import Rui
 from rt_core_v2.rttuple import DTuple, FTuple, ATuple
 from rt_core_v2.metadata_accessory import TupleEventType, RtChangeReason
