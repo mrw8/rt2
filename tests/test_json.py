@@ -3,6 +3,7 @@ import json
 from rt_core_v2.ids_codes.rui import Rui, TempRef
 from rt_core_v2.rttuple import (
     ANTuple,
+    ARTuple,
     DTuple,
     FTuple,
     NtoNTuple,
@@ -34,6 +35,7 @@ ruics = Rui()
 ruir = Rui()
 ruin = Rui()
 ruidt = Rui()
+ruio = Rui()
 rui = Rui()
 
 print("HIIII")
@@ -84,6 +86,20 @@ def test_antuple_json():
     recreated_a = json_to_rttuple(formatted_a)
     print(f"Original ANTuple:  {a.accept(get_attributes)}")
     print(f"Recreated ANTuple:  {recreated_a.accept(get_attributes)}")
+    assert a == recreated_a
+
+
+def test_artuple_json():
+    a = ARTuple(rui=rui, ruia=ruia, ruir=ruir, ruio=ruio)
+    formatted_a = format_rttuple(a)
+    expected_a = f'{{"rui": "{rui}", "type": "{a.tuple_type}", "ruia": "{ruia}", "ruir": "{ruir}", "ruio": "{ruio}", "unique": "{a.unique}", "ar": "{a.ar}", "t": "{a.t}"}}'
+    print("ARtuple Expected:  \n" + expected_a)
+    print("ARtuple Processed:  \n" + formatted_a)
+    assert compare(formatted_a, expected_a)
+
+    recreated_a = json_to_rttuple(formatted_a)
+    print(f"Original ARTuple:  {a.accept(get_attributes)}")
+    print(f"Recreated ARTuple:  {recreated_a.accept(get_attributes)}")
     assert a == recreated_a
 
 
