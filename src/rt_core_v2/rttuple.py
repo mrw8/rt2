@@ -48,6 +48,7 @@ class PorType(ValueEnum):
 class TupleComponents(enum.Enum):
     ruit = "ruit"
     ruitn = "ruitn"
+    ruio = 'ruio'
     type = "type"
     ar = "ar"
     ruia = "ruia"
@@ -56,7 +57,6 @@ class TupleComponents(enum.Enum):
     ruid = "ruid"
     event = "event"
     event_reason = "event_reason"
-    td = "td"
     replacements = "replacements"
     ta = "ta"
     C = "C"
@@ -136,6 +136,7 @@ class ANTuple(RtTuple):
 
 
 #TODO Add ontology field
+#TODO Figure out the process for inserting an ontology. Is it just an instance that has an ntode tuple linking to the website?
 @dataclass
 class ARTuple(RtTuple):
     """Referent Tracking assignment tuple that registers assignment of an RUI to a PoR
@@ -157,12 +158,14 @@ class ARTuple(RtTuple):
                 TupleComponents.t,
                 TupleComponents.ruia,
                 TupleComponents.unique,
-                TupleComponents.ruin,
+                TupleComponents.ruir,
+                TupleComponents.ruio,
             }
         ),
     }
     ruia: Rui = field(default_factory=Rui)
-    ruin: Rui = field(default_factory=Rui)
+    ruir: Rui = field(default_factory=Rui)
+    ruio: Rui = field(default_factory=Rui)
     ar: RuiStatus = RuiStatus.assigned
     unique: PorType = PorType.singular
     t: TempRef = field(default_factory=TempRef)
@@ -466,10 +469,11 @@ class AttributesVisitor(RtTupleVisitor):
         attributes[host.params[TupleComponents.t]] = host.t
         return attributes
     
-    def visit_ar(self, host:ANTuple):
+    def visit_ar(self, host:ARTuple):
         attributes = {}
         attributes[host.params[TupleComponents.ruia]] = host.ruia
-        attributes[host.params[TupleComponents.ruin]] = host.ruin
+        attributes[host.params[TupleComponents.ruir]] = host.ruir
+        attributes[host.params[TupleComponents.ruio]] = host.ruio
         attributes[host.params[TupleComponents.ar]] = host.ar
         attributes[host.params[TupleComponents.unique]] = host.unique
         attributes[host.params[TupleComponents.t]] = host.t
