@@ -2,7 +2,7 @@ import json
 
 from rt_core_v2.ids_codes.rui import Rui, TempRef
 from rt_core_v2.rttuple import (
-    ATuple,
+    ANTuple,
     DTuple,
     FTuple,
     NtoNTuple,
@@ -73,17 +73,17 @@ def compare(formatted, expected):
 """All of the below tuple tests first check whether converting from a tuple object to a json functions correclty then checks whether the reverse change is correct."""
 
 
-def test_atuple_json():
-    a = ATuple(rui=rui, ruia=ruia, ruin=ruin)
+def test_antuple_json():
+    a = ANTuple(rui=rui, ruia=ruia, ruin=ruin)
     formatted_a = format_rttuple(a)
     expected_a = f'{{"ruin": "{ruin}", "ruia": "{ruia}", "rui": "{rui}", "type": "{a.tuple_type}", "unique": "{a.unique}", "ar": "{a.ar}", "t": "{a.t}"}}'
-    print("Atuple Expected:  \n" + expected_a)
-    print("Atuple Processed:  \n" + formatted_a)
+    print("ANtuple Expected:  \n" + expected_a)
+    print("ANtuple Processed:  \n" + formatted_a)
     assert compare(formatted_a, expected_a)
 
     recreated_a = json_to_rttuple(formatted_a)
-    print(f"Original ATuple:  {a.accept(get_attributes)}")
-    print(f"Recreated ATuple:  {recreated_a.accept(get_attributes)}")
+    print(f"Original ANTuple:  {a.accept(get_attributes)}")
+    print(f"Recreated ANTuple:  {recreated_a.accept(get_attributes)}")
     assert a == recreated_a
 
 

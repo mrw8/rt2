@@ -25,7 +25,8 @@ class RuiStatus(ValueEnum):
 
 
 class TupleType(ValueEnum):
-    A = "A"
+    AR = "AR"
+    AN = "AN"
     D = "D"
     F = "F"
     NtoDE = "NtoDE"
@@ -102,18 +103,52 @@ class RtTuple(ABC):
         return visitor.visit(self)
 
 @dataclass
-class ATuple(RtTuple):
+class ANTuple(RtTuple):
     """Referent Tracking assignment tuple that registers assignment of an RUI to a PoR
 
     Attributes:
     ar -- The status of ruin
     ruin -- The Rui that is being assigned for the first time
-    ruia -- The Rui of the author of this ATuple
+    ruia -- The Rui of the author of this ANTuple
     unique -- Asserts whether this is a non-repeatable or repeatable portion of reality
-    t -- The time of the creation of the ATuple
+    t -- The time of the creation of the ANTuple
     """
 
-    tuple_type: ClassVar[TupleType] = TupleType.A
+    tuple_type: ClassVar[TupleType] = TupleType.AN
+    params: ClassVar[dict[TupleComponents, str]] = {
+        **RtTuple.params,
+        **enum_to_dict(
+            {
+                TupleComponents.ar,
+                TupleComponents.t,
+                TupleComponents.ruia,
+                TupleComponents.unique,
+                TupleComponents.ruin,
+            }
+        ),
+    }
+    ruia: Rui = field(default_factory=Rui)
+    ruin: Rui = field(default_factory=Rui)
+    ar: RuiStatus = RuiStatus.assigned
+    unique: PorType = PorType.singular
+    t: TempRef = field(default_factory=TempRef)
+
+
+
+#TODO Add ontology field
+@dataclass
+class ARTuple(RtTuple):
+    """Referent Tracking assignment tuple that registers assignment of an RUI to a PoR
+
+    Attributes:
+    ar -- The status of ruin
+    ruin -- The Rui that is being assigned for the first time
+    ruia -- The Rui of the author of this ARTuple
+    unique -- Asserts whether this is a non-repeatable or repeatable portion of reality
+    t -- The time of the creation of the ARTuple
+    """
+
+    tuple_type: ClassVar[TupleType] = TupleType.AR
     params: ClassVar[dict[TupleComponents, str]] = {
         **RtTuple.params,
         **enum_to_dict(
@@ -379,7 +414,8 @@ class NtoLackRTuple(RtTuple):
 
 """Mapping from tuple id to the corresponding tuple class"""
 type_to_class = {
-    TupleType.A: ATuple,
+    TupleType.AN: ANTuple,
+    TupleType.AR: ARTuple,
     TupleType.D: DTuple,
     TupleType.F: FTuple,
     TupleType.NtoDE: NtoDETuple,
@@ -401,8 +437,10 @@ class AttributesVisitor(RtTupleVisitor):
             host.params[TupleComponents.type]: host.tuple_type,
         }
         match host.tuple_type:
-            case TupleType.A:
-                attributes |= self.visit_a(host)
+            case TupleType.AN:
+                attributes |= self.visit_an(host)
+            case TupleType.AR:
+                attributes |= self.visit_ar(host)
             case TupleType.D:
                 attributes |= self.visit_d(host)
             case TupleType.F:
@@ -419,7 +457,16 @@ class AttributesVisitor(RtTupleVisitor):
                 attributes |= self.visit_ntolackr(host)
         return attributes
 
-    def visit_a(self, host:ATuple):
+    def visit_an(self, host:ANTuple):
+        attributes = {}
+        attributes[host.params[TupleComponents.ruia]] = host.ruia
+        attributes[host.params[TupleComponents.ruin]] = host.ruin
+        attributes[host.params[TupleComponents.ar]] = host.ar
+        attributes[host.params[TupleComponents.unique]] = host.unique
+        attributes[host.params[TupleComponents.t]] = host.t
+        return attributes
+    
+    def visit_ar(self, host:ANTuple):
         attributes = {}
         attributes[host.params[TupleComponents.ruia]] = host.ruia
         attributes[host.params[TupleComponents.ruin]] = host.ruin
