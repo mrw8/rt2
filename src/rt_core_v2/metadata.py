@@ -93,7 +93,6 @@ description_dict = {
     RtChangeReason.BELIEF: "the entity making this update to the system had a change in belief about what is true of reality and is making this update to reflect its change in belief.",
     RtChangeReason.REALITY: "the entity making this update to the system recognized that reality has changed and is making this update to reflect new reality",
     RtChangeReason.RELEVANCE: "the entity making this update to the system changed what it deems relevant to the purposes of the system and is making this update to reflect this change in relevance",
-    RtChangeReason.MISTAKE: "the entity making this update recognized a mistake and is updating the system to correct it",
     RtChangeReason.A1: "The RUI that denotes the primary referent of the tuple, typically the ruin parameter, does not refer to any existing entity in reality after all",
     RtChangeReason.A2: "The RUI that denotes the primary referent of the tuple, typically the ruin parameter, refers to two or more numerically distinct portions of reality",
     RtChangeReason.A3: "The RUI that denotes the primary referent of the tuple, typically the ruin parameter, is not the only RUI in the RTS that refers to this portion of reality and the adjudication is to retire and replace it",

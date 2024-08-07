@@ -1,6 +1,6 @@
 from rt_core_v2.ids_codes.rui import Rui, TempRef
 from rt_core_v2.rttuple import (
-    ATuple,
+    ANTuple,
     DTuple,
     FTuple,
     NtoNTuple,
@@ -43,9 +43,9 @@ data = "data insert"
 
 #TODO Fill out tests for tuple factory usage
 def test_atuple_factory():
-    a = ATuple(ruit, ruia, ruin, ar, unique, time_1)
+    a = ANTuple(ruit, ruia, ruin, ar, unique, time_1)
     # a_args = {TupleComponents.ruit:ruit, TupleComponents.ruit:ruia, TupleComponents.ruit:ruin, TupleComponents.ruit:ar, TupleComponents.ruit:unique, TupleComponents.ruit:time_1}
-    # a_fac, d_fac = insert_rttuple({:ruit, :ruia, :ruin, :ar, :unique, :time_1}, TupleType.ATuple)
+    # a_fac, d_fac = insert_rttuple({:ruit, :ruia, :ruin, :ar, :unique, :time_1}, TupleType.ANTuple)
 # def test_dtuple_factory():
 
 # def test_ftuple_factory():
