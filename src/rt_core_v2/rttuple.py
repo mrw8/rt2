@@ -264,16 +264,12 @@ class FTuple(RtTuple):
         **RtTuple.params,
         **enum_to_dict(
             {
-                TupleComponents.ruid,
-                TupleComponents.ta,
                 TupleComponents.C,
                 TupleComponents.ruitn,
             }
         ),
     }
-    ruid: Rui = field(default_factory=Rui)
     ruitn: Rui = field(default_factory=Rui)
-    ta: TempRef = field(default_factory=TempRef)
     C: float = 1.0
 
 
@@ -546,9 +542,7 @@ class AttributesVisitor(RtTupleVisitor):
 
     def visit_f(self, host:FTuple):
         attributes = {}
-        attributes[host.params[TupleComponents.ruid]] = host.ruid
         attributes[host.params[TupleComponents.ruitn]] = host.ruitn
-        attributes[host.params[TupleComponents.ta]] = host.ta
         attributes[host.params[TupleComponents.C]] = host.C
         return attributes
 

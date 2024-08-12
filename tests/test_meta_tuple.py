@@ -23,14 +23,10 @@ def print_d_tuple(dt):
 
 def print_f_tuple(ft):
     print(
-        "<",
-        ft.ruid.uuid,
-        "> has confidence level '",
+        "confidence level '",
         ft.C,
         "' in tuple <",
         ft.ruitn.uuid,
-        "> at ",
-        ft.ta,
     )
     print("\ttuple rui: ", ft.rui.uuid)
 
@@ -54,7 +50,7 @@ print_d_tuple(dt2)
 
 # now create an FTuple for each ANTuple.  ruitn, ruia, ta, C, ruit=None):
 # actually at the moment this is a mistake. ANTuples won't have associated FTuples. We just need to build the other template types first.
-ft1 = FTuple(ruitn=w.rui, ruid=a, ta=rui.TempRef(), C=0.76)
-ft2 = FTuple(ruitn=x.rui, ruid=a, ta=rui.TempRef(), C=0.5)
+ft1 = FTuple(ruitn=w.rui, C=0.76)
+ft2 = FTuple(ruitn=x.rui, C=0.5)
 print_f_tuple(ft1)
 print_f_tuple(ft2)
