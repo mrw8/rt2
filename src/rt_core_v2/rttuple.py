@@ -27,7 +27,8 @@ class RuiStatus(ValueEnum):
 class TupleType(ValueEnum):
     AR = "AR"
     AN = "AN"
-    D = "D"
+    Dc = "Dc"
+    Di = "Di"
     F = "F"
     NtoDE = "NtoDE"
     NtoN = "NtoN"
@@ -172,7 +173,7 @@ class ARTuple(RtTuple):
 
 
 @dataclass
-class DTuple(RtTuple):
+class DiTuple(RtTuple):
     """Referent Tracking metadata tuple that stores information regarding the instantation of other tuple types
 
     Attributes:
@@ -185,7 +186,43 @@ class DTuple(RtTuple):
 
     # D#< RUId, RUIT, t, ‘I’/E, R, S >
 
-    tuple_type: ClassVar[TupleType] = TupleType.D
+    tuple_type: ClassVar[TupleType] = TupleType.Di
+    params: ClassVar[dict[TupleComponents, str]] = {
+        **RtTuple.params,
+        **enum_to_dict(
+            {
+                TupleComponents.ruid,
+                TupleComponents.event_reason,
+                TupleComponents.t,
+                TupleComponents.ruit,
+                TupleComponents.ruia,
+                TupleComponents.ta,
+            }
+        ),
+    }
+    ruit: Rui = field(default_factory=Rui)
+    ruid: Rui = field(default_factory=Rui)
+    t: TempRef = field(default_factory=TempRef)
+    event_reason: RtChangeReason = field(default_factory=RtChangeReason.REALITY)
+    ruia: Rui = field(default_factory=Rui)
+    ta: TempRef = field(default_factory=TempRef)
+
+
+@dataclass
+class DcTuple(RtTuple):
+    """Referent Tracking metadata tuple that stores information regarding the instantation of other tuple types
+
+    Attributes:
+    ruit -- The ruit of another tuple that this tuple stores information about
+    event -- The category of reason that caused the creation of tuple ruit
+    event_reason -- The reason for the event above occuring
+    td -- The time of this tuple's creation
+    replacements -- Any tuples that ruit replaces
+    """
+
+    # D#< RUId, RUIT, t, ‘I’/E, R, S >
+
+    tuple_type: ClassVar[TupleType] = TupleType.Dc
     params: ClassVar[dict[TupleComponents, str]] = {
         **RtTuple.params,
         **enum_to_dict(
@@ -419,7 +456,8 @@ class NtoLackRTuple(RtTuple):
 type_to_class = {
     TupleType.AN: ANTuple,
     TupleType.AR: ARTuple,
-    TupleType.D: DTuple,
+    TupleType.Di: DiTuple,
+    TupleType.Dc: DcTuple,
     TupleType.F: FTuple,
     TupleType.NtoDE: NtoDETuple,
     TupleType.NtoN: NtoNTuple,
@@ -448,8 +486,10 @@ class AttributesVisitor(RtTupleVisitor):
                 attributes |= self.visit_an(host)
             case TupleType.AR:
                 attributes |= self.visit_ar(host)
-            case TupleType.D:
-                attributes |= self.visit_d(host)
+            case TupleType.Di:
+                attributes |= self.visit_di(host)
+            case TupleType.Dc:
+                attributes |= self.visit_dc(host)
             case TupleType.F:
                 attributes |= self.visit_f(host)
             case TupleType.NtoN:
@@ -483,7 +523,18 @@ class AttributesVisitor(RtTupleVisitor):
         attributes[host.params[TupleComponents.t]] = host.t
         return attributes
 
-    def visit_d(self, host:DTuple):
+    def visit_di(self, host:DiTuple):
+        attributes = {}
+        attributes[host.params[TupleComponents.ruid]] = host.ruid
+        attributes[host.params[TupleComponents.ruit]] = host.ruit
+        attributes[host.params[TupleComponents.event_reason]] = host.event_reason.value
+        attributes[host.params[TupleComponents.t]] = host.t
+        attributes[host.params[TupleComponents.ruia]] = host.ruia
+        attributes[host.params[TupleComponents.ta]] = host.ta
+        return attributes
+
+
+    def visit_dc(self, host:DcTuple):
         attributes = {}
         attributes[host.params[TupleComponents.ruid]] = host.ruid
         attributes[host.params[TupleComponents.ruit]] = host.ruit

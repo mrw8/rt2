@@ -1,5 +1,5 @@
 from rt_core_v2.ids_codes import rui
-from rt_core_v2.rttuple import DTuple, FTuple, ANTuple
+from rt_core_v2.rttuple import DcTuple, FTuple, ANTuple
 from rt_core_v2.metadata import TupleEventType, RtChangeReason
 
 
@@ -45,9 +45,9 @@ x = ANTuple(s, ruia=a)
 # the entity registering the tuples in the RTS
 dr = rui.Rui()
 # metadata or D tuple for w (ANTuple)
-dt1 = DTuple(ruid=a, ruit=a, event=TupleEventType.INSERT, event_reason=RtChangeReason.REALITY)
+dt1 = DcTuple(ruid=a, ruit=a, event=TupleEventType.INSERT, event_reason=RtChangeReason.REALITY)
 # metadata or D tuple for x (ANTuple)
-dt2 = DTuple(ruid=a, ruit=s, event=TupleEventType.INSERT, event_reason=RtChangeReason.REALITY)
+dt2 = DcTuple(ruid=a, ruit=s, event=TupleEventType.INSERT, event_reason=RtChangeReason.REALITY)
 
 print_d_tuple(dt1)
 print_d_tuple(dt2)
