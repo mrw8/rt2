@@ -39,7 +39,6 @@ ruidt = Rui()
 ruio = Rui()
 rui = Rui()
 
-print("HIIII")
 get_attributes = AttributesVisitor()
 
 time_1 = TempRef()
