@@ -429,6 +429,10 @@ type_to_class = {
 }
 
 class AttributesVisitor(RtTupleVisitor):
+    """
+    Visitor that converts a tuple's representation to a dictionary 
+    mapping the TupleComponent entry type to the value of the entry
+    """
     def __init__(self):
         super().__init__()
 

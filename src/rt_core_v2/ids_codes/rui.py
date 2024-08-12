@@ -55,7 +55,7 @@ class TempRef:
         return self.__dict__ == other.__dict__
 
 class Relationship:
-
+    
     def __init__(self, uri: str, ontology: Rui):
         self.uri = uri
         self.ontology = ontology
