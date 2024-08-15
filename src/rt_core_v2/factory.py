@@ -1,4 +1,4 @@
-from rt_core_v2.rttuple import TupleType, DiTuple, DcTuple, TupleComponents, RuiStatus, PorType, TempRef, type_to_class
+from rt_core_v2.rttuple import TupleType, DITuple, DCTuple, TupleComponents, RuiStatus, PorType, TempRef, type_to_class
 from rt_core_v2.metadata import RtChangeReason, TupleEventType
 from rt_core_v2.ids_codes.rui import Rui
 
@@ -18,12 +18,10 @@ def rttuple_factory(tuple_arguments: dict, type: TupleType, t: TempRef, event: T
         return None
     try:
         concrete_tuple = type_to_class[type](**tuple_arguments)
-        meta_tuple = DcTuple(
+        meta_tuple = DITuple(
             concrete_tuple.rui,
             t,
-            event, 
             event_reason, 
-            replacements,
             author,
         )
     except TypeError:

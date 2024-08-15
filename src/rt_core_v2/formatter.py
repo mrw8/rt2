@@ -21,15 +21,18 @@ from rt_core_v2.metadata import TupleEventType, RtChangeReason
 class RtTupleJSONEncoder(json.JSONEncoder):
     """Converts contents of RtTuples into a json representation"""
 
-    encoded_classes = {Rui, TempRef, PorType, RuiStatus, TupleType}
+    str_classes = {Rui, TempRef, PorType, RuiStatus,}
+    val_classes = {TupleType, RtChangeReason, TupleEventType,}
 
     def __init__(self, *args, **kwargs):
         json.JSONEncoder.__init__(self, *args, **kwargs)
 
     def default(self, obj):
         """If the object is an instance of an entry in encoded_classes then convert it to a string for the JSON"""
-        if any(isinstance(obj, cls) for cls in self.encoded_classes):
+        if any(isinstance(obj, cls) for cls in self.str_classes):
             return str(obj)
+        if any(isinstance(obj, cls) for cls in self.val_classes):
+            return obj.value
         else:
             super().default(obj)
 
