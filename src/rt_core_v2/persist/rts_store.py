@@ -1,12 +1,13 @@
 from abc import ABC, abstractmethod
 from typing import Optional
 
-from rt_core_v2.rttuple import RtTuple, TupleType, TupleComponents
-from rt_core_v2.ids_codes.Rui import Rui, TempRef
-from rt_core_v2.metadata_accessory import RtChangeReason, TupleEventType
+from rt_core_v2.rttuple import RtTuple, TupleType
+from rt_core_v2.ids_codes.rui import Rui, TempRef
+from rt_core_v2.metadata import RtChangeReason, TupleEventType
 
-#TODO Change fields to be up to date with referent tracking 2.0 
-class TupleQuery():
+
+# TODO Change fields to be up to date with referent tracking 2.0
+class TupleQuery:
     def __init__(self):
         self.types: set[TupleType] = set()
         self.rui: Optional[Rui] = None
@@ -22,68 +23,105 @@ class TupleQuery():
         self.error_code: Optional[TupleEventType] = None
         self.temporal_entity_name: Optional[str] = None
         self.tr: Optional[TempRef] = None
-        #TODO Figure out particular reference type for self.p
+        # TODO Figure out particular reference type for self.p
         self.p: Optional[Rui] = None
         self.polarity: Optional[bool] = None
 
-    #TODO Make this general
+    # TODO Make this a single general function for all tuples, others will be deprecated.
     # def parameters_match_tuple(self, tuple_type):
-    
+
+    # Tuples types are filtered out not by the query sharing qualiting that the tuple has, but by the query having any quality that the tuple type does not
+
     def match_atuple(self):
         if self.types and TupleType.A not in self.types:
             return False
-        if self.relationship_rui or self.data or self.change_reason or self.datatype or self.error_code or self.temporal_entity_name or self.universal_rui or self.polarity:
+        if (
+            self.relationship_rui
+            or self.data
+            or self.change_reason
+            or self.datatype
+            or self.error_code
+            or self.temporal_entity_name
+            or self.universal_rui
+            or self.polarity
+        ):
             return False
         return True
-    
+
     def match_dtuple(self):
         if self.types and TupleType.D not in self.types:
             return False
-        if self.data or self.datatype or self.temporal_entity_name or self.relationship_rui or self.universal_rui or self.polarity:
+        if (
+            self.data
+            or self.datatype
+            or self.temporal_entity_name
+            or self.relationship_rui
+            or self.universal_rui
+            or self.polarity
+        ):
             return False
         return True
-    
-    #TODO Fill out ftuple match
+
+    # TODO Fill out ftuple match
     def match_ftuple(self):
         if self.types and TupleType.F not in self.types:
             return False
         return True
-    
+
     def match_ntontuple(self):
-        if self.types and TupleType.NtoNTuple not in self.types:
+        if self.types and TupleType.NtoN not in self.types:
             return False
-        if self.datatype or self.change_reason or self.error_code or self.temporal_entity_name or self.universal_rui:
+        if (
+            self.datatype
+            or self.change_reason
+            or self.error_code
+            or self.temporal_entity_name
+            or self.universal_rui
+        ):
             return False
         return True
-    
+
     def match_ntortuple(self):
-        if self.types and TupleType.NtoRTuple not in self.types:
+        if self.types and TupleType.NtoR not in self.types:
             return False
-        if self.data or self.datatype or self.change_reason or self.error_code or self.temporal_entity_name:
+        if (
+            self.data
+            or self.datatype
+            or self.change_reason
+            or self.error_code
+            or self.temporal_entity_name
+        ):
             return False
         return True
-    
-    #TODO Fill out ntoc tuple
+
+    # TODO Fill out ntoc tuple
     def match_ntoctuple(self):
         if self.types and TupleType.NtoC not in self.types:
             return False
         return True
-    
-    #TODO Fill out ntode tuple
+
+    # TODO Fill out ntode tuple
     def match_ntodetuple(self):
         if self.types and TupleType.NtoDE not in self.types:
             return False
         return True
-    
+
     def ntolackrtuple(self):
         if self.types and TupleType.NtoLackR not in self.types:
             return False
-        if self.data or self.datatype or self.change_reason or self.error_code or self.temporal_entity_name or self.polarity:
+        if (
+            self.data
+            or self.datatype
+            or self.change_reason
+            or self.error_code
+            or self.temporal_entity_name
+            or self.polarity
+        ):
             return False
         return True
 
-class RtStore(ABC):
 
+class RtStore(ABC):
     @abstractmethod
     def save_tuple(self, tup: RtTuple) -> bool:
         pass
