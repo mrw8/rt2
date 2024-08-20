@@ -2,6 +2,7 @@ import json
 import enum
 from io import StringIO
 from uuid import UUID
+from datetime import datetime
 
 from rt_core_v2.rttuple import (
     RtTuple,
@@ -10,6 +11,7 @@ from rt_core_v2.rttuple import (
     type_to_class,
     RuiStatus,
     PorType,
+    AttributesVisitor
 )
 from rt_core_v2.ids_codes.rui import Rui, TempRef
 from rt_core_v2.metadata import TupleEventType, RtChangeReason
@@ -30,10 +32,10 @@ class RtTupleJSONEncoder(json.JSONEncoder):
         else:
             super().default(obj)
 
-
+get_attributes = AttributesVisitor()
 def rttuple_to_json(input_rttuple: RtTuple):
     """Convert an RtTuple to a json object"""
-    return json.dumps(input_rttuple.get_attributes(), cls=RtTupleJSONEncoder)
+    return json.dumps(input_rttuple.accept(get_attributes), cls=RtTupleJSONEncoder)
 
 
 # TODO Swap this from an enum to a dictionary
@@ -70,9 +72,6 @@ class JsonEntryConverter:
     def str_to_rui(x) -> Rui:
         return Rui(UUID(x))
 
-    @staticmethod
-    def str_to_temp(x) -> TempRef:
-        return TempRef(Rui(UUID(x)))
 
     @staticmethod
     def lst_to_ruis(x) -> list[Rui]:
@@ -81,21 +80,33 @@ class JsonEntryConverter:
     @staticmethod
     def str_to_str(x):
         return x
+    
+    @staticmethod
+    def process_temp_ref(x):
+        #UUIDs do not contain colons. A bit hacky, so find a better way to differentiate.
+        if ':' in x:
+            format = "%Y-%m-%d %H:%M:%S.%f%z"
+            time_data = datetime.strptime(x, format)
+        else:
+            time_data = Rui(UUID(x))
+        return TempRef(time_data)
+
 
 
 json_entry_converter = {
-    TupleComponents.ruit: JsonEntryConverter.str_to_rui,
-    TupleComponents.ruip: JsonEntryConverter.str_to_rui,
+    TupleComponents.rui: JsonEntryConverter.str_to_rui,
+    TupleComponents.ruin: JsonEntryConverter.str_to_rui,
     TupleComponents.ruia: JsonEntryConverter.str_to_rui,
     TupleComponents.ruid: JsonEntryConverter.str_to_rui,
     TupleComponents.ruin: JsonEntryConverter.str_to_rui,
     TupleComponents.ruir: JsonEntryConverter.str_to_rui,
     TupleComponents.ruics: JsonEntryConverter.str_to_rui,
     TupleComponents.ruidt: JsonEntryConverter.str_to_rui,
-    TupleComponents.t: JsonEntryConverter.str_to_temp,
-    TupleComponents.td: JsonEntryConverter.str_to_temp,
-    TupleComponents.ta: JsonEntryConverter.str_to_temp,
-    TupleComponents.tr: JsonEntryConverter.str_to_temp,
+    TupleComponents.ruit: JsonEntryConverter.str_to_rui,
+    TupleComponents.ruitn: JsonEntryConverter.str_to_rui,
+    TupleComponents.t: JsonEntryConverter.process_temp_ref,
+    TupleComponents.ta: JsonEntryConverter.process_temp_ref,
+    TupleComponents.tr: JsonEntryConverter.process_temp_ref,
     TupleComponents.ar: lambda x: RuiStatus(x),
     TupleComponents.unique: lambda x: PorType(x),
     TupleComponents.event: lambda x: TupleEventType(x),
@@ -105,8 +116,7 @@ json_entry_converter = {
     TupleComponents.C: lambda x: float(x),
     TupleComponents.polarity: lambda x: bool(x),
     TupleComponents.r: JsonEntryConverter.str_to_str,
-    # TODO Figure out type of rT, inst, code, data
-    TupleComponents.rT: JsonEntryConverter.str_to_str,
+    # TODO Figure out type of inst, code, data
     TupleComponents.inst: JsonEntryConverter.str_to_str,
     TupleComponents.code: JsonEntryConverter.str_to_str,
     TupleComponents.data: JsonEntryConverter.str_to_str,
@@ -124,7 +134,7 @@ def json_to_rttuple(tuple_json) -> RtTuple:
         except ValueError:
             # TODO Log error
             print(
-                "Invalid rttuple-json processed. The processing of this tuple has been skipped."
+                f"Invalid rttuple-json processed due to key: {key} with entry: {value}. The processing of this tuple has been skipped."
             )
             return None
     tuple_class = type_to_class[tuple_dict[TupleComponents.type.value]]

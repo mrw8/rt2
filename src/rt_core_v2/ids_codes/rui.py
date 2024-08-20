@@ -1,5 +1,6 @@
 from uuid6 import uuid7, UUID
-
+from typing import Union
+from datetime import datetime, timezone
 
 class Rui:
     """Referent Unique Identifier
@@ -28,8 +29,8 @@ class Rui:
             return False
         return self.__dict__ == other.__dict__
 
-    def __repr__(self):
-        return self.__str__()
+    # def __repr__(self):
+    #     return self.__str__()
 
 
 class TempRef:
@@ -39,8 +40,11 @@ class TempRef:
     ref -- Identifier for the temporal reference
     """
 
-    def __init__(self, tr: Rui = None):
-        self.ref = tr if tr else Rui()
+    def __init__(self, tr: Rui | datetime = None):
+        tr = tr if tr else datetime.now()
+        if isinstance(tr, datetime):
+            tr = tr.astimezone(timezone.utc)
+        self.ref = tr
 
     def __str__(self):
         return str(self.ref)
@@ -49,3 +53,17 @@ class TempRef:
         if not isinstance(other, type(self)):
             return False
         return self.__dict__ == other.__dict__
+
+class Relationship:
+
+    def __init__(self, uri: str, ontology: Rui):
+        self.uri = uri
+        self.ontology = ontology
+
+
+    def __eq__(self, other):
+        if not isinstance(other, type(self)):
+            return False
+        return self.__dict__ == other.__dict__
+
+    
