@@ -7,10 +7,11 @@ def component_to_string(enum_dict):
     return {key.value: val for key, val in enum_dict}
 
 def insert_rttuple(tuple_arguments: dict, type: TupleType):
-   return rttuple_factory(tuple_arguments, type, TupleEventType.INSERT, RtChangeReason.BELIEF)
+   return rttuple_factory(tuple_arguments, type, TupleEventType.INSERT, RtChangeReason.RELEVANCE)
 
 # TODO Create support for DTuple author
 # TODO Create testing that creates every tuple type using this functions
+# TODO Make rttuple_factory insert 
 def rttuple_factory(tuple_arguments: dict, type: TupleType, t: TempRef, event: TupleEventType, event_reason: RtChangeReason, replacements: list[Rui], author: Rui):
     # DTuples should only be created in tandem with another tuple
     tuple_arguments = component_to_string(tuple_arguments)

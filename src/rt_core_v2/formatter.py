@@ -50,7 +50,7 @@ class ToJsonVisitor(RtTupleVisitor):
 
 # TODO Swap this from an enum to a dictionary
 class RtTupleFormat(enum.Enum):
-    """Enum mapping formats to functions to convert RtTuples into the format"""
+    """A mapping from data represenation formats to functions that perform the conversion on RtTuples"""
     json_format = ToJsonVisitor()
 
 

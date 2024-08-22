@@ -121,10 +121,6 @@ class ANTuple(RtTuple):
     unique: PorType = PorType.singular
     t: TempRef = field(default_factory=TempRef)
 
-
-
-#TODO Add ontology field
-#TODO Figure out the process for inserting an ontology. Is it just an instance that has an ntode tuple linking to the website?
 @dataclass
 class ARTuple(RtTuple):
     """Referent Tracking assignment tuple that registers assignment of an RUI to a PoR
@@ -164,7 +160,7 @@ class DITuple(RtTuple):
     ruit: Rui = field(default_factory=Rui)
     ruid: Rui = field(default_factory=Rui)
     t: TempRef = field(default_factory=TempRef)
-    event_reason: RtChangeReason = field(default_factory=RtChangeReason.REALITY)
+    event_reason: RtChangeReason = RtChangeReason.REALITY
     ruia: Rui = field(default_factory=Rui)
     ta: TempRef = field(default_factory=TempRef)
 
@@ -187,8 +183,8 @@ class DCTuple(RtTuple):
     ruit: Rui = field(default_factory=Rui)
     ruid: Rui = field(default_factory=Rui)
     t: TempRef = field(default_factory=TempRef)
-    event: TupleEventType = field(default_factory=TupleEventType.INSERT)
-    event_reason: RtChangeReason = field(default_factory=RtChangeReason.REALITY)
+    event: TupleEventType = TupleEventType.INVALIDATE
+    event_reason: RtChangeReason = RtChangeReason.R01
     #TODO Make replacements a shallow copy
     replacements: list[Rui] = field(default_factory=list)
 
@@ -205,7 +201,7 @@ class FTuple(RtTuple):
     C -- The level of confidence from 0.00-1.00 in the assertion.
     """
 
-    # F#< RUId, ta, RUIa, RUITN, C >
+    # F#< RUITN, C >
 
     tuple_type: ClassVar[TupleType] = TupleType.F
     ruitn: Rui = field(default_factory=Rui)
