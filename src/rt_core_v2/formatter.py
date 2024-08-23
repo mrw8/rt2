@@ -126,8 +126,7 @@ json_entry_converter = {
     TupleComponents.C: lambda x: float(x),
     TupleComponents.polarity: lambda x: bool(x),
     TupleComponents.r: JsonEntryConverter.str_to_str,
-    # TODO Figure out type of inst, code, data
-    TupleComponents.inst: JsonEntryConverter.str_to_str,
+    # TODO Figure out the types of code and data
     TupleComponents.code: JsonEntryConverter.str_to_str,
     TupleComponents.data: JsonEntryConverter.str_to_str,
     TupleComponents.type: lambda x: TupleType(x),

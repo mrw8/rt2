@@ -65,7 +65,6 @@ class TupleComponents(enum.Enum):
     r = "r"
     p_list = "p"
     tr = "tr"
-    inst = "inst"
     ruin = "ruin"
     ruir = "ruir"
     ruics = "ruics"
@@ -245,7 +244,7 @@ class NtoRTuple(RtTuple):
 
     tuple_type: ClassVar[TupleType] = TupleType.NtoR
     polarity: bool = True
-    inst: str = ""
+    r: str = ""
     ruin: Rui = field(default_factory=Rui)
     ruir: Rui = field(default_factory=Rui)
     tr: TempRef = field(default_factory=TempRef)

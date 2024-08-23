@@ -34,7 +34,7 @@ def print_NtoRTuple_tuple(NtoRTuple):
     )
     print(
         "\tr: the relationship between the non-repeatable PoR and the repeatable PoR --",
-        str(NtoRTuple.inst),
+        str(NtoRTuple.r),
     )
     print(
         "\ttr: the time at which the relationship between the non-repeatable PoR and the repeatable PoR holds --",
@@ -81,7 +81,7 @@ h = rui.Rui()
 tr1 = rui.Rui()
 k = ANTuple(tr1, ruia=a)
 
-NtoRTuple = NtoRTuple(polarity=True, inst="part of", ruin=a, ruir=h, tr=rui.TempRef())
+NtoRTuple = NtoRTuple(polarity=True, r="part of", ruin=a, ruir=h, tr=rui.TempRef())
 print_NtoRTuple_tuple(NtoRTuple)
 
 # let x be the RUI standing for Kuala Lumpur
