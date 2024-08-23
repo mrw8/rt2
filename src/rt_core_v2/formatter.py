@@ -14,14 +14,14 @@ from rt_core_v2.rttuple import (
     AttributesVisitor,
     RtTupleVisitor,
 )
-from rt_core_v2.ids_codes.rui import Rui, TempRef
+from rt_core_v2.ids_codes.rui import Rui, TempRef, Relationship
 from rt_core_v2.metadata import TupleEventType, RtChangeReason
 
 
 class RtTupleJSONEncoder(json.JSONEncoder):
     """Converts contents of RtTuples into a json representation"""
 
-    str_classes = {Rui, TempRef, PorType, RuiStatus,}
+    str_classes = {Rui, TempRef, PorType, RuiStatus, Relationship,}
     val_classes = {TupleType, RtChangeReason, TupleEventType,}
 
     def __init__(self, *args, **kwargs):
@@ -78,20 +78,20 @@ class JsonEntryConverter:
     """Contains functions for converting correclty formatted json representations of tuple fields to tuple fields"""
 
     @staticmethod
-    def str_to_rui(x) -> Rui:
+    def str_to_rui(x: str) -> Rui:
         return Rui(UUID(x))
 
 
     @staticmethod
-    def lst_to_ruis(x) -> list[Rui]:
+    def lst_to_ruis(x: list[str]) -> list[Rui]:
         return [Rui(UUID(entry)) for entry in x]
 
     @staticmethod
-    def str_to_str(x):
+    def str_to_str(x: str):
         return x
     
     @staticmethod
-    def process_temp_ref(x):
+    def process_temp_ref(x: str):
         #UUIDs do not contain colons. A bit hacky, so find a better way to differentiate.
         if ':' in x:
             format = "%Y-%m-%d %H:%M:%S.%f%z"
@@ -99,6 +99,10 @@ class JsonEntryConverter:
         else:
             time_data = Rui(UUID(x))
         return TempRef(time_data)
+    
+    @staticmethod
+    def str_to_relation(relation_str: str) -> Relationship:
+        return Relationship(relation_str)
 
 
 
@@ -125,7 +129,7 @@ json_entry_converter = {
     TupleComponents.p_list: JsonEntryConverter.lst_to_ruis,
     TupleComponents.C: lambda x: float(x),
     TupleComponents.polarity: lambda x: bool(x),
-    TupleComponents.r: JsonEntryConverter.str_to_str,
+    TupleComponents.r: JsonEntryConverter.str_to_relation,
     # TODO Figure out the types of code and data
     TupleComponents.code: JsonEntryConverter.str_to_str,
     TupleComponents.data: JsonEntryConverter.str_to_str,

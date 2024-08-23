@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass, field, asdict
 from typing import ClassVar, override
 
-from rt_core_v2.ids_codes.rui import Rui, TempRef
+from rt_core_v2.ids_codes.rui import Rui, TempRef, Relationship
 from rt_core_v2.metadata import TupleEventType, ValueEnum, RtChangeReason
 
 """Takes an set of enums and converts them into a dict with mapping entry:value"""
@@ -222,7 +222,7 @@ class NtoNTuple(RtTuple):
     # NtoNTuple#< ‘+’/‘-’, r, P, tr/‘-’ >
     tuple_type: ClassVar[TupleType] = TupleType.NtoN
     polarity: bool = True
-    r: str = ""
+    r: Relationship = field(default_factory=Relationship)
     #TODO Make a copy of p
     p: list[Rui] = field(default_factory=[])
     tr: TempRef = field(default_factory=TempRef)
@@ -244,7 +244,7 @@ class NtoRTuple(RtTuple):
 
     tuple_type: ClassVar[TupleType] = TupleType.NtoR
     polarity: bool = True
-    r: str = ""
+    r: Relationship = field(default_factory=Relationship)
     ruin: Rui = field(default_factory=Rui)
     ruir: Rui = field(default_factory=Rui)
     tr: TempRef = field(default_factory=TempRef)
@@ -270,7 +270,7 @@ class NtoCTuple(RtTuple):
 
     tuple_type: ClassVar[TupleType] = TupleType.NtoC
     polarity: bool = True
-    r: str = ""
+    r: Relationship = field(default_factory=Relationship)
     ruics: Rui = field(default_factory=Rui)
     ruin: Rui = field(default_factory=Rui)
     code: str = ""
@@ -319,7 +319,7 @@ class NtoLackRTuple(RtTuple):
     # NtoRTuple(-) -tuple NtoRTuple(-)#< r, ruin, RUIr, rT/‘-’, tr/‘-’ >
 
     tuple_type: ClassVar[TupleType] = TupleType.NtoLackR
-    r: str = ""
+    r: Relationship = field(default_factory=Relationship)
     ruin: Rui = field(default_factory=Rui)
     ruir: Rui = field(default_factory=Rui)
     tr: TempRef = field(default_factory=TempRef)

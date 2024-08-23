@@ -1,6 +1,6 @@
 import json
 
-from rt_core_v2.ids_codes.rui import Rui, TempRef
+from rt_core_v2.ids_codes.rui import Rui, TempRef, Relationship
 from rt_core_v2.rttuple import (
     ANTuple,
     ARTuple,
@@ -46,10 +46,9 @@ event = TupleEventType.REVALIDATE
 reason = RtChangeReason.BELIEF
 replacements = [ruin, ruidt, ruin]
 polarity = False
-relation = "part of"
+relation = Relationship("instance of")
 p_list = [ruid, ruin]
 code = "code insert"
-inst = "instance of"
 data = "data insert"
 
 """Converts the list into a json appropriate representation"""
@@ -170,9 +169,9 @@ def test_nton_json():
 
 
 def test_ntor_json():
-    ntor = NtoRTuple(rui=rui, polarity=polarity, r=inst, ruin=ruin, ruir=ruir, tr=time_1)
+    ntor = NtoRTuple(rui=rui, polarity=polarity, r=relation, ruin=ruin, ruir=ruir, tr=time_1)
     formatted_ntor = format_rttuple(ntor)
-    expected_ntor = f'{{"rui": "{rui}", "tuple_type": "{ntor.tuple_type}", "polarity": {str(polarity).lower()}, "r": "{inst}", "ruir": "{ruir}", "ruin": "{ruin}", "tr": "{time_1}"}}'
+    expected_ntor = f'{{"rui": "{rui}", "tuple_type": "{ntor.tuple_type}", "polarity": {str(polarity).lower()}, "r": "{relation}", "ruir": "{ruir}", "ruin": "{ruin}", "tr": "{time_1}"}}'
 
     print("Ntortuple Expected:  \n" + expected_ntor)
     print("Ntonrtuple Processed:  \n" + formatted_ntor)

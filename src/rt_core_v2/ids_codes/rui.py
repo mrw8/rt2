@@ -55,11 +55,16 @@ class TempRef:
         return self.__dict__ == other.__dict__
 
 class Relationship:
-    
-    def __init__(self, uri: str, ontology: Rui):
-        self.uri = uri
-        self.ontology = ontology
+    """A tuple component that contains a URI for a relationship
 
+    Attributes:
+    uri -- Identifier for the temporal reference
+    """
+    def __init__(self, uri: str="http://invalid_relationship.com"):
+        self.uri = uri
+
+    def __str__(self):
+        return str(self.uri)
 
     def __eq__(self, other):
         if not isinstance(other, type(self)):
