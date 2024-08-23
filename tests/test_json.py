@@ -172,7 +172,7 @@ def test_nton_json():
 def test_ntor_json():
     ntor = NtoRTuple(rui=rui, polarity=polarity, r=inst, ruin=ruin, ruir=ruir, tr=time_1)
     formatted_ntor = format_rttuple(ntor)
-    expected_ntor = f'{{"rui": "{rui}", "tuple_type": "{ntor.tuple_type}", "polarity": {str(polarity).lower()}, "inst": "{inst}", "ruir": "{ruir}", "ruin": "{ruin}", "tr": "{time_1}"}}'
+    expected_ntor = f'{{"rui": "{rui}", "tuple_type": "{ntor.tuple_type}", "polarity": {str(polarity).lower()}, "r": "{inst}", "ruir": "{ruir}", "ruin": "{ruin}", "tr": "{time_1}"}}'
 
     print("Ntortuple Expected:  \n" + expected_ntor)
     print("Ntonrtuple Processed:  \n" + formatted_ntor)
