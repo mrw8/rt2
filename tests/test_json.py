@@ -2,8 +2,10 @@ import json
 
 from rt_core_v2.ids_codes.rui import Rui, TempRef
 from rt_core_v2.rttuple import (
-    ATuple,
-    DTuple,
+    ANTuple,
+    ARTuple,
+    DiTuple,
+    DcTuple,
     FTuple,
     NtoNTuple,
     NtoRTuple,
@@ -34,13 +36,13 @@ ruics = Rui()
 ruir = Rui()
 ruin = Rui()
 ruidt = Rui()
+ruio = Rui()
 rui = Rui()
 
-print("HIIII")
 get_attributes = AttributesVisitor()
 
 time_1 = TempRef()
-event = TupleEventType.INSERT
+event = TupleEventType.REVALIDATE
 reason = RtChangeReason.BELIEF
 replacements = [ruin, ruidt, ruin]
 polarity = False
@@ -73,27 +75,40 @@ def compare(formatted, expected):
 """All of the below tuple tests first check whether converting from a tuple object to a json functions correclty then checks whether the reverse change is correct."""
 
 
-def test_atuple_json():
-    a = ATuple(rui=rui, ruia=ruia, ruin=ruin)
+def test_antuple_json():
+    a = ANTuple(rui=rui, ruia=ruia, ruin=ruin)
     formatted_a = format_rttuple(a)
     expected_a = f'{{"ruin": "{ruin}", "ruia": "{ruia}", "rui": "{rui}", "type": "{a.tuple_type}", "unique": "{a.unique}", "ar": "{a.ar}", "t": "{a.t}"}}'
-    print("Atuple Expected:  \n" + expected_a)
-    print("Atuple Processed:  \n" + formatted_a)
+    print("ANtuple Expected:  \n" + expected_a)
+    print("ANtuple Processed:  \n" + formatted_a)
     assert compare(formatted_a, expected_a)
 
     recreated_a = json_to_rttuple(formatted_a)
-    print(f"Original ATuple:  {a.accept(get_attributes)}")
-    print(f"Recreated ATuple:  {recreated_a.accept(get_attributes)}")
+    print(f"Original ANTuple:  {a.accept(get_attributes)}")
+    print(f"Recreated ANTuple:  {recreated_a.accept(get_attributes)}")
     assert a == recreated_a
 
 
-def test_dtuple_json():
-    d = DTuple(
-        ruit=ruit, t=time_1, event=TupleEventType.INSERT, event_reason=RtChangeReason.BELIEF, ruid=ruid, replacements=replacements, rui=rui
+def test_artuple_json():
+    a = ARTuple(rui=rui, ruia=ruia, ruir=ruir, ruio=ruio)
+    formatted_a = format_rttuple(a)
+    expected_a = f'{{"rui": "{rui}", "type": "{a.tuple_type}", "ruia": "{ruia}", "ruir": "{ruir}", "ruio": "{ruio}", "unique": "{a.unique}", "ar": "{a.ar}", "t": "{a.t}"}}'
+    print("ARtuple Expected:  \n" + expected_a)
+    print("ARtuple Processed:  \n" + formatted_a)
+    assert compare(formatted_a, expected_a)
+
+    recreated_a = json_to_rttuple(formatted_a)
+    print(f"Original ARTuple:  {a.accept(get_attributes)}")
+    print(f"Recreated ARTuple:  {recreated_a.accept(get_attributes)}")
+    assert a == recreated_a
+
+
+def test_dituple_json():
+    d = DiTuple(
+        ruit=ruit, t=time_1, event_reason=RtChangeReason.BELIEF, ruid=ruid, rui=rui, ruia=ruia, ta=time_1
     )
     formatted_d = format_rttuple(d)
-    replacements_repr = jsonify_list(replacements)
-    expected_d = f'{{"type": "{d.tuple_type}", "ruid": "{ruid}", "ruit": "{ruit}", "t": "{time_1}", "event": {event}, "event_reason": {reason}, "replacements": {replacements_repr}, "rui": "{rui}"}}'
+    expected_d = f'{{"type": "{d.tuple_type}", "ruid": "{ruid}", "ruit": "{ruit}", "t": "{time_1}", "event_reason": {reason}, "rui": "{rui}", "ruia": "{ruia}", "ta": "{time_1}"}}'
     print("Dtuple Expected:  \n" + expected_d)
     print("Dtuple Processed:  \n" + formatted_d)
     assert compare(formatted_d, expected_d)
@@ -103,12 +118,28 @@ def test_dtuple_json():
     print(f"Recreated DTuple:  {recreated_d.accept(get_attributes)}")
     assert d == recreated_d
 
+def test_dctuple_json():
+    d = DcTuple(
+        ruit=ruit, t=time_1, event=TupleEventType.REVALIDATE, event_reason=RtChangeReason.BELIEF, ruid=ruid, replacements=replacements, rui=rui
+    )
+    formatted_d = format_rttuple(d)
+    replacements_repr = jsonify_list(replacements)
+    expected_d = f'{{"type": "{d.tuple_type}", "ruid": "{ruid}", "ruit": "{ruit}", "t": "{time_1}", "event": {event}, "event_reason": {reason}, "replacements": {replacements_repr}, "rui": "{rui}"}}'
+    print("Dctuple Expected:  \n" + expected_d)
+    print("Dctuple Processed:  \n" + formatted_d)
+    assert compare(formatted_d, expected_d)
+
+    recreated_d = json_to_rttuple(formatted_d)
+    print(f"Original DcTuple:  {d.accept(get_attributes)}")
+    print(f"Recreated DcTuple:  {recreated_d.accept(get_attributes)}")
+    assert d == recreated_d
+
 
 def test_ftuple_json():
     C = 0.753
-    f = FTuple(ruid=ruid, ruitn=ruitn, ta=time_1, C=C, rui=rui)
+    f = FTuple(ruitn=ruitn, C=C, rui=rui)
     formatted_f = format_rttuple(f)
-    expected_f = f'{{"type": "{f.tuple_type}", "ruid": "{ruid}", "ruitn": "{ruitn}", "ta": "{time_1}", "C": {C}, "rui": "{rui}"}}'
+    expected_f = f'{{"type": "{f.tuple_type}", "ruitn": "{ruitn}", "C": {C}, "rui": "{rui}"}}'
     print("Ftuple Expected:  \n" + expected_f)
     print("Ftuple Processed:  \n" + formatted_f)
 

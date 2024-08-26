@@ -11,7 +11,8 @@ from rt_core_v2.rttuple import (
     type_to_class,
     RuiStatus,
     PorType,
-    AttributesVisitor
+    AttributesVisitor,
+    RtTupleVisitor,
 )
 from rt_core_v2.ids_codes.rui import Rui, TempRef
 from rt_core_v2.metadata import TupleEventType, RtChangeReason
@@ -32,22 +33,27 @@ class RtTupleJSONEncoder(json.JSONEncoder):
         else:
             super().default(obj)
 
-get_attributes = AttributesVisitor()
-def rttuple_to_json(input_rttuple: RtTuple):
-    """Convert an RtTuple to a json object"""
-    return json.dumps(input_rttuple.accept(get_attributes), cls=RtTupleJSONEncoder)
+class ToJsonVisitor(RtTupleVisitor):
+    """
+    Converts an RtTuple into a JSON
+
+    Attributes:
+    get_attributes -- Visitor to retrieve a tuple's attributes in a formatted manner
+    """
+    get_attributes = AttributesVisitor()
+    def visit(self, host: RtTuple):
+        return json.dumps(host.accept(self.get_attributes), cls=RtTupleJSONEncoder)
 
 
 # TODO Swap this from an enum to a dictionary
 class RtTupleFormat(enum.Enum):
     """Enum mapping formats to functions to convert RtTuples into the format"""
-
-    json_format = rttuple_to_json
+    json_format = ToJsonVisitor()
 
 
 def format_rttuple(tuple: RtTuple, format: RtTupleFormat = RtTupleFormat.json_format):
     """Convert the rttuple to the specified format"""
-    return format(tuple)
+    return tuple.accept(format.value)
 
 
 def write_tuples(
@@ -104,6 +110,7 @@ json_entry_converter = {
     TupleComponents.ruidt: JsonEntryConverter.str_to_rui,
     TupleComponents.ruit: JsonEntryConverter.str_to_rui,
     TupleComponents.ruitn: JsonEntryConverter.str_to_rui,
+    TupleComponents.ruio: JsonEntryConverter.str_to_rui,
     TupleComponents.t: JsonEntryConverter.process_temp_ref,
     TupleComponents.ta: JsonEntryConverter.process_temp_ref,
     TupleComponents.tr: JsonEntryConverter.process_temp_ref,

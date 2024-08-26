@@ -1,9 +1,9 @@
 from rt_core_v2.ids_codes import rui
-from rt_core_v2.rttuple import ATuple, NtoRTuple, NtoNTuple, RuiStatus
+from rt_core_v2.rttuple import ANTuple, NtoRTuple, NtoNTuple, RuiStatus
 
 
-def print_ATuple(a):
-    print("A tuple information:")
+def print_ANTuple(a):
+    print("AN tuple information:")
     print("\trui: the rui that denotes tuple itself", str(a.rui.uuid))
     print("\truin: rui that was assigned to some PoR", str(a.ruin.uuid))
     print("\tis ruin reserved? ", a.ar)
@@ -79,27 +79,27 @@ a = rui.Rui()
 h = rui.Rui()
 # Rui that stands for interval over which author has been instance of human being
 tr1 = rui.Rui()
-k = ATuple(tr1, ruia=a)
+k = ANTuple(tr1, ruia=a)
 
 NtoRTuple = NtoRTuple(polarity=True, inst="part of", ruin=a, ruir=h, tr=rui.TempRef())
 print_NtoRTuple_tuple(NtoRTuple)
 
 # let x be the RUI standing for Kuala Lumpur
 x = rui.Rui()
-y = ATuple(x)
-print_ATuple(y)
+y = ANTuple(x)
+print_ANTuple(y)
 
 q = rui.Rui()
-z = ATuple(q, ruia=a, ar=RuiStatus.reserved)
-print_ATuple(z)
+z = ANTuple(q, ruia=a, ar=RuiStatus.reserved)
+print_ANTuple(z)
 
 # let s be the RUI standing for the territory of Malaysia
 s = rui.Rui()
-w = ATuple(s, ruia=a)
-print_ATuple(w)
+w = ANTuple(s, ruia=a)
+print_ANTuple(w)
 
 # let tr2 be interval over which kuala lumpur has been part of Malaysia
 tr2 = rui.Rui()
-j = ATuple(tr2, ruia=a)
+j = ANTuple(tr2, ruia=a)
 NtoNTuple = NtoNTuple(polarity=True, r="part of", p=[x, s], tr=rui.TempRef())
 print_NtoNTuple_tuple(NtoNTuple)

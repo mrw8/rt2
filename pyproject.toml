@@ -19,6 +19,9 @@ authors = [
 description = "Python implementation of Referent Tracking 2.0"
 readme = "README.md"
 requires-python = ">=3.11"
+dependencies = [
+  "uuid6~=2024.1.12", 
+]
 
 [tool.pytest.ini_options]
 pythonpath = [

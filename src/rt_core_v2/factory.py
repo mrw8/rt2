@@ -1,4 +1,4 @@
-from rt_core_v2.rttuple import TupleType, DTuple, TupleComponents, RuiStatus, PorType, TempRef, type_to_class
+from rt_core_v2.rttuple import TupleType, DiTuple, DcTuple, TupleComponents, RuiStatus, PorType, TempRef, type_to_class
 from rt_core_v2.metadata import RtChangeReason, TupleEventType
 from rt_core_v2.ids_codes.rui import Rui
 
@@ -18,7 +18,7 @@ def rttuple_factory(tuple_arguments: dict, type: TupleType, t: TempRef, event: T
         return None
     try:
         concrete_tuple = type_to_class[type](**tuple_arguments)
-        meta_tuple = DTuple(
+        meta_tuple = DcTuple(
             concrete_tuple.rui,
             t,
             event, 
@@ -34,10 +34,10 @@ def rttuple_factory(tuple_arguments: dict, type: TupleType, t: TempRef, event: T
     return concrete_tuple, meta_tuple
 
 #TODO Make a factory for each tuple that calls rttuple_factory
-def create_atuple(rui: Rui=None, ruia: Rui=None, ruin: Rui=None, ar: RuiStatus=RuiStatus.assigned, unique: PorType=PorType.singular, t: TempRef=None, event=TupleEventType.INSERT, event_reason=RtChangeReason.BELIEF, replacements=[], author=None):
-    atuple_arguments = {TupleComponents.rui:rui, TupleComponents.ruia:ruia, TupleComponents.ruin:ruin, TupleComponents.ar:ar, TupleComponents.unique:unique, TupleComponents.t:t}
+def create_antuple(rui: Rui=None, ruia: Rui=None, ruin: Rui=None, ar: RuiStatus=RuiStatus.assigned, unique: PorType=PorType.singular, t: TempRef=None, event=TupleEventType.INSERT, event_reason=RtChangeReason.BELIEF, replacements=[], author=None):
+    antuple_arguments = {TupleComponents.rui:rui, TupleComponents.ruia:ruia, TupleComponents.ruin:ruin, TupleComponents.ar:ar, TupleComponents.unique:unique, TupleComponents.t:t}
     author = author if author else ruia
-    return rttuple_factory(atuple_arguments, TupleType.A, t, event, event_reason, replacements, author)
+    return rttuple_factory(antuple_arguments, TupleType.AN, t, event, event_reason, replacements, author)
 
 def create_ftuple(rui:Rui=None, ruid:Rui=None, ta:TempRef=None, C:float=1.0, ruitn:Rui=None, t: TempRef=None, event=TupleEventType.INSERT, event_reason=RtChangeReason.BELIEF, replacements=[], author=None):
     ftuple_arguments = {TupleComponents.rui:rui, TupleComponents.ruid:ruid, TupleComponents.ta:ta, TupleComponents.ruitn:ruitn, TupleComponents.C:C}

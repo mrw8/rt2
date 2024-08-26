@@ -32,8 +32,8 @@ class TupleQuery:
 
     # Tuples types are filtered out not by the query sharing qualiting that the tuple has, but by the query having any quality that the tuple type does not
 
-    def match_atuple(self):
-        if self.types and TupleType.A not in self.types:
+    def match_antuple(self):
+        if self.types and TupleType.AN not in self.types:
             return False
         if (
             self.relationship_rui
