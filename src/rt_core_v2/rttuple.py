@@ -224,7 +224,7 @@ class NtoNTuple(RtTuple):
     polarity: bool = True
     r: Relationship = field(default_factory=Relationship)
     #TODO Make a copy of p
-    p: list[Rui] = field(default_factory=[])
+    p: list[Rui] = field(default_factory=list)
     tr: TempRef = field(default_factory=TempRef)
 
 @dataclass
