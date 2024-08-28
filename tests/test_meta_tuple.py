@@ -34,8 +34,8 @@ def print_f_tuple(ft):
 # create two ANTuples with a = rui of person assigning rui to things
 a = rui.Rui()
 s = rui.Rui()
-w = ANTuple(a, ruia=a)
-x = ANTuple(s, ruia=a)
+w = ANTuple(a)
+x = ANTuple(s)
 
 # create two D tuples for each ANTuple
 # the entity registering the tuples in the RTS

@@ -5,6 +5,7 @@ from typing import ClassVar, override
 
 from rt_core_v2.ids_codes.rui import Rui, TempRef
 from rt_core_v2.metadata import TupleEventType, ValueEnum, RtChangeReason
+from datetime import datetime
 
 """Takes an set of enums and converts them into a dict with mapping entry:value"""
 
@@ -114,11 +115,9 @@ class ANTuple(RtTuple):
     """
 
     tuple_type: ClassVar[TupleType] = TupleType.AN
-    ruia: Rui = field(default_factory=Rui)
     ruin: Rui = field(default_factory=Rui)
     ar: RuiStatus = RuiStatus.assigned
     unique: PorType = PorType.singular
-    t: TempRef = field(default_factory=TempRef)
 
 @dataclass
 class ARTuple(RtTuple):
@@ -133,12 +132,10 @@ class ARTuple(RtTuple):
     """
 
     tuple_type: ClassVar[TupleType] = TupleType.AR
-    ruia: Rui = field(default_factory=Rui)
     ruir: Rui = field(default_factory=Rui)
     ruio: Rui = field(default_factory=Rui)
     ar: RuiStatus = RuiStatus.assigned
     unique: PorType = PorType.singular
-    t: TempRef = field(default_factory=TempRef)
 
 
 @dataclass
@@ -158,7 +155,7 @@ class DITuple(RtTuple):
     tuple_type: ClassVar[TupleType] = TupleType.DI
     ruit: Rui = field(default_factory=Rui)
     ruid: Rui = field(default_factory=Rui)
-    t: TempRef = field(default_factory=TempRef)
+    t: datetime = field(default_factory=datetime.now)
     event_reason: RtChangeReason = RtChangeReason.REALITY
     ruia: Rui = field(default_factory=Rui)
     ta: TempRef = field(default_factory=TempRef)
@@ -181,7 +178,7 @@ class DCTuple(RtTuple):
     tuple_type: ClassVar[TupleType] = TupleType.DC
     ruit: Rui = field(default_factory=Rui)
     ruid: Rui = field(default_factory=Rui)
-    t: TempRef = field(default_factory=TempRef)
+    t: datetime = field(default_factory=datetime.now)
     event: TupleEventType = TupleEventType.INVALIDATE
     event_reason: RtChangeReason = RtChangeReason.R01
     #TODO Make replacements a shallow copy
@@ -224,7 +221,7 @@ class NtoNTuple(RtTuple):
     polarity: bool = True
     r: str = ""
     #TODO Make a copy of p
-    p: list[Rui] = field(default_factory=[])
+    p: list[Rui] = field(default_factory=list)
     tr: TempRef = field(default_factory=TempRef)
 
 @dataclass

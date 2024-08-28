@@ -76,9 +76,9 @@ def compare(formatted, expected):
 
 
 def test_antuple_json():
-    a = ANTuple(rui=rui, ruia=ruia, ruin=ruin)
+    a = ANTuple(rui=rui, ruin=ruin)
     formatted_a = format_rttuple(a)
-    expected_a = f'{{"ruin": "{ruin}", "ruia": "{ruia}", "rui": "{rui}", "tuple_type": "{a.tuple_type}", "unique": "{a.unique}", "ar": "{a.ar}", "t": "{a.t}"}}'
+    expected_a = f'{{"ruin": "{ruin}", "rui": "{rui}", "tuple_type": "{a.tuple_type}", "unique": "{a.unique}", "ar": "{a.ar}"}}'
     print("ANtuple Expected:  \n" + expected_a)
     print("ANtuple Processed:  \n" + formatted_a)
     assert compare(formatted_a, expected_a)
@@ -90,9 +90,9 @@ def test_antuple_json():
 
 
 def test_artuple_json():
-    a = ARTuple(rui=rui, ruia=ruia, ruir=ruir, ruio=ruio)
+    a = ARTuple(rui=rui, ruir=ruir, ruio=ruio)
     formatted_a = format_rttuple(a)
-    expected_a = f'{{"rui": "{rui}", "tuple_type": "{a.tuple_type}", "ruia": "{ruia}", "ruir": "{ruir}", "ruio": "{ruio}", "unique": "{a.unique}", "ar": "{a.ar}", "t": "{a.t}"}}'
+    expected_a = f'{{"rui": "{rui}", "tuple_type": "{a.tuple_type}", "ruir": "{ruir}", "ruio": "{ruio}", "unique": "{a.unique}", "ar": "{a.ar}"}}'
     print("ARtuple Expected:  \n" + expected_a)
     print("ARtuple Processed:  \n" + formatted_a)
     assert compare(formatted_a, expected_a)
