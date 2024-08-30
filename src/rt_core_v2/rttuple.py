@@ -1,10 +1,11 @@
 import enum
 from abc import ABC, abstractmethod
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, asdict
 from typing import ClassVar, override
 
 from rt_core_v2.ids_codes.rui import Rui, TempRef
 from rt_core_v2.metadata import TupleEventType, ValueEnum, RtChangeReason
+from datetime import datetime
 
 """Takes an set of enums and converts them into a dict with mapping entry:value"""
 
@@ -27,8 +28,8 @@ class RuiStatus(ValueEnum):
 class TupleType(ValueEnum):
     AR = "AR"
     AN = "AN"
-    Dc = "Dc"
-    Di = "Di"
+    DC = "DC"
+    DI = "DI"
     F = "F"
     NtoDE = "NtoDE"
     NtoN = "NtoN"
@@ -50,7 +51,7 @@ class TupleComponents(enum.Enum):
     ruit = "ruit"
     ruitn = "ruitn"
     ruio = 'ruio'
-    type = "type"
+    type = "tuple_type"
     ar = "ar"
     ruia = "ruia"
     unique = "unique"
@@ -65,7 +66,6 @@ class TupleComponents(enum.Enum):
     r = "r"
     p_list = "p"
     tr = "tr"
-    inst = "inst"
     ruin = "ruin"
     ruir = "ruir"
     ruics = "ruics"
@@ -92,7 +92,6 @@ class RtTuple(ABC):
     """
 
     tuple_type: ClassVar[TupleType] = None
-    params: ClassVar[dict[TupleComponents, str]] = {**enum_to_dict({TupleComponents.rui, TupleComponents.type})}
     rui: Rui = field(default_factory=Rui)
 
     def __eq__(self, other):
@@ -116,28 +115,10 @@ class ANTuple(RtTuple):
     """
 
     tuple_type: ClassVar[TupleType] = TupleType.AN
-    params: ClassVar[dict[TupleComponents, str]] = {
-        **RtTuple.params,
-        **enum_to_dict(
-            {
-                TupleComponents.ar,
-                TupleComponents.t,
-                TupleComponents.ruia,
-                TupleComponents.unique,
-                TupleComponents.ruin,
-            }
-        ),
-    }
-    ruia: Rui = field(default_factory=Rui)
     ruin: Rui = field(default_factory=Rui)
     ar: RuiStatus = RuiStatus.assigned
     unique: PorType = PorType.singular
-    t: TempRef = field(default_factory=TempRef)
 
-
-
-#TODO Add ontology field
-#TODO Figure out the process for inserting an ontology. Is it just an instance that has an ntode tuple linking to the website?
 @dataclass
 class ARTuple(RtTuple):
     """Referent Tracking assignment tuple that registers assignment of an RUI to a PoR
@@ -151,29 +132,14 @@ class ARTuple(RtTuple):
     """
 
     tuple_type: ClassVar[TupleType] = TupleType.AR
-    params: ClassVar[dict[TupleComponents, str]] = {
-        **RtTuple.params,
-        **enum_to_dict(
-            {
-                TupleComponents.ar,
-                TupleComponents.t,
-                TupleComponents.ruia,
-                TupleComponents.unique,
-                TupleComponents.ruir,
-                TupleComponents.ruio,
-            }
-        ),
-    }
-    ruia: Rui = field(default_factory=Rui)
     ruir: Rui = field(default_factory=Rui)
     ruio: Rui = field(default_factory=Rui)
     ar: RuiStatus = RuiStatus.assigned
     unique: PorType = PorType.singular
-    t: TempRef = field(default_factory=TempRef)
 
 
 @dataclass
-class DiTuple(RtTuple):
+class DITuple(RtTuple):
     """Referent Tracking metadata tuple that stores information regarding the instantation of other tuple types
 
     Attributes:
@@ -186,30 +152,17 @@ class DiTuple(RtTuple):
 
     # D#< RUId, RUIT, t, ‘I’/E, R, S >
 
-    tuple_type: ClassVar[TupleType] = TupleType.Di
-    params: ClassVar[dict[TupleComponents, str]] = {
-        **RtTuple.params,
-        **enum_to_dict(
-            {
-                TupleComponents.ruid,
-                TupleComponents.event_reason,
-                TupleComponents.t,
-                TupleComponents.ruit,
-                TupleComponents.ruia,
-                TupleComponents.ta,
-            }
-        ),
-    }
+    tuple_type: ClassVar[TupleType] = TupleType.DI
     ruit: Rui = field(default_factory=Rui)
     ruid: Rui = field(default_factory=Rui)
-    t: TempRef = field(default_factory=TempRef)
-    event_reason: RtChangeReason = field(default_factory=RtChangeReason.REALITY)
+    t: datetime = field(default_factory=datetime.now)
+    event_reason: RtChangeReason = RtChangeReason.REALITY
     ruia: Rui = field(default_factory=Rui)
     ta: TempRef = field(default_factory=TempRef)
 
 
 @dataclass
-class DcTuple(RtTuple):
+class DCTuple(RtTuple):
     """Referent Tracking metadata tuple that stores information regarding the instantation of other tuple types
 
     Attributes:
@@ -222,25 +175,12 @@ class DcTuple(RtTuple):
 
     # D#< RUId, RUIT, t, ‘I’/E, R, S >
 
-    tuple_type: ClassVar[TupleType] = TupleType.Dc
-    params: ClassVar[dict[TupleComponents, str]] = {
-        **RtTuple.params,
-        **enum_to_dict(
-            {
-                TupleComponents.ruid,
-                TupleComponents.event,
-                TupleComponents.event_reason,
-                TupleComponents.t,
-                TupleComponents.replacements,
-                TupleComponents.ruit
-            }
-        ),
-    }
+    tuple_type: ClassVar[TupleType] = TupleType.DC
     ruit: Rui = field(default_factory=Rui)
     ruid: Rui = field(default_factory=Rui)
-    t: TempRef = field(default_factory=TempRef)
-    event: TupleEventType = field(default_factory=TupleEventType.INSERT)
-    event_reason: RtChangeReason = field(default_factory=RtChangeReason.REALITY)
+    t: datetime = field(default_factory=datetime.now)
+    event: TupleEventType = TupleEventType.INVALIDATE
+    event_reason: RtChangeReason = RtChangeReason.R01
     #TODO Make replacements a shallow copy
     replacements: list[Rui] = field(default_factory=list)
 
@@ -257,18 +197,9 @@ class FTuple(RtTuple):
     C -- The level of confidence from 0.00-1.00 in the assertion.
     """
 
-    # F#< RUId, ta, RUIa, RUITN, C >
+    # F#< RUITN, C >
 
     tuple_type: ClassVar[TupleType] = TupleType.F
-    params: ClassVar[dict[TupleComponents, str]] = {
-        **RtTuple.params,
-        **enum_to_dict(
-            {
-                TupleComponents.C,
-                TupleComponents.ruitn,
-            }
-        ),
-    }
     ruitn: Rui = field(default_factory=Rui)
     C: float = 1.0
 
@@ -287,21 +218,10 @@ class NtoNTuple(RtTuple):
 
     # NtoNTuple#< ‘+’/‘-’, r, P, tr/‘-’ >
     tuple_type: ClassVar[TupleType] = TupleType.NtoN
-    params: ClassVar[dict[TupleComponents, str]] = {
-        **RtTuple.params,
-        **enum_to_dict(
-            {
-                TupleComponents.polarity,
-                TupleComponents.r,
-                TupleComponents.p_list,
-                TupleComponents.tr,
-            }
-        ),
-    }
     polarity: bool = True
     r: str = ""
     #TODO Make a copy of p
-    p: list[Rui] = field(default_factory=[])
+    p: list[Rui] = field(default_factory=list)
     tr: TempRef = field(default_factory=TempRef)
 
 @dataclass
@@ -320,20 +240,8 @@ class NtoRTuple(RtTuple):
     # NtoRTuple#< ‘+’/‘-’, inst, RUIn, RUIr, tr/‘-’ >
 
     tuple_type: ClassVar[TupleType] = TupleType.NtoR
-    params: ClassVar[dict[TupleComponents, str]] = {
-        **RtTuple.params,
-        **enum_to_dict(
-            {
-                TupleComponents.polarity,
-                TupleComponents.inst,
-                TupleComponents.ruin,
-                TupleComponents.ruir,
-                TupleComponents.tr,
-            }
-        ),
-    }
     polarity: bool = True
-    inst: str = ""
+    r: str = ""
     ruin: Rui = field(default_factory=Rui)
     ruir: Rui = field(default_factory=Rui)
     tr: TempRef = field(default_factory=TempRef)
@@ -358,19 +266,6 @@ class NtoCTuple(RtTuple):
     # NtoC#< ‘+’/‘-’, r, RUIcs, ruin, code, tr >
 
     tuple_type: ClassVar[TupleType] = TupleType.NtoC
-    params: ClassVar[dict[TupleComponents, str]] = {
-        **RtTuple.params,
-        **enum_to_dict(
-            {
-                TupleComponents.polarity,
-                TupleComponents.r,
-                TupleComponents.ruics,
-                TupleComponents.ruin,
-                TupleComponents.code,
-                TupleComponents.tr,
-            }
-        ),
-    }
     polarity: bool = True
     r: str = ""
     ruics: Rui = field(default_factory=Rui)
@@ -401,17 +296,6 @@ class NtoDETuple(RtTuple):
     # NtoDE#< '+/-', r, ruin, data, ruidt>
 
     tuple_type: ClassVar[TupleType] = TupleType.NtoDE
-    params: ClassVar[dict[TupleComponents, str]] = {
-        **RtTuple.params,
-        **enum_to_dict(
-            {
-                TupleComponents.polarity,
-                TupleComponents.ruin,
-                TupleComponents.data,
-                TupleComponents.ruidt,
-            }
-        ),
-    }
     polarity: bool = True
     ruin: Rui = field(default_factory=Rui)
     data: str =""
@@ -432,17 +316,6 @@ class NtoLackRTuple(RtTuple):
     # NtoRTuple(-) -tuple NtoRTuple(-)#< r, ruin, RUIr, rT/‘-’, tr/‘-’ >
 
     tuple_type: ClassVar[TupleType] = TupleType.NtoLackR
-    params: ClassVar[dict[TupleComponents, str]] = {
-        **RtTuple.params,
-        **enum_to_dict(
-            {
-                TupleComponents.r,
-                TupleComponents.ruin,
-                TupleComponents.ruir,
-                TupleComponents.tr,
-            }
-        ),
-    }
     r: str = ""
     ruin: Rui = field(default_factory=Rui)
     ruir: Rui = field(default_factory=Rui)
@@ -452,8 +325,8 @@ class NtoLackRTuple(RtTuple):
 type_to_class = {
     TupleType.AN: ANTuple,
     TupleType.AR: ARTuple,
-    TupleType.Di: DiTuple,
-    TupleType.Dc: DcTuple,
+    TupleType.DI: DITuple,
+    TupleType.DC: DCTuple,
     TupleType.F: FTuple,
     TupleType.NtoDE: NtoDETuple,
     TupleType.NtoN: NtoNTuple,
@@ -472,119 +345,9 @@ class AttributesVisitor(RtTupleVisitor):
 
     @override
     def visit(self, host:RtTuple):
-        attributes = {}
-        attributes = {
-            host.params[TupleComponents.rui]: host.rui,
-            host.params[TupleComponents.type]: host.tuple_type,
-        }
-        match host.tuple_type:
-            case TupleType.AN:
-                attributes |= self.visit_an(host)
-            case TupleType.AR:
-                attributes |= self.visit_ar(host)
-            case TupleType.Di:
-                attributes |= self.visit_di(host)
-            case TupleType.Dc:
-                attributes |= self.visit_dc(host)
-            case TupleType.F:
-                attributes |= self.visit_f(host)
-            case TupleType.NtoN:
-                attributes |= self.visit_nton(host)
-            case TupleType.NtoR:
-                attributes |= self.visit_ntor(host)
-            case TupleType.NtoC:
-                attributes |= self.visit_ntoc(host)
-            case TupleType.NtoDE:
-                attributes |= self.visit_ntode(host)
-            case TupleType.NtoLackR:
-                attributes |= self.visit_ntolackr(host)
-        return attributes
-
-    def visit_an(self, host:ANTuple):
-        attributes = {}
-        attributes[host.params[TupleComponents.ruia]] = host.ruia
-        attributes[host.params[TupleComponents.ruin]] = host.ruin
-        attributes[host.params[TupleComponents.ar]] = host.ar
-        attributes[host.params[TupleComponents.unique]] = host.unique
-        attributes[host.params[TupleComponents.t]] = host.t
-        return attributes
-    
-    def visit_ar(self, host:ARTuple):
-        attributes = {}
-        attributes[host.params[TupleComponents.ruia]] = host.ruia
-        attributes[host.params[TupleComponents.ruir]] = host.ruir
-        attributes[host.params[TupleComponents.ruio]] = host.ruio
-        attributes[host.params[TupleComponents.ar]] = host.ar
-        attributes[host.params[TupleComponents.unique]] = host.unique
-        attributes[host.params[TupleComponents.t]] = host.t
-        return attributes
-
-    def visit_di(self, host:DiTuple):
-        attributes = {}
-        attributes[host.params[TupleComponents.ruid]] = host.ruid
-        attributes[host.params[TupleComponents.ruit]] = host.ruit
-        attributes[host.params[TupleComponents.event_reason]] = host.event_reason.value
-        attributes[host.params[TupleComponents.t]] = host.t
-        attributes[host.params[TupleComponents.ruia]] = host.ruia
-        attributes[host.params[TupleComponents.ta]] = host.ta
-        return attributes
-
-
-    def visit_dc(self, host:DcTuple):
-        attributes = {}
-        attributes[host.params[TupleComponents.ruid]] = host.ruid
-        attributes[host.params[TupleComponents.ruit]] = host.ruit
-        attributes[host.params[TupleComponents.event]] = host.event.value
-        attributes[host.params[TupleComponents.event_reason]] = host.event_reason.value
-        attributes[host.params[TupleComponents.t]] = host.t
-        attributes[host.params[TupleComponents.replacements]] = host.replacements
-        return attributes
-
-    def visit_f(self, host:FTuple):
-        attributes = {}
-        attributes[host.params[TupleComponents.ruitn]] = host.ruitn
-        attributes[host.params[TupleComponents.C]] = host.C
-        return attributes
-
-    def visit_nton(self, host:NtoNTuple):
-        attributes = {}
-        attributes[host.params[TupleComponents.polarity]] = host.polarity
-        attributes[host.params[TupleComponents.r]] = host.r
-        attributes[host.params[TupleComponents.p_list]] = host.p
-        attributes[host.params[TupleComponents.tr]] = host.tr
-        return attributes
-
-    def visit_ntor(self, host:NtoRTuple):
-        attributes = {}
-        attributes[host.params[TupleComponents.polarity]] = host.polarity
-        attributes[host.params[TupleComponents.inst]] = host.inst
-        attributes[host.params[TupleComponents.ruin]] = host.ruin
-        attributes[host.params[TupleComponents.ruir]] = host.ruir
-        attributes[host.params[TupleComponents.tr]] = host.tr
-        return attributes
-
-    def visit_ntoc(self, host:NtoCTuple):
-        attributes = {}
-        attributes[host.params[TupleComponents.polarity]] = host.polarity
-        attributes[host.params[TupleComponents.r]] = host.r
-        attributes[host.params[TupleComponents.ruics]] = host.ruics
-        attributes[host.params[TupleComponents.ruin]] = host.ruin
-        attributes[host.params[TupleComponents.code]] = host.code
-        attributes[host.params[TupleComponents.tr]] = host.tr
-        return attributes
-
-    def visit_ntode(self, host:NtoDETuple):
-        attributes = {}
-        attributes[host.params[TupleComponents.polarity]] = host.polarity
-        attributes[host.params[TupleComponents.ruin]] = host.ruin
-        attributes[host.params[TupleComponents.data]] = host.data
-        attributes[host.params[TupleComponents.ruidt]] = host.ruidt
-        return attributes
-
-    def visit_ntolackr(self, host:NtoLackRTuple):
-        attributes = {}
-        attributes[host.params[TupleComponents.r]] = host.r
-        attributes[host.params[TupleComponents.ruin]] = host.ruin
-        attributes[host.params[TupleComponents.ruir]] = host.ruir
-        attributes[host.params[TupleComponents.tr]] = host.tr
-        return attributes
+        output = asdict(host)
+        for attr_name, attr_value in vars(type(host)).items():
+            # Adds class variables, which are attributes that are not callable, private, or already present
+            if not callable(attr_value) and not attr_name.startswith("_") and attr_name not in output:
+                output[attr_name] = attr_value
+        return output
