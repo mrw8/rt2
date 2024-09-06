@@ -114,11 +114,9 @@ class ANTuple(RtTuple):
     """
 
     tuple_type: ClassVar[TupleType] = TupleType.AN
-    ruia: Rui = field(default_factory=Rui)
     ruin: Rui = field(default_factory=Rui)
     ar: RuiStatus = RuiStatus.assigned
     unique: PorType = PorType.singular
-    t: TempRef = field(default_factory=TempRef)
 
 @dataclass
 class ARTuple(RtTuple):
@@ -133,12 +131,10 @@ class ARTuple(RtTuple):
     """
 
     tuple_type: ClassVar[TupleType] = TupleType.AR
-    ruia: Rui = field(default_factory=Rui)
     ruir: Rui = field(default_factory=Rui)
     ruio: Rui = field(default_factory=Rui)
     ar: RuiStatus = RuiStatus.assigned
     unique: PorType = PorType.singular
-    t: TempRef = field(default_factory=TempRef)
 
 
 @dataclass
