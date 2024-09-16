@@ -12,11 +12,6 @@ def print_ANTuple(a):
     print(
         "\tis ruin singularly unique vs. potentially non-singularly unique: ", a.unique
     )
-    print(
-        "\truia: rui that denotes person who assigned ruin to some PoR",
-        str(a.ruia.uuid),
-    )
-    print("\tt: time that ruia assigned/reserved ruin to/for some PoR", str(a.t))
     print()
 
 
@@ -27,11 +22,11 @@ y = ANTuple(x)
 print_ANTuple(y)
 
 q = Rui()
-z = ANTuple(q, ruia=a, unique="+SU", ar="R")
+z = ANTuple(q, unique="+SU", ar="R")
 print_ANTuple(z)
 
 s = Rui()
-w = ANTuple(s, ruia=a, unique="+SU")
+w = ANTuple(s, unique="+SU")
 print_ANTuple(w)
 
 print(type(datetime.now(timezone.utc)))

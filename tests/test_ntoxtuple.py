@@ -10,11 +10,6 @@ def print_ANTuple(a):
     print(
         "\tis ruin singularly unique vs. potentially non-singularly unique: ", a.unique
     )
-    print(
-        "\truia: rui that denotes person who assigned ruin to some PoR",
-        str(a.ruia.uuid),
-    )
-    print("\tt: time that ruia assigned/reserved ruin to/for some PoR", str(a.t))
     print()
 
 
@@ -79,7 +74,7 @@ a = rui.Rui()
 h = rui.Rui()
 # Rui that stands for interval over which author has been instance of human being
 tr1 = rui.Rui()
-k = ANTuple(tr1, ruia=a)
+k = ANTuple(tr1)
 
 NtoRTuple = NtoRTuple(polarity=True, r="part of", ruin=a, ruir=h, tr=rui.TempRef())
 print_NtoRTuple_tuple(NtoRTuple)
@@ -90,16 +85,16 @@ y = ANTuple(x)
 print_ANTuple(y)
 
 q = rui.Rui()
-z = ANTuple(q, ruia=a, ar=RuiStatus.reserved)
+z = ANTuple(q, ar=RuiStatus.reserved)
 print_ANTuple(z)
 
 # let s be the RUI standing for the territory of Malaysia
 s = rui.Rui()
-w = ANTuple(s, ruia=a)
+w = ANTuple(s)
 print_ANTuple(w)
 
 # let tr2 be interval over which kuala lumpur has been part of Malaysia
 tr2 = rui.Rui()
-j = ANTuple(tr2, ruia=a)
+j = ANTuple(tr2)
 NtoNTuple = NtoNTuple(polarity=True, r="part of", p=[x, s], tr=rui.TempRef())
 print_NtoNTuple_tuple(NtoNTuple)

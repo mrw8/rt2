@@ -77,7 +77,7 @@ def compare(formatted, expected):
 def test_antuple_json():
     a = ANTuple(rui=rui, ruin=ruin)
     formatted_a = format_rttuple(a)
-    expected_a = f'{{"ruin": "{ruin}""rui": "{rui}", "tuple_type": "{a.tuple_type}", "unique": "{a.unique}", "ar": "{a.ar}"}}'
+    expected_a = f'{{"ruin": "{ruin}", "rui": "{rui}", "tuple_type": "{a.tuple_type}", "unique": "{a.unique}", "ar": "{a.ar}"}}'
     print("ANtuple Expected:  \n" + expected_a)
     print("ANtuple Processed:  \n" + formatted_a)
     assert compare(formatted_a, expected_a)
