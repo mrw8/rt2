@@ -34,7 +34,7 @@ class TupleType(ValueEnum):
     NtoN = "NtoN"
     NtoR = "NtoR"
     NtoC = "NtoC"
-    NtoLackR = "NtoR(-)"
+    NtoLackR = "NtoLackR"
 
 
 """Enum representing portions of reality types"""
@@ -240,7 +240,7 @@ class NtoRTuple(RtTuple):
 
     tuple_type: ClassVar[TupleType] = TupleType.NtoR
     polarity: bool = True
-    r: Relationship = field(default_factory=Relationship)
+    r: Rui = field(default_factory=Rui)
     ruin: Rui = field(default_factory=Rui)
     ruir: Rui = field(default_factory=Rui)
     tr: TempRef = field(default_factory=TempRef)
