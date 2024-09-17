@@ -127,7 +127,7 @@ class RtStore(ABC):
         pass
 
     @abstractmethod
-    def get_tuple(self, tup: Rui) -> RtTuple:
+    def get_tuple(self, rui: Rui) -> RtTuple:
         pass
 
     @abstractmethod
