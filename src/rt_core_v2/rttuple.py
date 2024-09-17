@@ -219,7 +219,7 @@ class NtoNTuple(RtTuple):
     # NtoNTuple#< ‘+’/‘-’, r, P, tr/‘-’ >
     tuple_type: ClassVar[TupleType] = TupleType.NtoN
     polarity: bool = True
-    r: Relationship = field(default_factory=Rui)
+    r: Rui = field(default_factory=Rui)
     #TODO Make a copy of p
     p: list[Rui] = field(default_factory=list)
     tr: TempRef = field(default_factory=TempRef)
@@ -267,7 +267,7 @@ class NtoCTuple(RtTuple):
 
     tuple_type: ClassVar[TupleType] = TupleType.NtoC
     polarity: bool = True
-    r: Relationship = field(default_factory=Relationship)
+    r: Rui = field(default_factory=Rui)
     ruics: Rui = field(default_factory=Rui)
     ruin: Rui = field(default_factory=Rui)
     code: str = ""
@@ -316,7 +316,7 @@ class NtoLackRTuple(RtTuple):
     # NtoRTuple(-) -tuple NtoRTuple(-)#< r, ruin, RUIr, rT/‘-’, tr/‘-’ >
 
     tuple_type: ClassVar[TupleType] = TupleType.NtoLackR
-    r: Relationship = field(default_factory=Relationship)
+    r: Rui = field(default_factory=Rui)
     ruin: Rui = field(default_factory=Rui)
     ruir: Rui = field(default_factory=Rui)
     tr: TempRef = field(default_factory=TempRef)

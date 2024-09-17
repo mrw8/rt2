@@ -129,7 +129,7 @@ json_entry_converter = {
     TupleComponents.p_list: JsonEntryConverter.lst_to_ruis,
     TupleComponents.C: lambda x: float(x),
     TupleComponents.polarity: lambda x: bool(x),
-    TupleComponents.r: JsonEntryConverter.str_to_relation,
+    TupleComponents.r: JsonEntryConverter.str_to_rui,
     # TODO Figure out the types of code and data
     TupleComponents.code: JsonEntryConverter.str_to_str,
     TupleComponents.data: JsonEntryConverter.str_to_str,
