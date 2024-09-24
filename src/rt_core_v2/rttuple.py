@@ -82,6 +82,24 @@ class RtTupleVisitor(ABC):
     def visit(self, host):
         pass
 
+class AttributesVisitor(RtTupleVisitor):
+    """
+    Visitor that converts a tuple's representation to a dictionary 
+    mapping the TupleComponent entry type to the value of the entry
+    """
+    def __init__(self):
+        super().__init__()
+
+    @override
+    def visit(self, host):
+        output = asdict(host)
+        for attr_name, attr_value in vars(type(host)).items():
+            # Adds class variables, which are attributes that are not callable, private, or already present
+            if not callable(attr_value) and not attr_name.startswith("_") and attr_name not in output:
+                output[attr_name] = attr_value
+        return output
+
+
 @dataclass
 class RtTuple(ABC):
     """Abstract Referent Tracking tuple that contains the information that all referent tracking tuples contain
@@ -97,7 +115,8 @@ class RtTuple(ABC):
     def __eq__(self, other):
         if not isinstance(other, type(self)):
             return False
-        return self.__dict__ == other.__dict__
+        get_attr = AttributesVisitor()
+        return self.accept(get_attr) == other.accept(get_attr)
 
     def accept(self, visitor: RtTupleVisitor):
         return visitor.visit(self)
@@ -334,20 +353,3 @@ type_to_class = {
     TupleType.NtoC: NtoCTuple,
     TupleType.NtoLackR: NtoLackRTuple,
 }
-
-class AttributesVisitor(RtTupleVisitor):
-    """
-    Visitor that converts a tuple's representation to a dictionary 
-    mapping the TupleComponent entry type to the value of the entry
-    """
-    def __init__(self):
-        super().__init__()
-
-    @override
-    def visit(self, host:RtTuple):
-        output = asdict(host)
-        for attr_name, attr_value in vars(type(host)).items():
-            # Adds class variables, which are attributes that are not callable, private, or already present
-            if not callable(attr_value) and not attr_name.startswith("_") and attr_name not in output:
-                output[attr_name] = attr_value
-        return output
