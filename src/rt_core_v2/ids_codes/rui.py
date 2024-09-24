@@ -27,7 +27,7 @@ class Rui:
     def __eq__(self, other):
         if not isinstance(other, type(self)):
             return False
-        return self.__dict__ == other.__dict__
+        return self._uuid == other.uuid
 
     # def __repr__(self):
     #     return self.__str__()
@@ -52,7 +52,7 @@ class TempRef:
     def __eq__(self, other):
         if not isinstance(other, type(self)):
             return False
-        return self.__dict__ == other.__dict__
+        return self.ref == other.ref
 
 class Relationship:
     """A tuple component that contains a URI for a relationship

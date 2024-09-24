@@ -5,7 +5,7 @@ from typing import ClassVar, override
 
 from rt_core_v2.ids_codes.rui import Rui, TempRef, Relationship
 from rt_core_v2.metadata import TupleEventType, ValueEnum, RtChangeReason
-from datetime import datetime
+from datetime import datetime, timezone
 
 """Takes an set of enums and converts them into a dict with mapping entry:value"""
 
@@ -121,7 +121,7 @@ class RtTuple(ABC):
     def accept(self, visitor: RtTupleVisitor):
         return visitor.visit(self)
 
-@dataclass
+@dataclass(eq=False)
 class ANTuple(RtTuple):
     """Referent Tracking assignment tuple that registers assignment of an RUI to a PoR
 
@@ -138,7 +138,7 @@ class ANTuple(RtTuple):
     ar: RuiStatus = RuiStatus.assigned
     unique: PorType = PorType.singular
 
-@dataclass
+@dataclass(eq=False)
 class ARTuple(RtTuple):
     """Referent Tracking assignment tuple that registers assignment of an RUI to a PoR
 
@@ -157,7 +157,7 @@ class ARTuple(RtTuple):
     unique: PorType = PorType.singular
 
 
-@dataclass
+@dataclass(eq=False)
 class DITuple(RtTuple):
     """Referent Tracking metadata tuple that stores information regarding the instantation of other tuple types
 
@@ -174,13 +174,13 @@ class DITuple(RtTuple):
     tuple_type: ClassVar[TupleType] = TupleType.DI
     ruit: Rui = field(default_factory=Rui)
     ruid: Rui = field(default_factory=Rui)
-    t: datetime = field(default_factory=datetime.now)
+    t: datetime = field(default_factory=lambda : datetime.now().astimezone(timezone.utc))
     event_reason: RtChangeReason = RtChangeReason.REALITY
     ruia: Rui = field(default_factory=Rui)
     ta: TempRef = field(default_factory=TempRef)
 
 
-@dataclass
+@dataclass(eq=False)
 class DCTuple(RtTuple):
     """Referent Tracking metadata tuple that stores information regarding the instantation of other tuple types
 
@@ -197,14 +197,14 @@ class DCTuple(RtTuple):
     tuple_type: ClassVar[TupleType] = TupleType.DC
     ruit: Rui = field(default_factory=Rui)
     ruid: Rui = field(default_factory=Rui)
-    t: datetime = field(default_factory=datetime.now)
+    t: datetime = field(default_factory=lambda : datetime.now().astimezone(timezone.utc))
     event: TupleEventType = TupleEventType.INVALIDATE
     event_reason: RtChangeReason = RtChangeReason.R01
     #TODO Make replacements a shallow copy
     replacements: list[Rui] = field(default_factory=list)
 
 
-@dataclass
+@dataclass(eq=False)
 class FTuple(RtTuple):
     """Referent Tracking metadata tuple that stores information regarding the confidence level in another tuple's assertions
 
@@ -223,7 +223,7 @@ class FTuple(RtTuple):
     C: float = 1.0
 
 
-@dataclass
+@dataclass(eq=False)
 class NtoNTuple(RtTuple):
     """Tuple type that relates two or more non-repeatable portions of reality to one another
 
@@ -243,7 +243,7 @@ class NtoNTuple(RtTuple):
     p: list[Rui] = field(default_factory=list)
     tr: TempRef = field(default_factory=TempRef)
 
-@dataclass
+@dataclass(eq=False)
 class NtoRTuple(RtTuple):
     """Tuple type that relates a non-repeatable portion of reality to a repeatable portion of reality
 
@@ -267,7 +267,7 @@ class NtoRTuple(RtTuple):
 
 
 # TODO Use concepts
-@dataclass
+@dataclass(eq=False)
 class NtoCTuple(RtTuple):
     """Tuple type that annotates a non-repeatable portion of reality with a "concept" code from a
     concept-based system
@@ -301,7 +301,7 @@ class NtoCTuple(RtTuple):
 # (3) an NtoDE tuple to hold the actual written (or "string") form of the IdD.
 # Note that an IdD can be a name, identifier, etc.
 # TODO Figure out if data should be a string or generic data
-@dataclass
+@dataclass(eq=False)
 class NtoDETuple(RtTuple):
     """Tuple type that creates a connection between a non-repeatable portion of reality and a piece of data
 
@@ -320,7 +320,7 @@ class NtoDETuple(RtTuple):
     data: str =""
     ruidt: Rui = field(default_factory=Rui)
 
-@dataclass
+@dataclass(eq=False)
 class NtoLackRTuple(RtTuple):
     """Tuple type that asserts that a repeatable portion of reality in a does not have a specified relationship with a non-repeateble portion of reality
 
