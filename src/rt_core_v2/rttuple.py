@@ -291,7 +291,6 @@ class NtoCTuple(RtTuple):
     ruin: Rui = field(default_factory=Rui)
     code: str = ""
     tr: TempRef = field(default_factory=TempRef)
-    # TODO Make creating a tempref create an underlying time instance
 
 
 # We use NtoDE instead of NtoI, and we use an instance for the identifying descriptor
