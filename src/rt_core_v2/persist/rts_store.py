@@ -159,5 +159,6 @@ class RtStore(ABC):
         pass
 
     @abstractmethod
-    def save_rts_declaration(self, declaration) -> bool:
+    def rollback(self):
         pass
+

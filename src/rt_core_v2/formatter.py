@@ -36,7 +36,6 @@ class RtTupleJSONEncoder(json.JSONEncoder):
             return obj.value
         if isinstance(obj, bytes):
             return base64.b64encode(obj).decode('utf-8')
-
         else:
             super().default(obj)
 
