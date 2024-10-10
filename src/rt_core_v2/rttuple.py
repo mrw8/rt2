@@ -129,7 +129,7 @@ class ANTuple(RtTuple):
     ar -- The status of ruin
     ruin -- The Rui that is being assigned for the first time
     ruia -- The Rui of the author of this ANTuple
-    unique -- Asserts whether this is a non-repeatable or repeatable portion of reality
+    unique -- Asserts whether this POR is singuarly unique
     t -- The time of the creation of the ANTuple
     """
 
@@ -145,8 +145,7 @@ class ARTuple(RtTuple):
     Attributes:
     ar -- The status of ruin
     ruin -- The Rui that is being assigned for the first time
-    ruia -- The Rui of the author of this ARTuple
-    unique -- Asserts whether this is a non-repeatable or repeatable portion of reality
+    unique -- Asserts whether this POR is singuarly unique
     t -- The time of the creation of the ARTuple
     """
 

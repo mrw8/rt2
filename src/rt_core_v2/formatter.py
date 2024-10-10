@@ -17,6 +17,8 @@ from rt_core_v2.rttuple import (
 )
 from rt_core_v2.ids_codes.rui import Rui, TempRef, Relationship
 from rt_core_v2.metadata import TupleEventType, RtChangeReason
+from urllib.parse import urlparse
+import re
 
 
 class RtTupleJSONEncoder(json.JSONEncoder):
@@ -82,7 +84,30 @@ class JsonEntryConverter:
 
     @staticmethod
     def str_to_rui(x: str) -> Rui:
-        return Rui(UUID(x))
+        try:
+            val = UUID(x)
+            return Rui(val)
+        except ValueError:
+            pass
+        
+        iso8601_regex = (
+            r'^(-?(?:[1-9][0-9]*)?[0-9]{4})'  
+            r'-(1[0-2]|0[1-9])'               
+            r'-(3[01]|0[1-9]|[12][0-9])'      
+            r'T(2[0-3]|[01][0-9]):'           
+            r'([0-5][0-9]):'                  
+            r'([0-5][0-9]|60)'                
+            r'(?:\.(\d+))?'                   
+            r'(Z)$'
+        )
+    
+        if re.match(iso8601_regex, x):
+            try:
+                format = "%Y-%m-%d %H:%M:%S.%f%z"
+                return Rui(datetime.strptime(x, format))
+            except ValueError:
+                pass
+        return Rui(x)
 
 
     @staticmethod

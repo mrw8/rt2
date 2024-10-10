@@ -10,24 +10,26 @@ class Rui:
     uuid -- the unique identifier of the Rui
     """
 
-    def __init__(self, uuid: UUID = None):
-        self._uuid = uuid if uuid else uuid7()
+    def __init__(self, identifier: UUID| str | datetime = None):
+        if isinstance(identifier, datetime):
+            identifier = identifier.astimezone(timezone.utc)
+        self.identifier = identifier if identifier else uuid7()
 
     @property
     def uuid(self):
-        return self._uuid
+        return self.identifier
 
     @uuid.setter
     def uuid(self, uuid):
-        self._uuid = uuid
+        self.identifier = uuid
 
     def __str__(self):
-        return str(self._uuid)
+        return str(self.identifier)
 
     def __eq__(self, other):
         if not isinstance(other, type(self)):
             return False
-        return self._uuid == other.uuid
+        return self.identifier == other.uuid
 
     # def __repr__(self):
     #     return self.__str__()
