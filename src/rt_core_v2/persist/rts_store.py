@@ -6,7 +6,6 @@ from rt_core_v2.ids_codes.rui import Rui, TempRef
 from rt_core_v2.metadata import RtChangeReason, TupleEventType
 
 
-# TODO Change fields to be up to date with referent tracking 2.0
 class TupleQuery:
     def __init__(
         self,
