@@ -20,14 +20,12 @@ from rt_core_v2.rttuple import (
 )
 from rt_core_v2.ids_codes.rui import Rui, TempRef, Relationship
 from rt_core_v2.metadata import TupleEventType, RtChangeReason
-from urllib.parse import urlparse
-import re
 
 
 class RtTupleJSONEncoder(json.JSONEncoder):
     """Converts contents of RtTuples into a json representation"""
 
-    str_classes = {Rui, TempRef, PorType, RuiStatus, Relationship, UUI}
+    str_classes = {Rui, TempRef, PorType, RuiStatus, Relationship, UUI, datetime}
     val_classes = {TupleType, RtChangeReason, TupleEventType,}
 
     def __init__(self, *args, **kwargs):
@@ -84,6 +82,7 @@ def write_tuples(
 
 class JsonEntryConverter:
     """Contains functions for converting correclty formatted json representations of tuple fields to tuple fields"""
+    format = "%Y-%m-%d %H:%M:%S.%f%z"
 
     @staticmethod
     def str_to_rui(x: str) -> Rui:
@@ -99,14 +98,12 @@ class JsonEntryConverter:
     
     @staticmethod
     def str_to_isorui(x: str) -> ISO_Rui:
-        format = "%Y-%m-%d %H:%M:%S.%f%z"
-        return ISO_Rui(datetime.strptime(x, format))
+        return ISO_Rui(datetime.strptime(x, JsonEntryConverter.format))
     
     @staticmethod 
     def str_to_uui(x: str) -> UUI:
         return UUI(x)
     
-    #TODO Implement relationship here
     @staticmethod
     def str_to_relationship(x: str) -> Relationship:
         return Relationship(x)
@@ -118,6 +115,10 @@ class JsonEntryConverter:
     @staticmethod
     def str_to_str(x: str):
         return x
+    
+    @staticmethod
+    def process_datetime(x: str):
+        return datetime.strptime(x, JsonEntryConverter.format)
     
     @staticmethod
     def process_temp_ref(x: str):
@@ -148,8 +149,7 @@ json_entry_converter = {
     TupleComponents.ruit: JsonEntryConverter.str_to_idrui,
     TupleComponents.ruitn: JsonEntryConverter.str_to_idrui,
     TupleComponents.ruio: JsonEntryConverter.str_to_idrui,
-    #TODO Convert t to a timestamp string
-    TupleComponents.t: JsonEntryConverter.process_temp_ref,
+    TupleComponents.t: JsonEntryConverter.process_datetime,
     TupleComponents.ta: JsonEntryConverter.process_temp_ref,
     TupleComponents.tr: JsonEntryConverter.process_temp_ref,
     TupleComponents.ar: lambda x: RuiStatus(x),
