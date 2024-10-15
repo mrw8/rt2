@@ -1,6 +1,6 @@
 import json
 
-from rt_core_v2.ids_codes.rui import Rui, TempRef, Relationship
+from rt_core_v2.ids_codes.rui import Rui, ID_Rui, TempRef, Relationship
 from rt_core_v2.rttuple import (
     ANTuple,
     ARTuple,
@@ -27,17 +27,17 @@ def ordered(obj):
         return obj
 
 
-ruin = Rui()
-ruia = Rui()
-ruit = Rui()
-ruitn = Rui()
-ruid = Rui()
-ruics = Rui()
-ruir = Rui()
-ruin = Rui()
-ruidt = Rui()
-ruio = Rui()
-rui = Rui()
+ruin = ID_Rui()
+ruia = ID_Rui()
+ruit = ID_Rui()
+ruitn = ID_Rui()
+ruid = ID_Rui()
+ruics = ID_Rui()
+ruir = ID_Rui()
+ruin = ID_Rui()
+ruidt = ID_Rui()
+ruio = ID_Rui()
+rui = ID_Rui()
 
 get_attributes = AttributesVisitor()
 
@@ -46,7 +46,7 @@ event = TupleEventType.REVALIDATE
 reason = RtChangeReason.BELIEF
 replacements = [ruin, ruidt, ruin]
 polarity = False
-relation = Rui()
+relation = ID_Rui()
 p_list = [ruid, ruin]
 code = "code insert"
 data_original = "data insert"

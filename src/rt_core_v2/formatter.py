@@ -14,6 +14,9 @@ from rt_core_v2.rttuple import (
     PorType,
     AttributesVisitor,
     RtTupleVisitor,
+    ID_Rui, 
+    ISO_Rui, 
+    UUI,
 )
 from rt_core_v2.ids_codes.rui import Rui, TempRef, Relationship
 from rt_core_v2.metadata import TupleEventType, RtChangeReason
@@ -84,35 +87,33 @@ class JsonEntryConverter:
 
     @staticmethod
     def str_to_rui(x: str) -> Rui:
-        try:
-            val = UUID(x)
-            return Rui(val)
-        except ValueError:
-            pass
-        
-        iso8601_regex = (
-            r'^(-?(?:[1-9][0-9]*)?[0-9]{4})'  
-            r'-(1[0-2]|0[1-9])'               
-            r'-(3[01]|0[1-9]|[12][0-9])'      
-            r'T(2[0-3]|[01][0-9]):'           
-            r'([0-5][0-9]):'                  
-            r'([0-5][0-9]|60)'                
-            r'(?:\.(\d+))?'                   
-            r'(Z)$'
-        )
+        if ':' in x:
+            return JsonEntryConverter.str_to_isorui(x)
+        else:
+            return JsonEntryConverter.str_to_idrui(x)
     
-        if re.match(iso8601_regex, x):
-            try:
-                format = "%Y-%m-%d %H:%M:%S.%f%z"
-                return Rui(datetime.strptime(x, format))
-            except ValueError:
-                pass
-        return Rui(x)
-
+    @staticmethod
+    def str_to_idrui(x: str) -> ID_Rui:
+        val = UUID(x)
+        return ID_Rui(val)
+    
+    @staticmethod
+    def str_to_isorui(x: str) -> ISO_Rui:
+        format = "%Y-%m-%d %H:%M:%S.%f%z"
+        return ISO_Rui(datetime.strptime(x, format))
+    
+    @staticmethod 
+    def str_to_uui(x: str) -> UUI:
+        return UUI(x)
+    
+    #TODO Implement relationship here
+    @staticmethod
+    def str_to_relationship(x: str) -> Relationship:
+        pass
 
     @staticmethod
     def lst_to_ruis(x: list[str]) -> list[Rui]:
-        return [Rui(UUID(entry)) for entry in x]
+        return [JsonEntryConverter.str_to_rui(entry) for entry in x]
 
     @staticmethod
     def str_to_str(x: str):
@@ -120,12 +121,10 @@ class JsonEntryConverter:
     
     @staticmethod
     def process_temp_ref(x: str):
-        #UUIDs do not contain colons. A bit hacky, so find a better way to differentiate.
         if ':' in x:
-            format = "%Y-%m-%d %H:%M:%S.%f%z"
-            time_data = datetime.strptime(x, format)
+            time_data = JsonEntryConverter.str_to_isorui(x)
         else:
-            time_data = Rui(UUID(x))
+            time_data = JsonEntryConverter.str_to_idrui(x)
         return TempRef(time_data)
     
     @staticmethod
