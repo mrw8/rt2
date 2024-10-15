@@ -74,8 +74,11 @@ class UUI:
     identifier -- A string representing the unique identifier.
     """
 
-    def __init__(self, identifier: str):
+    def __init__(self, identifier: str = "http://default_uri.com"):
         self.identifier = identifier
+
+    def __str__(self):
+        return str(self.identifier)
 
     def __eq__(self, other):
         if not isinstance(other, type(self)):

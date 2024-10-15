@@ -27,7 +27,7 @@ import re
 class RtTupleJSONEncoder(json.JSONEncoder):
     """Converts contents of RtTuples into a json representation"""
 
-    str_classes = {Rui, TempRef, PorType, RuiStatus, Relationship,}
+    str_classes = {Rui, TempRef, PorType, RuiStatus, Relationship, UUI}
     val_classes = {TupleType, RtChangeReason, TupleEventType,}
 
     def __init__(self, *args, **kwargs):
@@ -138,17 +138,17 @@ class JsonEntryConverter:
 
 
 json_entry_converter = {
-    TupleComponents.rui: JsonEntryConverter.str_to_rui,
-    TupleComponents.ruin: JsonEntryConverter.str_to_rui,
-    TupleComponents.ruia: JsonEntryConverter.str_to_rui,
-    TupleComponents.ruid: JsonEntryConverter.str_to_rui,
-    TupleComponents.ruin: JsonEntryConverter.str_to_rui,
-    TupleComponents.ruir: JsonEntryConverter.str_to_rui,
-    TupleComponents.ruics: JsonEntryConverter.str_to_rui,
-    TupleComponents.ruidt: JsonEntryConverter.str_to_rui,
-    TupleComponents.ruit: JsonEntryConverter.str_to_rui,
-    TupleComponents.ruitn: JsonEntryConverter.str_to_rui,
-    TupleComponents.ruio: JsonEntryConverter.str_to_rui,
+    TupleComponents.rui: JsonEntryConverter.str_to_idrui,
+    TupleComponents.ruin: JsonEntryConverter.str_to_idrui,
+    TupleComponents.ruia: JsonEntryConverter.str_to_idrui,
+    TupleComponents.ruid: JsonEntryConverter.str_to_idrui,
+    TupleComponents.ruir: JsonEntryConverter.str_to_uui,
+    TupleComponents.ruics: JsonEntryConverter.str_to_uui,
+    TupleComponents.ruidt: JsonEntryConverter.str_to_idrui,
+    TupleComponents.ruit: JsonEntryConverter.str_to_idrui,
+    TupleComponents.ruitn: JsonEntryConverter.str_to_idrui,
+    TupleComponents.ruio: JsonEntryConverter.str_to_idrui,
+    #TODO Convert t to a timestamp string
     TupleComponents.t: JsonEntryConverter.process_temp_ref,
     TupleComponents.ta: JsonEntryConverter.process_temp_ref,
     TupleComponents.tr: JsonEntryConverter.process_temp_ref,

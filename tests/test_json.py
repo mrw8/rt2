@@ -1,6 +1,6 @@
 import json
 
-from rt_core_v2.ids_codes.rui import Rui, ID_Rui, TempRef, Relationship
+from rt_core_v2.ids_codes.rui import Rui, ID_Rui, TempRef, Relationship, UUI
 from rt_core_v2.rttuple import (
     ANTuple,
     ARTuple,
@@ -32,8 +32,8 @@ ruia = ID_Rui()
 ruit = ID_Rui()
 ruitn = ID_Rui()
 ruid = ID_Rui()
-ruics = ID_Rui()
-ruir = ID_Rui()
+ruics = UUI()
+ruir = UUI()
 ruin = ID_Rui()
 ruidt = ID_Rui()
 ruio = ID_Rui()
