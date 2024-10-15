@@ -109,7 +109,7 @@ class JsonEntryConverter:
     #TODO Implement relationship here
     @staticmethod
     def str_to_relationship(x: str) -> Relationship:
-        pass
+        return Relationship(x)
 
     @staticmethod
     def lst_to_ruis(x: list[str]) -> list[Rui]:
@@ -160,7 +160,7 @@ json_entry_converter = {
     TupleComponents.p_list: JsonEntryConverter.lst_to_ruis,
     TupleComponents.C: lambda x: float(x),
     TupleComponents.polarity: lambda x: bool(x),
-    TupleComponents.r: JsonEntryConverter.str_to_rui,
+    TupleComponents.r: JsonEntryConverter.str_to_relationship,
     TupleComponents.code: JsonEntryConverter.str_to_str,
     TupleComponents.data: JsonEntryConverter.str_to_bytes,
     TupleComponents.type: lambda x: TupleType(x),
